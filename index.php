@@ -64,7 +64,7 @@
 
     // Put together the models parameters
     var model1 = new params(
-        'Projekcia',
+        'projection',
         MAXDAYS,
         rate_seed,
         'log',
@@ -73,8 +73,20 @@
         new_seed,
     );
 
+    // Add another scenario
+    var model2 = new params(
+        'projection-optimistic',
+        MAXDAYS,
+        rate_seed,
+        'log',
+        50,
+        1.01,
+        new_seed,
+    );
+
     // Run the model
     run_model( model1 );
+    run_model( model2 );
 </script>
 
 <!-- MOBILE & DESKTOP STYLES -->

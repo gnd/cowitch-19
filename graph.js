@@ -4,15 +4,13 @@ var graph_height = window.innerHeight * 0.83;
 var grd = full.createLinearGradient(0, graph_height,  0,  0);
 var country_name = 'Czech republic';
 var models = ['Projekcia'];
-var chart_max = {};
-chart_max['Projekcia'] = get_max(model['Projekcia']['rate']);
+chart_max = Math.max(get_max(model['projection']['total']), get_max(model['projection-optimistic']['total']));
 var pal = palette('mpn65', 1);
 var labels = [];
 for (var i=1; i<MAXDAYS; i++) {
         temp = moment(new Date(2020, 02, i));
     labels.push(temp);
 }
-console.log(labels);
 
 // HEX to R,G,B - taken from http://www.javascripter.net/faq/hextorgb.htm
 function hexToR(h) {return parseInt((cutHex(h)).substring(0,2),16)}
@@ -24,6 +22,9 @@ function cutHex(h) {return (h.charAt(0)=="#") ? h.substring(1,7):h}
 function hexToRGBA(h, alpha) {
     return "rgba(" + hexToR(h) + "," + hexToG(h) + "," + hexToB(h) + "," + alpha + ")";
 }
+
+// generate palette
+var pal = palette('mpn65', 6);
 
 // This takes care of data array switching and chart titles
 // when choosing different substances
@@ -82,16 +83,28 @@ function legendcallback(chart) {
 window.myChart = new Chart(full, {
     type: 'line',
     data: { labels: labels,
-    datasets: [ {
+    datasets: [
+    {
         label: 'Current model',
-        data: model['Projekcia']['total'],
+        data: model['projection']['total'],
         spanGaps: true,
         borderWidth: 1,
-        borderColor: '#0000EE',
-        pointStyle: 'cross',
-        pointBackgroundColor: 'rgb(0,0,0)',
-        pointBorderColor: 'rgb(0,0,0)',
-        tension: 0.2
+        borderColor: '#' + pal[0],
+        pointStyle: 'circle',
+        pointBorderColor:  '#' + pal[0],
+        tension: 0.2,
+        fill: false
+    },
+    {
+        label: 'Optmistic model',
+        data: model['projection-optimistic']['total'],
+        spanGaps: true,
+        borderWidth: 1,
+        borderColor: '#' + pal[1],
+        pointStyle: 'circle',
+        pointBorderColor:  '#' + pal[1],
+        tension: 0.2,
+        fill: false
     }
 ]
 },
@@ -110,7 +123,8 @@ window.myChart = new Chart(full, {
             yAxes: [{
                 ticks: {
                     min: 0,
-                    max: get_max(model['Projekcia']['total'])                    }
+                    max: chart_max
+                }
             }]
         },
         legendCallback: legendcallback,
