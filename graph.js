@@ -85,10 +85,22 @@ window.myChart = new Chart(full, {
     data: { labels: labels,
     datasets: [
     {
-        label: 'Current model',
+        label: 'Confirmed cases',
+        data: current_values,
+        spanGaps: true,
+        borderWidth: 3,
+        borderColor: '#' + pal[1],
+        pointStyle: 'circle',
+        pointBorderColor:  '#' + pal[1],
+        tension: 0,
+        fill: false
+    },
+    {
+        label: 'Standard model',
         data: model['projection']['total'],
         spanGaps: true,
         borderWidth: 1,
+        borderDash: [5, 5],
         borderColor: '#' + pal[0],
         pointStyle: 'circle',
         pointBorderColor:  '#' + pal[0],
@@ -96,13 +108,14 @@ window.myChart = new Chart(full, {
         fill: false
     },
     {
-        label: 'Optmistic model',
+        label: 'Optimistic model',
         data: model['projection-optimistic']['total'],
         spanGaps: true,
         borderWidth: 1,
-        borderColor: '#' + pal[1],
+        borderDash: [5, 5],
+        borderColor: '#' + pal[2],
         pointStyle: 'circle',
-        pointBorderColor:  '#' + pal[1],
+        pointBorderColor:  '#' + pal[2],
         tension: 0.2,
         fill: false
     }
@@ -111,7 +124,7 @@ window.myChart = new Chart(full, {
     options: {
         title: {
             display: true,
-            text: 'Infected, CZ'
+            text: 'Current confirmed and predicted cases of COVID-19 in Czech republic'
         },
         scales: {
             xAxes: [{
@@ -123,7 +136,8 @@ window.myChart = new Chart(full, {
             yAxes: [{
                 ticks: {
                     min: 0,
-                    max: chart_max
+                    suggestedMax: 3500,
+                    //max: chart_max*1.1
                 }
             }]
         },

@@ -1,7 +1,7 @@
 <html>
 <head>
 <title>
-    cowitch-19 - pseudo-scientific curve prediction yay!
+    cowitch-19 - epidemiological witch-doctory
 </title>
 
 <!--TODO:
@@ -47,7 +47,7 @@
 
     // Prepare the model
     model = {};
-    MAXDAYS = 180;
+    MAXDAYS = 90;
 
     // Create infection_rate seed for the model
     var rate_seed = {};
