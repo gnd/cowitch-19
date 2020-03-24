@@ -12,8 +12,8 @@ function log_decrease(day, speed) {
     return Math.log10(day)/speed;
 }
 
-// This computes the average infection rate for days with data
-function avg_infection_rate(data) {
+// This computes the average growth rate for days with data
+function avg_growth_rate(data) {
     var sum = 0;
     for (var i=0; i < data.length; i++) {
         sum += data[i];
@@ -28,11 +28,11 @@ function avg_infection_rate(data) {
 //  - infected_daily:
 //      daily increase of infected confirmed, eg.:
 //      [3,0,2,4] - 3 new on day 1, 0 new on day 2, 2 new on day 3, 4 new on day 4
-//  - infection_rate:
+//  - growth_rate:
 //      the ratio of infected confirmed on day n+1 to confirmed infected on day n, eg:
 //      [1,1,1.66,1.4]
-//  - infection_rate_avg:
-//      average on infection_rate over all values up to i:
+//  - growth_rate_avg:
+//      average on growth_rate over all values up to i:
 //      [1, 1, 1.22, 1.26]
 //
 //  These data are used to seed the model
@@ -40,25 +40,25 @@ function fill_initial(arr, current_values) {
     // prepare the arrays
     arr['infected_confirmed'] = [];
     arr['infected_daily'] = [];
-    arr['infection_rate'] = [];
-    arr['infection_rate_avg'] = [];
+    arr['growth_rate'] = [];
+    arr['growth_rate_avg'] = [];
 
     // seed the arrays
     arr['infected_confirmed'] = current_values;
     arr['infected_daily'].push( arr['infected_confirmed'][0] );
-    arr['infection_rate'].push( 1 );
-    arr['infection_rate_avg'].push( 1 );
+    arr['growth_rate'].push( 1 );
+    arr['growth_rate_avg'].push( 1 );
 
     days_elapsed = arr['infected_confirmed'].length;
     for (var i=1; i < days_elapsed; i++) {
         /// compute daily new cases
         arr['infected_daily'].push( arr['infected_confirmed'][i] - arr['infected_confirmed'][i-1] );
 
-        /// compute daily infection rate
-        arr['infection_rate'].push( arr['infected_confirmed'][i] / arr['infected_confirmed'][i-1] );
+        /// compute daily growth rate
+        arr['growth_rate'].push( arr['infected_confirmed'][i] / arr['infected_confirmed'][i-1] );
 
-        /// compute daily average infection rate
-        arr['infection_rate_avg'].push( avg_infection_rate( arr['infection_rate'].slice(0,i+1) ) );
+        /// compute daily average growth rate
+        arr['growth_rate_avg'].push( avg_growth_rate( arr['growth_rate'].slice(0,i+1) ) );
     }
 
     return days_elapsed;
@@ -133,10 +133,10 @@ function dead(arr) {
 }
 
 // Sort of struct emulation in js
-function params(name, model_duration, infection_rate_seed, decay_func, decay_speed, decay_min, new_seed) {
+function params(name, model_duration, growth_rate_seed, decay_func, decay_speed, decay_min, new_seed) {
     this.name = name;
     this.model_duration = model_duration;
-    this.irs = infection_rate_seed;
+    this.irs = growth_rate_seed;
     this.decay_func = decay_func;
     this.decay_speed = decay_speed;
     this.decay_min = decay_min;
@@ -153,7 +153,7 @@ function run_model(params) {
     model[params.name]['deaths'] = [0];
     model[params.name]['total'] = [0];
 
-    // seed & compute infection rate
+    // seed & compute growth rate
     for (var i=0; i < params.model_duration; i++) {
         // if we have provided a value, use it
         if (i in params.irs) {
@@ -185,7 +185,7 @@ function run_model(params) {
             model[params.name]['new'].push( new_infected );
             //console.log('new infected[' + i + '] = ' + new_infected );
         } else {
-            // new infected are yesterda's total * yesterdays infection rate
+            // new infected are yesterda's total * yesterdays growth rate
             new_infected = model[params.name]['rate'][i-1] * model[params.name]['total'][i-1];
             model[params.name]['new'].push( new_infected );
             //console.log('new infected[' + i + '] = ' + model[params.name]['rate'][i-1] + ' * ' + model[params.name]['total'][i-1] );

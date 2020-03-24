@@ -5,22 +5,15 @@
 </title>
 
 <!--TODO:
-
-- fix interface:
-    - fix colors and graph style
-- what is the correct name - infection rate ? rate of spread ?
-- add graph for rate of spread
 - add a way to access older states (eg. state from 22.3, etc)
 - add a small probabilistic jitter to the scenario, run several times:
     - rate of spread jitter
     - speed / rate of decline jitter
-- add rolling average for infection rate
-- add several scenarios (current, optimistic)
+- add rolling average for growth rate
 - look into dead / healthy - cumulative or not ?
 - add healed / dead / new per day
 - add tables to graphs
 - add interface to change params from web
-
 - use the SIER methodology to predict longterm
 - population size, immune pool, dead pool, etc
 
@@ -49,10 +42,10 @@
     model = {};
     MAXDAYS = 90;
 
-    // Create infection_rate seed for the model
+    // Create growth_rate seed for the model
     var rate_seed = {};
     for (var i=0; i < 20; i++) {
-        rate_seed[i] = data['infection_rate_avg'][i];
+        rate_seed[i] = data['growth_rate_avg'][i];
     }
 
     rate_seed[20] = 1.2; // czech government enforced mandatory quarantaine on 14.3, we should start seeing the effects around 21.3
@@ -92,15 +85,28 @@
 <!-- MOBILE & DESKTOP STYLES -->
 <link rel="stylesheet" media='screen' href="style.css"/>
 
+<?php
+    // compute last change to the model(s)
+    $max = filemtime($cwd . 'index.php');
+    $max = max($max, filemtime($cwd . 'graph.js'));
+    $max = max($max, filemtime($cwd . 'model.js'));
+?>
+
 </head>
 <body style="margin: 0;">
     <div id="nav_top" style="width: 99%; padding-left: 1%; padding-top: 0.5%; border-bottom: 1px solid black; padding-bottom: 1%;">
-        Covid-19 infection course prediction in Czechia based on data from: <a href=https://onemocneni-aktualne.mzcr.cz/covid-19>https://onemocneni-aktualne.mzcr.cz/covid-19</a>
+        <h2>Covid-19 infection course prediction in Czech republic.</h2>
+        This model is based on an elaborate data witch-doctory using observed Covid-19 growth rate in Czech republic.<br/></br>
+        Initial data taken from: <a href=https://onemocneni-aktualne.mzcr.cz/covid-19>https://onemocneni-aktualne.mzcr.cz/covid-19</a>.
+        Last change: <?php echo gmdate("d/m/y H:i", $max); ?>
     </div>
-    <div class="chart-container" style="padding-left: 1%; position: relative; width:85%; height:83%;">
-		<canvas id="full"></canvas>
+    <div class="chart-container" style="padding-left: 1%; position: relative; width:75%;">
+		<canvas id="infected"></canvas>
 	</div>
 	<br/><br/><br/>
+    <div class="chart-container" style="padding-left: 1%; position: relative; width:75%;">
+		<canvas id="growth_rate"></canvas>
+	</div>
     <div id="nav_bottom" style="width: 100%; background-color: gold; border: 2px; border-color: black;">
         <div style="padding-left: 3%; float: left;">
             <br/>Future controls here.
