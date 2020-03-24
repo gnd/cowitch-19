@@ -1,9 +1,23 @@
-
 <html>
 <head>
 <title>
     cowitch-19 - pseudo-scientific curve prediction yay!
 </title>
+
+<!--TODO:
+- fix interface:
+    - remove smogdance data
+    - add correct datetime to labels
+    - fix colors and graph style
+- add graph for rate of spread
+- add a small probabilistic to the scenario, run several times
+- add several scenarios
+- look into dead / healthy - cumulative or not ?
+- add healed / dead / new per day
+- add tables to graphs
+- add interface to change params from web
+
+-->
 
 <!-- MOMENT.JS -->
 <script src="moment.js"></script>
@@ -175,7 +189,7 @@
 
         // compute the projected
         for (var i=0; i < params.model_duration; i++) {
-            var new_infected, healed, died;
+            var new_infected, new_daily, healed, died, total;
 
             // New
             if (i in params.new_seed) {
@@ -186,14 +200,14 @@
                 // new infected are yesterda's total * yesterdays infection rate
                 new_infected = model[params.name]['rate'][i-1] * model[params.name]['total'][i-1];
                 model[params.name]['new'].push( new_infected );
-                console.log('new infected[' + i + '] = ' + model[params.name]['rate'][i-1] + ' * ' + model[params.name]['total'][i-1] );
+                //console.log('new infected[' + i + '] = ' + model[params.name]['rate'][i-1] + ' * ' + model[params.name]['total'][i-1] );
             }
 
             // New per day
             if (i > 0) {
-                new_daily = Math.max(model[params.name]['new'][i] - model[params.name]['new'][i-1], 0);
+                new_daily = Math.max(model[params.name]['new'][i] - model[params.name]['total'][i-1], 0);
                 model[params.name]['daily'].push( new_daily );
-                console.log('daily[' + i + '] = ' +  model[params.name]['new'][i] + ' - ' + model[params.name]['new'][i-1] );
+                //console.log('daily[' + i + '] = ' +  model[params.name]['new'][i] + ' - ' + model[params.name]['new'][i-1] );
             }
 
             // Healed per day
@@ -207,7 +221,7 @@
                 }
                 healed = healthy(daily_slice);
                 model[params.name]['healed'].push( healed );
-                console.log('healed[' + i + '] = ' + healed );
+                //console.log('healed[' + i + '] = ' + healed );
             }
 
             // Deaths per day
@@ -220,21 +234,28 @@
                     }
                 }
                 died = dead(daily_slice);
-                model[params.name]['deaths'].push( healed );
-                console.log('deaths[' + i + '] = ' + died );
+                model[params.name]['deaths'].push( died );
+                //console.log('deaths[' + i + '] = ' + died );
             }
 
             // Total = New - Healed - Died
             if (i > 0) {
-                model[params.name]['total'].push( new_infected - healed - died );
-                console.log('total[' + i + '] = ' + new_infected + ' - ' + healed + ' - ' + died );
+                total = new_infected - healed - died;
+                model[params.name]['total'].push( total );
+                //console.log('total[' + i + '] = ' + new_infected + ' - ' + healed + ' - ' + died );
+            }
+
+            // Log to console
+            if (i >0) {
+                rate = model[params.name]['rate'][i];
+                console.log((i+1)+' rate: '+rate.toFixed(2)+' new: '+new_infected.toFixed(0)+' day: '+new_daily.toFixed(0)+' healed: '+healed.toFixed(0)+' total: '+total.toFixed(0) + ' died: '+died.toFixed(0))
             }
         }
     }
 
     // Create the data array
     var data = {};
-    data['infected_confirmed'] = [3,3,5,5,8,19,26,32,38,63,94,116,141,189,298,383,464,572,774,904,1047,1165];
+    data['infected_confirmed'] = [3,3,5,5,8,19,26,32,38,63,94,116,141,189,298,383,464,572,774,904,1047,1165,1289];
     data['infected_daily'] = [];
     data['infection_rate'] = [];
     data['infection_rate_avg'] = [];
