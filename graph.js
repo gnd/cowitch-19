@@ -9,8 +9,10 @@ chart_max['Projekcia'] = get_max(model['Projekcia']['rate']);
 var pal = palette('mpn65', 1);
 var labels = [];
 for (var i=1; i<MAXDAYS; i++) {
-    labels.push(i);
+        temp = moment(new Date(2020, 02, i));
+    labels.push(temp);
 }
+console.log(labels);
 
 // HEX to R,G,B - taken from http://www.javascripter.net/faq/hextorgb.htm
 function hexToR(h) {return parseInt((cutHex(h)).substring(0,2),16)}

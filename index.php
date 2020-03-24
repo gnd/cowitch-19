@@ -6,9 +6,7 @@
 
 <!--TODO:
 
-- add rolling average for infection rate
 - fix interface:
-    - add correct datetime to labels
     - fix colors and graph style
 - what is the correct name - infection rate ? rate of spread ?
 - add graph for rate of spread
@@ -16,6 +14,7 @@
 - add a small probabilistic jitter to the scenario, run several times:
     - rate of spread jitter
     - speed / rate of decline jitter
+- add rolling average for infection rate
 - add several scenarios (current, optimistic)
 - look into dead / healthy - cumulative or not ?
 - add healed / dead / new per day
