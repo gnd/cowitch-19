@@ -9,22 +9,72 @@ function hexToRGBA(h, alpha) {
     return "rgba(" + hexToR(h) + "," + hexToG(h) + "," + hexToB(h) + "," + alpha + ")";
 }
 
-// create a legendCallback - see: https://github.com/chartjs/Chart.js/issues/2565
-function legendcallback(chart) {
-    var legendHtml = [];
-    legendHtml.push('<table>');
-    legendHtml.push('<tr>');
-    for (var i=0; i<chart.data.datasets.length; i++) {
-        legendHtml.push('<td><div class="chart-legend" style="background-color:' + chart.data.datasets[i].borderColor + '"></div></td>');
-        if (chart.data.datasets[i].label) {
-            legendHtml.push(
-                '<td class="chart-legend-label-text" onclick="updateDataset(event, ' + '\'' + chart.legend.legendItems[i].datasetIndex + '\'' + ')">'
-                 + chart.data.datasets[i].label + '</td>');
+// legend callback - see https://www.chartjs.org/docs/latest/configuration/legend.html
+function legendCallbackInfected(e, legendItem) {
+    var index = legendItem.datasetIndex;
+    var ci = this.chart;
+
+    // Confirmed cases
+    if (index == 0) {
+        meta = ci.getDatasetMeta(index);
+        meta.hidden = meta.hidden === null ? !ci.data.datasets[index].hidden : null;
+    }
+
+    // Standard scenario
+    if (index == 1) {
+        for (i=0; i<JITTER_COUNT; i++) {
+            meta = ci.getDatasetMeta(index+i*2);
+            meta.hidden = meta.hidden === null ? !ci.data.datasets[index+i*2].hidden : null;
         }
     }
-    legendHtml.push('</tr>');
-    legendHtml.push('</table>');
-    return legendHtml.join("");
+
+    // Optimistic scenario
+    if (index == 2) {
+        for (i=0; i<JITTER_COUNT; i++) {
+            var meta = ci.getDatasetMeta(index+i*2);
+            meta.hidden = meta.hidden === null ? !ci.data.datasets[index+i*2].hidden : null;
+        }
+    }
+
+    // Update the chart
+    ci.update();
+}
+
+// legend callback - see https://www.chartjs.org/docs/latest/configuration/legend.html
+function legendCallbackGrowthRate(e, legendItem) {
+    var index = legendItem.datasetIndex;
+    var ci = this.chart;
+
+    // Observed growth rate
+        if (index == 0) {
+        meta = ci.getDatasetMeta(index);
+        meta.hidden = meta.hidden === null ? !ci.data.datasets[index].hidden : null;
+    }
+
+    // Average growth rate
+        if (index == 1) {
+        meta = ci.getDatasetMeta(index);
+        meta.hidden = meta.hidden === null ? !ci.data.datasets[index].hidden : null;
+    }
+
+    // Standard scenario
+    if (index == 2) {
+        for (i=0; i<JITTER_COUNT; i++) {
+            meta = ci.getDatasetMeta(index+i*2);
+            meta.hidden = meta.hidden === null ? !ci.data.datasets[index+i*2].hidden : null;
+        }
+    }
+
+    // Optimistic scenario
+    if (index == 3) {
+        for (i=0; i<JITTER_COUNT; i++) {
+            var meta = ci.getDatasetMeta(index+i*2);
+            meta.hidden = meta.hidden === null ? !ci.data.datasets[index+i*2].hidden : null;
+        }
+    }
+
+    // Update the chart
+    ci.update();
 }
 
 // generate palette
@@ -43,48 +93,67 @@ var country_name = 'Czech republic';
 var models = ['Projekcia'];
 chart_max = Math.max(get_max(model['projection']['total']), get_max(model['projection-optimistic']['total']));
 
-// The infected chart
-window.myChart = new Chart(infected_chart, {
-    type: 'line',
-    data: { labels: labels,
-    datasets: [
-    {
-        label: 'Confirmed cases',
-        data: current_values,
-        spanGaps: true,
-        borderWidth: 3,
-        borderColor: '#' + infected_pal[1],
-        pointStyle: 'circle',
-        pointBorderColor:  '#' + infected_pal[1],
-        tension: 0,
-        fill: false
-    },
-    {
-        label: 'Standard model',
-        data: model['projection']['total'],
+// Create datasets for infected projections
+infected_dataset = [];
+infected_dataset[0] = {
+    label: 'Confirmed cases',
+    data: current_values,
+    spanGaps: true,
+    borderWidth: 3,
+    borderColor: '#' + infected_pal[1],
+    pointStyle: 'circle',
+    pointBorderColor:  '#' + infected_pal[1],
+    tension: 0,
+    fill: false
+};
+for (i=0; i<JITTER_COUNT; i++) {
+    if (i>0) {
+        label = 'Standard model' + '-' + i;
+    } else {
+        label = 'Standard model';
+    }
+    projection = {
+        label: label,
+        data: model['projection']['total'][i],
         spanGaps: true,
         borderWidth: 1,
         borderDash: [5, 5],
-        borderColor: '#' + infected_pal[0],
+        borderColor: hexToRGBA('#' + infected_pal[0], 0.7),
         pointStyle: 'circle',
+        radius: 0,
         pointBorderColor:  '#' + infected_pal[0],
         tension: 0.2,
         fill: false
-    },
-    {
-        label: 'Optimistic model',
-        data: model['projection-optimistic']['total'],
+    };
+    if (i>0) {
+        label = 'Optimistic model' + '-' + i;
+    } else {
+        label = 'Optimistic model';
+    }
+    projection_optimistic = {
+        label: label,
+        data: model['projection-optimistic']['total'][i],
         spanGaps: true,
         borderWidth: 1,
         borderDash: [5, 5],
-        borderColor: '#' + infected_pal[2],
+        borderColor: hexToRGBA('#' + infected_pal[2], 0.7),
         pointStyle: 'circle',
+        radius: 0,
         pointBorderColor:  '#' + infected_pal[2],
         tension: 0.2,
         fill: false
-    }
-]
-},
+    };
+    infected_dataset.push( projection );
+    infected_dataset.push( projection_optimistic );
+}
+
+// The infected chart
+window.infected_chart = new Chart(infected_chart, {
+    type: 'line',
+    data: {
+        labels: labels,
+        datasets: infected_dataset,
+    },
     options: {
         title: {
             display: true,
@@ -104,9 +173,19 @@ window.myChart = new Chart(infected_chart, {
                 }
             }]
         },
-        legendCallback: legendcallback,
+        //legendCallback: legendCallbackInfected,
         legend: {
-            display: true
+            display: true,
+            onClick: legendCallbackInfected,
+            labels: {
+                // Show only first three labels
+                filter: function (legendItem, chartData) {
+                    if (legendItem.datasetIndex < 3) {
+                        return (chartData.datasets[legendItem.datasetIndex].label)
+                    }
+
+                },
+            }
         }
     }
 });
@@ -118,12 +197,9 @@ var country_name = 'Czech republic';
 var models = ['Projekcia'];
 chart_max = Math.max(get_max(model['projection']['total']), get_max(model['projection-optimistic']['total']));
 
-// The growth rate chart
-window.myChart = new Chart(growth_rate_chart, {
-    type: 'line',
-    data: { labels: labels,
-    datasets: [
-    {
+// Create datasets for growth_rate
+growth_rate_dataset = [];
+growth_rate_dataset[0] = {
         label: 'Observed',
         data: data['growth_rate'],
         spanGaps: true,
@@ -133,8 +209,8 @@ window.myChart = new Chart(growth_rate_chart, {
         pointBorderColor:  '#' + infected_pal[1],
         tension: 0.2,
         fill: false
-    },
-    {
+    };
+growth_rate_dataset[1] = {
         label: 'Average',
         data: data['growth_rate_avg'],
         spanGaps: true,
@@ -144,33 +220,55 @@ window.myChart = new Chart(growth_rate_chart, {
         pointBorderColor:  '#' + infected_pal[3],
         tension: 0.2,
         fill: false
-    },
-    {
-        label: 'Standard model',
-        data: model['projection']['rate'],
+    };
+for (i=0; i<JITTER_COUNT; i++) {
+    if (i>0) {
+        label = 'Standard model' + '-' + i;
+    } else {
+        label = 'Standard model';
+    }
+    projection = {
+        label: label,
+        data: model['projection']['rate'][i],
         spanGaps: true,
         borderWidth: 1,
         borderDash: [5, 5],
-        borderColor: '#' + infected_pal[0],
+        borderColor: hexToRGBA('#' + infected_pal[0], 0.5),
         pointStyle: 'circle',
+        radius: 0,
         pointBorderColor:  '#' + infected_pal[0],
         tension: 0.2,
         fill: false
-    },
-    {
-        label: 'Optimistic model',
-        data: model['projection-optimistic']['rate'],
+    };
+    if (i>0) {
+        label = 'Optimistic model' + '-' + i;
+    } else {
+        label = 'Optimistic model';
+    }
+    projection_optimistic =  {
+        label: label,
+        data: model['projection-optimistic']['rate'][i],
         spanGaps: true,
         borderWidth: 1,
         borderDash: [5, 5],
-        borderColor: '#' + infected_pal[2],
+        borderColor: hexToRGBA('#' + infected_pal[2], 0.5),
         pointStyle: 'circle',
-        pointBorderColor:  '#' + infected_pal[2],
+        radius: 0,
+        pointBorderColor: '#' + infected_pal[2],
         tension: 0.2,
         fill: false
+    };
+    growth_rate_dataset.push( projection );
+    growth_rate_dataset.push( projection_optimistic );
+}
+
+// The growth rate chart
+window.growth_rate_chart = new Chart(growth_rate_chart, {
+    type: 'line',
+    data: {
+        labels: labels.slice(0,40),
+        datasets: growth_rate_dataset,
     },
-]
-},
     options: {
         title: {
             display: true,
@@ -186,13 +284,22 @@ window.myChart = new Chart(growth_rate_chart, {
             yAxes: [{
                 ticks: {
                     min: 0,
-                    suggestedMax: 3,
+                    max: 5,
                 }
             }]
         },
-        legendCallback: legendcallback,
         legend: {
-            display: true
+            display: true,
+            onClick: legendCallbackGrowthRate,
+            labels: {
+                // Show only first three labels
+                filter: function (legendItem, chartData) {
+                    if (legendItem.datasetIndex < 4) {
+                        return (chartData.datasets[legendItem.datasetIndex].label)
+                    }
+
+                },
+            }
         }
     }
 });

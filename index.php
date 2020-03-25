@@ -5,10 +5,6 @@
 </title>
 
 <!--TODO:
-- add a way to access older states (eg. state from 22.3, etc)
-- add a small probabilistic jitter to the scenario, run several times:
-    - rate of spread jitter
-    - speed / rate of decline jitter
 - add rolling average for growth rate
 - look into dead / healthy - cumulative or not ?
 - add healed / dead / new per day
@@ -16,7 +12,7 @@
 - add interface to change params from web
 - use the SIER methodology to predict longterm
 - population size, immune pool, dead pool, etc
-
+- add a way to access older states (eg. state from 22.3, etc)
 -->
 
 <!-- MOMENT.JS -->
@@ -35,12 +31,14 @@
 <script>
     // Create the data array using values from https://onemocneni-aktualne.mzcr.cz/covid-19
     data = {};
-    current_values = [3,3,5,5,8,19,26,32,38,63,94,116,141,189,298,383,464,572,774,904,1047,1165,1289];
+    current_values = [3,3,5,5,8,19,26,32,38,63,94,116,141,189,298,383,464,572,774,904,1047,1165,1289,1497];
     days_elapsed = fill_initial(data, current_values);
 
     // Prepare the model
     model = {};
     MAXDAYS = 90;
+    JITTER_COUNT = 10;
+    JITTER_AMOUNT = 0.01;
 
     // Create growth_rate seed for the model
     var rate_seed = {};
@@ -61,9 +59,11 @@
         MAXDAYS,
         rate_seed,
         'log',
-        100,
-        1.01,
-        new_seed,
+        120,        // rate of slowdown, smaller is faster
+        1.01,       // min possible growth rate
+        new_seed,   // the confirmed cases so far
+        JITTER_COUNT,         // jitter count
+        JITTER_AMOUNT,        // jitter amount
     );
 
     // Add another scenario
@@ -72,9 +72,11 @@
         MAXDAYS,
         rate_seed,
         'log',
-        50,
-        1.01,
-        new_seed,
+        50,         // rate of slowdown, smaller is faster
+        1.01,       // min possible growth rate
+        new_seed,   // the confirmed cases so far
+        JITTER_COUNT,         // jitter count
+        JITTER_AMOUNT,        // jitter amount
     );
 
     // Run the model
@@ -98,7 +100,7 @@
         <h2>Covid-19 infection course prediction in Czech republic.</h2>
         This model is based on an elaborate data witch-doctory using observed Covid-19 growth rate in Czech republic.<br/></br>
         Initial data taken from: <a href=https://onemocneni-aktualne.mzcr.cz/covid-19>https://onemocneni-aktualne.mzcr.cz/covid-19</a>.
-        Last change: <?php echo gmdate("d/m/y H:i", $max); ?>
+        Last change: <?php echo date("d/m/y H:i", $max); ?>
     </div>
     <div class="chart-container" style="padding-left: 1%; position: relative; width:75%;">
 		<canvas id="infected"></canvas>

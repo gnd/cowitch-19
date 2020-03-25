@@ -133,7 +133,7 @@ function dead(arr) {
 }
 
 // Sort of struct emulation in js
-function params(name, model_duration, growth_rate_seed, decay_func, decay_speed, decay_min, new_seed) {
+function params(name, model_duration, growth_rate_seed, decay_func, decay_speed, decay_min, new_seed, jitter_count, jitter_amount) {
     this.name = name;
     this.model_duration = model_duration;
     this.irs = growth_rate_seed;
@@ -141,102 +141,119 @@ function params(name, model_duration, growth_rate_seed, decay_func, decay_speed,
     this.decay_speed = decay_speed;
     this.decay_min = decay_min;
     this.new_seed = new_seed;
+    this.jitter_count = jitter_count;
+    this.jitter_amount = jitter_amount;
 }
 
 function run_model(params) {
     // setup arrays
     model[params.name] = {}
-    model[params.name]['rate'] = [];
-    model[params.name]['new'] = [];
-    model[params.name]['daily'] = [3];
-    model[params.name]['healed'] = [0];
-    model[params.name]['deaths'] = [0];
-    model[params.name]['total'] = [0];
+    model[params.name]['rate'] = {};
+    model[params.name]['new'] = {};
+    model[params.name]['daily'] = {}
+    model[params.name]['healed'] = {}
+    model[params.name]['deaths'] = {}
+    model[params.name]['total'] = {}
 
-    // seed & compute growth rate
-    for (var i=0; i < params.model_duration; i++) {
-        // if we have provided a value, use it
-        if (i in params.irs) {
-            model[params.name]['rate'].push( params.irs[i] );
-        } else {
-            // otherwise determine next value from the previous one
-            // we need to seed at least the first value
+    for (jitter=0; jitter<params.jitter_count; jitter++) {
+        // setup arrays II
+        model[params.name]['rate'][jitter] = [];
+        model[params.name]['new'][jitter] = [];
+        model[params.name]['daily'][jitter] = [3];
+        model[params.name]['healed'][jitter] = [0];
+        model[params.name]['deaths'][jitter] = [0];
+        model[params.name]['total'][jitter] = [0];
+
+        // seed & compute growth rate
+        for (var i=0; i < params.model_duration; i++) {
+            // if we have provided a value, use it
+            if (i in params.irs) {
+                model[params.name]['rate'][jitter].push( params.irs[i] );
+            } else {
+                // otherwise determine next value from the previous one
+                // we need to seed at least the first value
+                if (i > 0) {
+                    // decrease by log(day_number)/speed
+                    if (params.decay_func == 'log') {
+                        new_rate = model[params.name]['rate'][jitter][i-1] - log_decrease(i+1, params.decay_speed);
+                    }
+                    // add some jitter
+                    if (params.jitter_amount > 0) {
+                        rnd = 1  + (Math.random()*params.jitter_amount*2) - (params.jitter_amount);
+                        new_rate *= rnd;
+                    }
+                    // check if new_rate over allowed min
+                    new_rate = Math.max( new_rate, params.decay_min );
+
+                    // add rate into model
+                    model[params.name]['rate'][jitter].push( new_rate );
+                }
+            }
+        }
+
+        // compute the projected
+        for (var i=0; i < params.model_duration; i++) {
+            var new_infected, new_daily, healed, died, total;
+
+            // New
+            if (i in params.new_seed) {
+                new_infected = params.new_seed[i];
+                model[params.name]['new'][jitter].push( new_infected );
+                //console.log('new infected[' + i + '] = ' + new_infected );
+            } else {
+                // new infected are yesterda's total * yesterdays growth rate
+                new_infected = model[params.name]['rate'][jitter][i-1] * model[params.name]['total'][jitter][i-1];
+                model[params.name]['new'][jitter].push( new_infected );
+                //console.log('new infected[' + i + '] = ' + model[params.name]['rate'][i-1] + ' * ' + model[params.name]['total'][i-1] );
+            }
+
+            // New per day
             if (i > 0) {
-                // decrease by log(day_number)/speed
-                if (params.decay_func == 'log') {
-                    new_rate = model[params.name]['rate'][i-1] - log_decrease(i+1, params.decay_speed);
-                }
-                // check if new_rate over allowed min
-                new_rate = Math.max( new_rate, params.decay_min );
-
-                // add rate into model
-                model[params.name]['rate'].push( new_rate );
+                new_daily = Math.max(model[params.name]['new'][jitter][i] - model[params.name]['total'][jitter][i-1], 0);
+                model[params.name]['daily'][jitter].push( new_daily );
+                //console.log('daily[' + i + '] = ' +  model[params.name]['new'][i] + ' - ' + model[params.name]['new'][i-1] );
             }
-        }
-    }
 
-    // compute the projected
-    for (var i=0; i < params.model_duration; i++) {
-        var new_infected, new_daily, healed, died, total;
-
-        // New
-        if (i in params.new_seed) {
-            new_infected = params.new_seed[i];
-            model[params.name]['new'].push( new_infected );
-            //console.log('new infected[' + i + '] = ' + new_infected );
-        } else {
-            // new infected are yesterda's total * yesterdays growth rate
-            new_infected = model[params.name]['rate'][i-1] * model[params.name]['total'][i-1];
-            model[params.name]['new'].push( new_infected );
-            //console.log('new infected[' + i + '] = ' + model[params.name]['rate'][i-1] + ' * ' + model[params.name]['total'][i-1] );
-        }
-
-        // New per day
-        if (i > 0) {
-            new_daily = Math.max(model[params.name]['new'][i] - model[params.name]['total'][i-1], 0);
-            model[params.name]['daily'].push( new_daily );
-            //console.log('daily[' + i + '] = ' +  model[params.name]['new'][i] + ' - ' + model[params.name]['new'][i-1] );
-        }
-
-        // Healed per day
-        if (i > 0) {
-            // Create and fill the daily array slice starting at current day - 34 and ending at current day - 11
-            daily_slice = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
-            for (var j=34; j>10; j--) {
-                if (i-j > 0) {
-                    daily_slice[34-j] = model[params.name]['daily'][i-j];
+            // Healed per day
+            if (i > 0) {
+                // Create and fill the daily array slice starting at current day - 34 and ending at current day - 11
+                daily_slice = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
+                for (var j=34; j>10; j--) {
+                    if (i-j > 0) {
+                        daily_slice[34-j] = model[params.name]['daily'][jitter][i-j];
+                    }
                 }
+                healed = healthy(daily_slice);
+                model[params.name]['healed'][jitter].push( healed );
+                //console.log('healed[' + i + '] = ' + healed );
             }
-            healed = healthy(daily_slice);
-            model[params.name]['healed'].push( healed );
-            //console.log('healed[' + i + '] = ' + healed );
-        }
 
-        // Deaths per day
-        if (i > 0) {
-            // Create and fill the daily array slice starting at current day - 30 and ending at current day - 20
-            daily_slice = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
-            for (var j=30; j>19; j--) {
-                if (i-j > 0) {
-                    daily_slice[30-j] = model[params.name]['daily'][i-j];
+            // Deaths per day
+            if (i > 0) {
+                // Create and fill the daily array slice starting at current day - 30 and ending at current day - 20
+                daily_slice = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
+                for (var j=30; j>19; j--) {
+                    if (i-j > 0) {
+                        daily_slice[30-j] = model[params.name]['daily'][jitter][i-j];
+                    }
                 }
+                died = dead(daily_slice);
+                model[params.name]['deaths'][jitter].push( died );
+                //console.log('deaths[' + i + '] = ' + died );
             }
-            died = dead(daily_slice);
-            model[params.name]['deaths'].push( died );
-            //console.log('deaths[' + i + '] = ' + died );
-        }
 
-        // Total = New - Healed - Died
-        if (i > 0) {
-            total = new_infected - healed - died;
-            model[params.name]['total'].push( total );
-            //console.log('total[' + i + '] = ' + new_infected + ' - ' + healed + ' - ' + died );
-        }
+            // Total = New - Healed - Died
+            if (i > 0) {
+                total = new_infected - healed - died;
+                model[params.name]['total'][jitter].push( total );
+                //console.log('total[' + i + '] = ' + new_infected + ' - ' + healed + ' - ' + died );
+            }
 
-        // Log to console
-        if (i >0) {
-            rate = model[params.name]['rate'][i];
-            console.log((i+1)+' rate: '+rate.toFixed(2)+' new: '+new_infected.toFixed(0)+' day: '+new_daily.toFixed(0)+' healed: '+healed.toFixed(0)+' total: '+total.toFixed(0) + ' died: '+died.toFixed(0))
+            // Log to console
+            if (i >0) {
+                rate = model[params.name]['rate'][jitter][i];
+                console.log((i+1)+' rate: '+rate.toFixed(2)+' new: '+new_infected.toFixed(0)+' day: '+new_daily.toFixed(0)+' healed: '+healed.toFixed(0)+' total: '+total.toFixed(0) + ' died: '+died.toFixed(0))
+            }
         }
     }
 }
