@@ -5,9 +5,10 @@
 </title>
 
 <!--TODO:
+- verify model against JP, SG, HK and KR
 - add DOI to studies
-- use the SIER methodology to predict longterm
-- population size, immune pool, dead pool, etc
+- use SIER to predict longterm
+    - add population size, immune pool, dead pool, etc
 - add healed / dead / new per day
 - add tables to graphs
 - add interface to change params from web
