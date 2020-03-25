@@ -37,16 +37,15 @@
     // Prepare the model
     model = {};
     MAXDAYS = 90;
-    JITTER_COUNT = 10;
-    JITTER_AMOUNT = 0.01;
+    JITTER_COUNT = 50;
+    JITTER_AMOUNT = 0.015;
 
     // Create growth_rate seed for the model
     var rate_seed = {};
-    for (var i=0; i < 20; i++) {
-        rate_seed[i] = data['growth_rate_avg'][i];
+    for (var i=0; i < days_elapsed; i++) {
+        rate_seed[i] = data['growth_rate'][i];
     }
 
-    rate_seed[20] = 1.2; // czech government enforced mandatory quarantaine on 14.3, we should start seeing the effects around 21.3
     // Create infected seed for the model
     var new_seed = {};
     for (var i=0; i < days_elapsed; i++) {
@@ -73,7 +72,7 @@
         rate_seed,
         'log',
         50,         // rate of slowdown, smaller is faster
-        1.01,       // min possible growth rate
+        1.001,       // min possible growth rate
         new_seed,   // the confirmed cases so far
         JITTER_COUNT,         // jitter count
         JITTER_AMOUNT,        // jitter amount
