@@ -15,21 +15,10 @@ function legendCallbackInfected(e, legendItem) {
     var ci = this.chart;
 
     // Confirmed cases
-    if (index == 0) {
+    if (index < 1) {
         meta = ci.getDatasetMeta(index);
         meta.hidden = meta.hidden === null ? !ci.data.datasets[index].hidden : null;
-    }
-
-    // Standard scenario
-    if (index == 1) {
-        for (i=0; i<JITTER_COUNT; i++) {
-            meta = ci.getDatasetMeta(index+i*2);
-            meta.hidden = meta.hidden === null ? !ci.data.datasets[index+i*2].hidden : null;
-        }
-    }
-
-    // Optimistic scenario
-    if (index == 2) {
+    } else { // predictions
         for (i=0; i<JITTER_COUNT; i++) {
             var meta = ci.getDatasetMeta(index+i*2);
             meta.hidden = meta.hidden === null ? !ci.data.datasets[index+i*2].hidden : null;
@@ -45,28 +34,11 @@ function legendCallbackGrowthRate(e, legendItem) {
     var index = legendItem.datasetIndex;
     var ci = this.chart;
 
-    // Observed growth rate
-        if (index == 0) {
+    // Observed, Average and rolling average growth rate
+    if (index < 3) {
         meta = ci.getDatasetMeta(index);
         meta.hidden = meta.hidden === null ? !ci.data.datasets[index].hidden : null;
-    }
-
-    // Average growth rate
-        if (index == 1) {
-        meta = ci.getDatasetMeta(index);
-        meta.hidden = meta.hidden === null ? !ci.data.datasets[index].hidden : null;
-    }
-
-    // Standard scenario
-    if (index == 2) {
-        for (i=0; i<JITTER_COUNT; i++) {
-            meta = ci.getDatasetMeta(index+i*2);
-            meta.hidden = meta.hidden === null ? !ci.data.datasets[index+i*2].hidden : null;
-        }
-    }
-
-    // Optimistic scenario
-    if (index == 3) {
+    } else { // predictions
         for (i=0; i<JITTER_COUNT; i++) {
             var meta = ci.getDatasetMeta(index+i*2);
             meta.hidden = meta.hidden === null ? !ci.data.datasets[index+i*2].hidden : null;
@@ -221,6 +193,17 @@ growth_rate_dataset[1] = {
         tension: 0.2,
         fill: false
     };
+growth_rate_dataset[2] = {
+        label: '7 Day Average',
+        data: data['growth_rate_avg_7'],
+        spanGaps: true,
+        borderWidth: 2,
+        borderColor: '#' + infected_pal[4],
+        pointStyle: 'circle',
+        pointBorderColor:  '#' + infected_pal[4],
+        tension: 0.2,
+        fill: false
+    };
 for (i=0; i<JITTER_COUNT; i++) {
     if (i>0) {
         label = 'Standard model' + '-' + i;
@@ -294,7 +277,7 @@ window.growth_rate_chart = new Chart(growth_rate_chart, {
             labels: {
                 // Show only first three labels
                 filter: function (legendItem, chartData) {
-                    if (legendItem.datasetIndex < 4) {
+                    if (legendItem.datasetIndex < 5) {
                         return (chartData.datasets[legendItem.datasetIndex].label)
                     }
 

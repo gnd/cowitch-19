@@ -42,12 +42,14 @@ function fill_initial(arr, current_values) {
     arr['infected_daily'] = [];
     arr['growth_rate'] = [];
     arr['growth_rate_avg'] = [];
+    arr['growth_rate_avg_7'] = [];
 
     // seed the arrays
     arr['infected_confirmed'] = current_values;
     arr['infected_daily'].push( arr['infected_confirmed'][0] );
     arr['growth_rate'].push( 1 );
     arr['growth_rate_avg'].push( 1 );
+    arr['growth_rate_avg_7'].push( 1 );
 
     days_elapsed = arr['infected_confirmed'].length;
     for (var i=1; i < days_elapsed; i++) {
@@ -59,6 +61,10 @@ function fill_initial(arr, current_values) {
 
         /// compute daily average growth rate
         arr['growth_rate_avg'].push( avg_growth_rate( arr['growth_rate'].slice(0,i+1) ) );
+
+        /// compute rolling average growth rate for last 7 days
+        slice_start = Math.min(i, 7);
+        arr['growth_rate_avg_7'].push( avg_growth_rate( arr['growth_rate'].slice(i-slice_start,i+1) ) );
     }
 
     return days_elapsed;

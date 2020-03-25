@@ -5,7 +5,6 @@
 </title>
 
 <!--TODO:
-- add rolling average for growth rate
 - look into dead / healthy - cumulative or not ?
 - add healed / dead / new per day
 - add tables to graphs
@@ -13,6 +12,7 @@
 - use the SIER methodology to predict longterm
 - population size, immune pool, dead pool, etc
 - add a way to access older states (eg. state from 22.3, etc)
+- implement a graph estimating real infected numbers https://www.scmp.com/news/china/society/article/3076323/third-coronavirus-cases-may-be-silent-carriers-classified
 -->
 
 <!-- MOMENT.JS -->
