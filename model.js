@@ -138,6 +138,22 @@ function dead(arr) {
     return sum;
 }
 
+// Compute average if JITTER_COUNT > 1
+function get_average_jitter(params) {
+    model[params.name]['rate']['avg'] = [];
+    model[params.name]['total']['avg'] = [];
+    for (i=0; i<params.model_duration; i++) {
+        rate = 0;
+        total = 0;
+        for (j=0; j<params.jitter_count; j++) {
+            rate += model[params.name]['rate'][j][i];
+            total += model[params.name]['total'][j][i];
+        }
+        model[params.name]['rate']['avg'].push( rate / params.jitter_count );
+        model[params.name]['total']['avg'].push( total / params.jitter_count );
+    }
+}
+
 // Sort of struct emulation in js
 function params(name, model_duration, growth_rate_seed, decay_func, decay_speed, decay_min, new_seed, jitter_count, jitter_amount) {
     this.name = name;
@@ -257,5 +273,10 @@ function run_model(params) {
                 //console.log((i+1)+' rate: '+rate.toFixed(2)+' new: '+new_infected.toFixed(0)+' day: '+new_daily.toFixed(0)+' healed: '+healed.toFixed(0)+' total: '+total.toFixed(0) + ' died: '+died.toFixed(0))
             }
         }
+    }
+
+    // Compute average
+    if (params.jitter_count > 1) {
+        get_average_jitter(params);
     }
 }

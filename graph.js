@@ -19,7 +19,7 @@ function legendCallbackInfected(e, legendItem) {
         meta = ci.getDatasetMeta(index);
         meta.hidden = meta.hidden === null ? !ci.data.datasets[index].hidden : null;
     } else { // predictions
-        for (i=0; i<JITTER_COUNT; i++) {
+        for (i=0; i<=JITTER_COUNT; i++) {
             var meta = ci.getDatasetMeta(index+i*2);
             meta.hidden = meta.hidden === null ? !ci.data.datasets[index+i*2].hidden : null;
         }
@@ -39,7 +39,7 @@ function legendCallbackGrowthRate(e, legendItem) {
         meta = ci.getDatasetMeta(index);
         meta.hidden = meta.hidden === null ? !ci.data.datasets[index].hidden : null;
     } else { // predictions
-        for (i=0; i<JITTER_COUNT; i++) {
+        for (i=0; i<=JITTER_COUNT; i++) {
             var meta = ci.getDatasetMeta(index+i*2);
             meta.hidden = meta.hidden === null ? !ci.data.datasets[index+i*2].hidden : null;
         }
@@ -78,6 +78,28 @@ infected_dataset[0] = {
     tension: 0,
     fill: false
 };
+infected_dataset[1] = {
+    label: 'Standard model',
+    data:  model['projection']['total']['avg'],
+    spanGaps: true,
+    borderWidth: 2,
+    borderColor: '#' + infected_pal[0],
+    pointStyle: 'circle',
+    pointBorderColor:  '#' + infected_pal[0],
+    tension: 0,
+    fill: false
+};
+infected_dataset[2] = {
+    label: 'Optimistic model',
+    data: model['projection-optimistic']['total']['avg'],
+    spanGaps: true,
+    borderWidth: 2,
+    borderColor: '#' + infected_pal[2],
+    pointStyle: 'circle',
+    pointBorderColor:  '#' + infected_pal[2],
+    tension: 0,
+    fill: false
+};
 for (i=0; i<JITTER_COUNT; i++) {
     if (i>0) {
         label = 'Standard model' + '-' + i;
@@ -90,7 +112,7 @@ for (i=0; i<JITTER_COUNT; i++) {
         spanGaps: true,
         borderWidth: 1,
         borderDash: [5, 5],
-        borderColor: hexToRGBA('#' + infected_pal[0], 0.7),
+        borderColor: hexToRGBA('#' + infected_pal[0], 0.4),
         pointStyle: 'circle',
         radius: 0,
         pointBorderColor:  '#' + infected_pal[0],
@@ -108,7 +130,7 @@ for (i=0; i<JITTER_COUNT; i++) {
         spanGaps: true,
         borderWidth: 1,
         borderDash: [5, 5],
-        borderColor: hexToRGBA('#' + infected_pal[2], 0.7),
+        borderColor: hexToRGBA('#' + infected_pal[2], 0.4),
         pointStyle: 'circle',
         radius: 0,
         pointBorderColor:  '#' + infected_pal[2],
@@ -172,38 +194,60 @@ chart_max = Math.max(get_max(model['projection']['total']), get_max(model['proje
 // Create datasets for growth_rate
 growth_rate_dataset = [];
 growth_rate_dataset[0] = {
-        label: 'Observed',
-        data: data['growth_rate'],
-        spanGaps: true,
-        borderWidth: 3,
-        borderColor: '#' + infected_pal[1],
-        pointStyle: 'circle',
-        pointBorderColor:  '#' + infected_pal[1],
-        tension: 0.2,
-        fill: false
-    };
+    label: 'Observed',
+    data: data['growth_rate'],
+    spanGaps: true,
+    borderWidth: 3,
+    borderColor: '#' + infected_pal[1],
+    pointStyle: 'circle',
+    pointBorderColor:  '#' + infected_pal[1],
+    tension: 0.2,
+    fill: false
+};
 growth_rate_dataset[1] = {
-        label: 'Average',
-        data: data['growth_rate_avg'],
-        spanGaps: true,
-        borderWidth: 2,
-        borderColor: '#' + infected_pal[3],
-        pointStyle: 'circle',
-        pointBorderColor:  '#' + infected_pal[3],
-        tension: 0.2,
-        fill: false
-    };
+    label: 'Observed average',
+    data: data['growth_rate_avg'],
+    spanGaps: true,
+    borderWidth: 2,
+    borderColor: '#' + infected_pal[3],
+    pointStyle: 'circle',
+    pointBorderColor:  '#' + infected_pal[3],
+    tension: 0.2,
+    fill: false
+};
 growth_rate_dataset[2] = {
-        label: '7 Day Average',
-        data: data['growth_rate_avg_7'],
-        spanGaps: true,
-        borderWidth: 2,
-        borderColor: '#' + infected_pal[4],
-        pointStyle: 'circle',
-        pointBorderColor:  '#' + infected_pal[4],
-        tension: 0.2,
-        fill: false
-    };
+    label: 'Observed 7 day average',
+    data: data['growth_rate_avg_7'],
+    spanGaps: true,
+    borderWidth: 2,
+    borderColor: '#' + infected_pal[4],
+    pointStyle: 'circle',
+    pointBorderColor:  '#' + infected_pal[4],
+    tension: 0.2,
+    fill: false
+};
+growth_rate_dataset[3] = {
+    label: 'Standard model',
+    data: model['projection']['rate']['avg'],
+    spanGaps: true,
+    borderWidth: 2,
+    borderColor: '#' + infected_pal[0],
+    pointStyle: 'circle',
+    pointBorderColor:  '#' + infected_pal[0],
+    tension: 0.2,
+    fill: false
+};
+growth_rate_dataset[4] = {
+    label: 'Optimistic model',
+    data: model['projection-optimistic']['rate']['avg'],
+    spanGaps: true,
+    borderWidth: 2,
+    borderColor: '#' + infected_pal[2],
+    pointStyle: 'circle',
+    pointBorderColor:  '#' + infected_pal[2],
+    tension: 0.2,
+    fill: false
+};
 for (i=0; i<JITTER_COUNT; i++) {
     if (i>0) {
         label = 'Standard model' + '-' + i;
@@ -216,7 +260,7 @@ for (i=0; i<JITTER_COUNT; i++) {
         spanGaps: true,
         borderWidth: 1,
         borderDash: [5, 5],
-        borderColor: hexToRGBA('#' + infected_pal[0], 0.5),
+        borderColor: hexToRGBA('#' + infected_pal[0], 0.2),
         pointStyle: 'circle',
         radius: 0,
         pointBorderColor:  '#' + infected_pal[0],
@@ -234,7 +278,7 @@ for (i=0; i<JITTER_COUNT; i++) {
         spanGaps: true,
         borderWidth: 1,
         borderDash: [5, 5],
-        borderColor: hexToRGBA('#' + infected_pal[2], 0.5),
+        borderColor: hexToRGBA('#' + infected_pal[2], 0.2),
         pointStyle: 'circle',
         radius: 0,
         pointBorderColor: '#' + infected_pal[2],
