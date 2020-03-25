@@ -5,7 +5,6 @@
 </title>
 
 <!--TODO:
-- look into dead / healthy - cumulative or not ?
 - add healed / dead / new per day
 - add tables to graphs
 - add interface to change params from web
@@ -95,23 +94,23 @@
 
 </head>
 <body style="margin: 0;">
-    <div id="nav_top" style="width: 99%; padding-left: 1%; padding-top: 0.5%; border-bottom: 1px solid black; padding-bottom: 1%;">
-        <h2><span style="background-color: white;">Covid-19 datamancy for Czech republic.</span></h2>
-        <span style="background-color: white;">This model is based on an elaborate data witch-doctory using observed Covid-19 growth rate in Czech republic.<br/></br>
-        Initial data taken from: <a href=https://onemocneni-aktualne.mzcr.cz/covid-19>https://onemocneni-aktualne.mzcr.cz/covid-19</a>.
+    <div id="nav_top" style="width: 100%; padding-left: 13.5%; padding-top: 0.5%; border-bottom: 1px solid black; padding-bottom: 1%;">
+        <h1><span style="background-color: white;">Covid-19 datamancy</span></h1>
+        <h3><span style="background-color: white;">This model is based on an elaborate data witch-doctory using observed Covid-19 growth rate in Czech republic.</span></h3>
+        <span style="background-color: white;">Initial data taken from: <a href=https://onemocneni-aktualne.mzcr.cz/covid-19>https://onemocneni-aktualne.mzcr.cz/covid-19</a>.
         Last change: <?php echo date("d/m/y H:i", $max); ?></span>
     </div>
     <div style="margin-bottom: 3%;">
         <div style="float: left; width: 12.5%;">&nbsp;</div>
         <div class="chart-container" style="padding-left: 1%; position: relative; width:75%; float: left;">
-    		<canvas id="infected" style="background-color: rgba(255,255,255,0.9);"></canvas>
+    		<canvas id="infected" style="background-color: rgba(255,255,255,0.85);"></canvas>
     	</div>
         <br style="clear: both;"/>
     </div>
     <div style="margin-bottom: 3%">
         <div style="float: left; width: 12.5%;">&nbsp;</div>
         <div class="chart-container" style="padding-left: 1%; position: relative; width:75%; float: left;">
-    		<canvas id="growth_rate" style="background-color: rgba(255,255,255,0.9);"></canvas>
+    		<canvas id="growth_rate" style="background-color: rgba(255,255,255,0.85);"></canvas>
     	</div>
         <br style="clear: both;"/>
     </div>
@@ -127,10 +126,11 @@
 
 <!-- BACKGROUND -->
 <script>
-    var images = ['01.jpg', '02.jpg', '03.jpg', '04.jpg', '05.jpg'];
-    document.body.style.backgroundImage =  'url(' + images[Math.floor(Math.random() * images.length)] + ')';
-    document.body.style.backgroundSize = "cover";
-    document.body.style.backgroundRepeat = "no-repeat";
+    //var images = ['01.jpg', '02.jpg', '03.jpg', '04.jpg', '05.jpg'];
+    //document.body.style.backgroundImage =  'url(' + images[Math.floor(Math.random() * images.length)] + ')';
+    document.body.style.backgroundImage = "url('corona-chan-black.jpg')";
+    //document.body.style.backgroundSize = "cover";
+    //document.body.style.backgroundRepeat = "no-repeat";
 </script>
 
 </html>
