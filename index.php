@@ -5,11 +5,12 @@
 </title>
 
 <!--TODO:
+- add DOI to studies
+- use the SIER methodology to predict longterm
+- population size, immune pool, dead pool, etc
 - add healed / dead / new per day
 - add tables to graphs
 - add interface to change params from web
-- use the SIER methodology to predict longterm
-- population size, immune pool, dead pool, etc
 - add a way to access older states (eg. state from 22.3, etc)
 - implement a graph estimating real infected numbers https://www.scmp.com/news/china/society/article/3076323/third-coronavirus-cases-may-be-silent-carriers-classified
 -->
@@ -17,7 +18,7 @@
 <!-- MOMENT.JS -->
 <script src="moment.js"></script>
 
-<!-- CHART.JS -->
+<!-- CHART.JS & PLUGINS-->
 <script src="Chart.min.js"></script>
 <script src="chartjs-plugin-annotation.min.js"></script>
 
@@ -127,11 +128,7 @@
 
 <!-- BACKGROUND -->
 <script>
-    //var images = ['01.jpg', '02.jpg', '03.jpg', '04.jpg', '05.jpg'];
-    //document.body.style.backgroundImage =  'url(' + images[Math.floor(Math.random() * images.length)] + ')';
     document.body.style.backgroundImage = "url('corona-chan-black.jpg')";
-    //document.body.style.backgroundSize = "cover";
-    //document.body.style.backgroundRepeat = "no-repeat";
 </script>
 
 </html>

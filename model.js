@@ -7,7 +7,7 @@ function get_max(arr) {
     return max;
 }
 
-// This is a log
+// This is a logarithm base 10
 function log_decrease(day, speed) {
     return Math.log10(day)/speed;
 }
@@ -34,6 +34,8 @@ function avg_growth_rate(data) {
 //  - growth_rate_avg:
 //      average on growth_rate over all values up to i:
 //      [1, 1, 1.22, 1.26]
+//  - growth_rate_avg_7:
+//      seven day rolling average of growth_rate
 //
 //  These data are used to seed the model
 function fill_initial(arr, current_values) {
@@ -70,7 +72,7 @@ function fill_initial(arr, current_values) {
     return days_elapsed;
 }
 
-// This computes the amount of people getting helthy on a given day
+// This computes the amount of people getting healthy on a given day
 // Earliest recovery is after 11 days, latest recovery after 35 days
 // For data these two studies were used:
 //      [1] Clinical Characteristics of 138 Hospitalized Patients With 2019 Novel Coronavirus–Infected Pneumonia in Wuhan, China
@@ -84,7 +86,6 @@ function fill_initial(arr, current_values) {
 //
 // To make things simpler the above can be represented like this:
 // 1,2,3,7,18,20,17,13,3,2,0.9,0.9,0.9,0.9,0.9,0.9,0.9,0.9,0.9,0.9,1,1,1,1
-//
 //
 // Where the first number is the percentage of healed cases on day 11, the next one is the percentage of healed on day 12, and so on
 //
@@ -182,7 +183,7 @@ function run_model(params) {
     model[params.name]['total'] = {}
 
     for (jitter=0; jitter<params.jitter_count; jitter++) {
-        // setup arrays II
+        // setup more arrays
         model[params.name]['rate'][jitter] = [];
         model[params.name]['new'][jitter] = [];
         model[params.name]['daily'][jitter] = [3];
