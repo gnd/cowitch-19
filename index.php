@@ -96,7 +96,7 @@
 </head>
 <body style="margin: 0;">
     <div id="nav_top" style="width: 100%; padding-left: 13.5%; padding-top: 0.5%; border-bottom: 1px solid black; padding-bottom: 1%;">
-        <h1><span style="background-color: white;">Covid-19 datamancy</span></h1>
+        <h1><span style="background-color: white;">Cowitch-19 datamancy</span></h1>
         <h3><span style="background-color: white;">This model is based on an elaborate data witch-doctory using observed Covid-19 growth rate in Czech republic.</span></h3>
         <span style="background-color: white;">Initial data taken from: <a href=https://onemocneni-aktualne.mzcr.cz/covid-19>https://onemocneni-aktualne.mzcr.cz/covid-19</a>.
         Last change: <?php echo date("d/m/y H:i", $max); ?></span>
