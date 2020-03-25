@@ -19,6 +19,7 @@
 
 <!-- CHART.JS -->
 <script src="Chart.min.js"></script>
+<script src="chartjs-plugin-annotation.min.js"></script>
 
 <!-- PALETTE.JS -->
 <script src="palette.js"></script>

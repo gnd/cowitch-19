@@ -57,6 +57,7 @@ var labels = [];
 for (var i=1; i<MAXDAYS; i++) {
     labels.push( moment(new Date(2020, 02, i)) );
 }
+console.log(moment(new Date(2020, 02, 30)));
 
 // the infected graph
 var infected_chart = document.getElementById("infected").getContext('2d');
@@ -180,7 +181,24 @@ window.infected_chart = new Chart(infected_chart, {
 
                 },
             }
-        }
+        },
+        annotation: {
+            drawTime: 'afterDatasetsDraw',
+            events: ['click'],
+            annotations: [{
+                type: 'line',
+                mode: 'vertical',
+                scaleID: 'x-axis-0',
+                value: 'Mar 14, 2020',
+                borderColor: 'green',
+                borderWidth: 2,
+                label: {
+                    backgroundColor: "red",
+                    content: "Quarantine start",
+                    enabled: true
+                },
+            }]
+        },
     }
 });
 
@@ -327,6 +345,23 @@ window.growth_rate_chart = new Chart(growth_rate_chart, {
 
                 },
             }
-        }
+        },
+        annotation: {
+            drawTime: 'afterDatasetsDraw',
+            events: ['click'],
+            annotations: [{
+                type: 'line',
+                mode: 'vertical',
+                scaleID: 'x-axis-0',
+                value: 'Mar 14, 2020',
+                borderColor: 'green',
+                borderWidth: 2,
+                label: {
+                    backgroundColor: "red",
+                    content: "Quarantine start",
+                    enabled: true
+                },
+            }]
+        },
     }
 });
