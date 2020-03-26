@@ -38,45 +38,72 @@ function avg_growth_rate(data) {
 //      seven day rolling average of growth_rate
 //
 //  These data are used to seed the model
-function fill_initial(arr, current_values) {
+function fill_initial(arr, values, name) {
     // prepare the arrays
-    arr['infected_confirmed'] = [];
-    arr['infected_daily'] = [];
-    arr['growth_rate'] = [];
-    arr['growth_rate_avg'] = [];
-    arr['growth_rate_avg_7'] = [];
+    arr[name] = {}
+    arr[name]['infected_confirmed'] = [];
+    arr[name]['infected_daily'] = [];
+    arr[name]['growth_rate'] = [];
+    arr[name]['growth_rate_avg'] = [];
+    arr[name]['growth_rate_avg_7'] = [];
 
-    // seed the arrays
-    arr['infected_confirmed'] = current_values;
-    arr['infected_daily'].push( arr['infected_confirmed'][0] );
-    arr['growth_rate'].push( 1 );
-    arr['growth_rate_avg'].push( 1 );
-    arr['growth_rate_avg_7'].push( 1 );
+    // seed the arr[name]ays
+    arr[name]['infected_confirmed'] = values[name];
+    arr[name]['infected_daily'].push( arr[name]['infected_confirmed'][0] );
+    arr[name]['growth_rate'].push( 1 );
+    arr[name]['growth_rate_avg'].push( 1 );
+    arr[name]['growth_rate_avg_7'].push( 1 );
 
-    days_elapsed = arr['infected_confirmed'].length;
-    for (var i=1; i < days_elapsed; i++) {
+    elapsed = arr[name]['infected_confirmed'].length;
+    for (var i=1; i < elapsed; i++) {
         /// compute daily new cases
-        arr['infected_daily'].push( arr['infected_confirmed'][i] - arr['infected_confirmed'][i-1] );
+        arr[name]['infected_daily'].push( arr[name]['infected_confirmed'][i] - arr[name]['infected_confirmed'][i-1] );
 
         /// compute daily growth rate
-        arr['growth_rate'].push( arr['infected_confirmed'][i] / arr['infected_confirmed'][i-1] );
+        arr[name]['growth_rate'].push( arr[name]['infected_confirmed'][i] / arr[name]['infected_confirmed'][i-1] );
 
         /// compute daily average growth rate
-        arr['growth_rate_avg'].push( avg_growth_rate( arr['growth_rate'].slice(0,i+1) ) );
+        arr[name]['growth_rate_avg'].push( avg_growth_rate( arr[name]['growth_rate'].slice(0,i+1) ) );
 
         /// compute rolling average growth rate for last 7 days
         slice_start = Math.min(i, 7);
-        arr['growth_rate_avg_7'].push( avg_growth_rate( arr['growth_rate'].slice(i-slice_start,i+1) ) );
+        arr[name]['growth_rate_avg_7'].push( avg_growth_rate( arr[name]['growth_rate'].slice(i-slice_start,i+1) ) );
     }
 
-    return days_elapsed;
+    return elapsed;
 }
+
+
+function create_seeds(seed_arr, elapsed, name) {
+    seed_arr['rate'][name] = {};
+    seed_arr['new'][name] = {};
+    for (var i=0; i < elapsed[name]; i++) {
+        seed['rate'][name][i] = data[name]['growth_rate'][i];
+        seed['new'][name][i] = data[name]['infected_confirmed'][i];
+    }
+}
+
+// Fills current_values[name_100] with current values above 100 cases
+// Used in compare_100 graph
+function prepare_100(values, name) {
+    new_name = name+'_100';
+    values[new_name] = [];
+
+    for (i=0; i<values[name].length; i++) {
+        if (values[name][i] > 100) {
+            values[new_name].push( values[name][i] );
+        }
+    }
+}
+
 
 // This computes the amount of people getting healthy on a given day
 // Earliest recovery is after 11 days, latest recovery after 35 days
 // For data these two studies were used:
-//      [1] Clinical Characteristics of 138 Hospitalized Patients With 2019 Novel Coronavirus–Infected Pneumonia in Wuhan, China
-//      [2] Clinical features of patients infected with 2019 novel coronavirus in Wuhan, China
+//      [1] Wang et al., Clinical Characteristics of 138 Hospitalized Patients With 2019 Novel Coronavirus–Infected Pneumonia in Wuhan, China,
+//          doi:10.1001/jama.2020.1585
+//      [2] Huang et al., Clinical features of patients infected with 2019 novel coronavirus in Wuhan, China
+//          https://doi.org/10.1016/S0140-6736(20)30183-5
 //
 // We use this kind of distribution [3]:
 // 80% - 14-17 days - mild cases

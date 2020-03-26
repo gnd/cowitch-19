@@ -1,3 +1,36 @@
+// HEX to R,G,B - taken from http://www.javascripter.net/faq/hextorgb.htm
+function hexToR(h) {return parseInt((cutHex(h)).substring(0,2),16)}
+function hexToG(h) {return parseInt((cutHex(h)).substring(2,4),16)}
+function hexToB(h) {return parseInt((cutHex(h)).substring(4,6),16)}
+function cutHex(h) {return (h.charAt(0)=="#") ? h.substring(1,7):h}
+
+// HEX to RGBA
+function hexToRGBA(h, alpha) {
+    return "rgba(" + hexToR(h) + "," + hexToG(h) + "," + hexToB(h) + "," + alpha + ")";
+}
+
+// generate palette
+var infected_pal = palette('mpn65', 6);
+
+// generate labels
+var labels = [];
+for (var i=1; i<MAXDAYS; i++) {
+    labels.push( moment(new Date(2020, 02, i)) );
+}
+var labels_relative = [];
+for (var i=1; i<MAXDAYS; i++) {
+    labels_relative.push( "Day "+i );
+}
+
+// default legend callback - see https://www.chartjs.org/docs/latest/configuration/legend.html
+function legendCallback(e, legendItem) {
+    var index = legendItem.datasetIndex;
+    var ci = this.chart;
+    meta = ci.getDatasetMeta(index);
+    meta.hidden = meta.hidden === null ? !ci.data.datasets[index].hidden : null;
+    ci.update();
+}
+
 function detect_client() {
     const mq = window.matchMedia('screen and (min-width: 300px) and (max-width: 340px)');
     if (mq.matches) {

@@ -1,14 +1,3 @@
-// HEX to R,G,B - taken from http://www.javascripter.net/faq/hextorgb.htm
-function hexToR(h) {return parseInt((cutHex(h)).substring(0,2),16)}
-function hexToG(h) {return parseInt((cutHex(h)).substring(2,4),16)}
-function hexToB(h) {return parseInt((cutHex(h)).substring(4,6),16)}
-function cutHex(h) {return (h.charAt(0)=="#") ? h.substring(1,7):h}
-
-// HEX to RGBA
-function hexToRGBA(h, alpha) {
-    return "rgba(" + hexToR(h) + "," + hexToG(h) + "," + hexToB(h) + "," + alpha + ")";
-}
-
 // legend callback - see https://www.chartjs.org/docs/latest/configuration/legend.html
 function legendCallbackInfected(e, legendItem) {
     var index = legendItem.datasetIndex;
@@ -49,27 +38,15 @@ function legendCallbackGrowthRate(e, legendItem) {
     ci.update();
 }
 
-// generate palette
-var infected_pal = palette('mpn65', 6);
-
-// generate labels
-var labels = [];
-for (var i=1; i<MAXDAYS; i++) {
-    labels.push( moment(new Date(2020, 02, i)) );
-}
-
 // the infected graph
-var infected_chart = document.getElementById("infected").getContext('2d');
-var graph_height = window.innerHeight * 0.83;
-var country_name = 'Czech republic';
-var models = ['Projekcia'];
+var infected_chart_cz = document.getElementById("infected_cz").getContext('2d');
 chart_max = Math.max(get_max(model['projection']['total']), get_max(model['projection-optimistic']['total']));
 
 // Create datasets for infected projections
 infected_dataset = [];
 infected_dataset[0] = {
     label: 'Confirmed',
-    data: current_values,
+    data: current_values['cz'],
     spanGaps: true,
     borderWidth: 3,
     borderColor: '#' + infected_pal[1],
@@ -142,7 +119,7 @@ for (i=0; i<JITTER_COUNT; i++) {
 }
 
 // The infected chart
-window.infected_chart = new Chart(infected_chart, {
+window.infected_chart = new Chart(infected_chart_cz, {
     type: 'line',
     data: {
         labels: labels,
@@ -152,7 +129,7 @@ window.infected_chart = new Chart(infected_chart, {
         aspectRatio: aspect_ratio,
         title: {
             display: true,
-            text: 'Confirmed and predicted cases of COVID-19 in Czech republic'
+            text: 'Confirmed and predicted cases of COVID-19 in Czech republic (click on the legend to show/hide data)'
         },
         scales: {
             xAxes: [{
@@ -203,17 +180,14 @@ window.infected_chart = new Chart(infected_chart, {
 });
 
 // the growth rate
-var growth_rate_chart = document.getElementById("growth_rate").getContext('2d');
-var graph_height = window.innerHeight * 0.83;
-var country_name = 'Czech republic';
-var models = ['Projekcia'];
+var growth_rate_chart_cz = document.getElementById("growth_rate_cz").getContext('2d');
 chart_max = Math.max(get_max(model['projection']['total']), get_max(model['projection-optimistic']['total']));
 
 // Create datasets for growth_rate
 growth_rate_dataset = [];
 growth_rate_dataset[0] = {
     label: 'Observed',
-    data: data['growth_rate'],
+    data: data['cz']['growth_rate'],
     spanGaps: true,
     borderWidth: 3,
     borderColor: '#' + infected_pal[1],
@@ -224,7 +198,7 @@ growth_rate_dataset[0] = {
 };
 growth_rate_dataset[1] = {
     label: 'Observed average',
-    data: data['growth_rate_avg'],
+    data: data['cz']['growth_rate_avg'],
     spanGaps: true,
     borderWidth: 2,
     borderColor: '#' + infected_pal[3],
@@ -235,7 +209,7 @@ growth_rate_dataset[1] = {
 };
 growth_rate_dataset[2] = {
     label: 'Observed 7 day average',
-    data: data['growth_rate_avg_7'],
+    data: data['cz']['growth_rate_avg_7'],
     spanGaps: true,
     borderWidth: 2,
     borderColor: '#' + infected_pal[4],
@@ -308,7 +282,7 @@ for (i=0; i<JITTER_COUNT; i++) {
 }
 
 // The growth rate chart
-window.growth_rate_chart = new Chart(growth_rate_chart, {
+window.growth_rate_chart = new Chart(growth_rate_chart_cz, {
     type: 'line',
     data: {
         labels: labels.slice(0,40),
@@ -318,7 +292,7 @@ window.growth_rate_chart = new Chart(growth_rate_chart, {
         aspectRatio: aspect_ratio,
         title: {
             display: true,
-            text: 'Confirmed, average and predicted growth rate of COVID-19 in Czech republic'
+            text: 'Confirmed, average and predicted growth rate of COVID-19 in Czech republic (click on the legend to show/hide data)'
         },
         scales: {
             xAxes: [{
