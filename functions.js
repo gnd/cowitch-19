@@ -15,6 +15,9 @@ var infected_pal = palette('mpn65', 6);
 // generate palette
 var pal_15 = palette('mpn65', 15);
 
+// generate palette
+var pal_8 = palette('sol-accent', 8);
+
 // generate labels
 var labels = [];
 for (var i=1; i<MAXDAYS; i++) {

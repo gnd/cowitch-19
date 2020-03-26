@@ -348,6 +348,39 @@ dataset.push( {
     tension: 0.2,
     fill: false
 } );
+dataset.push( {
+    label: 'KR-ALL',
+    data: data['kr_all']['growth_rate'].slice(29,64),
+    spanGaps: true,
+    borderWidth: 3,
+    borderColor: '#' + pal_15[0],
+    pointStyle: 'circle',
+    pointBorderColor:  '#' + pal_15[0],
+    tension: 0.2,
+    fill: false
+} );
+dataset.push( {
+    label: 'KR-ALL Avg',
+    data: data['kr_all']['growth_rate_avg'].slice(29,64),
+    spanGaps: true,
+    borderWidth: 2,
+    borderColor: '#' + pal_15[0],
+    pointStyle: 'circle',
+    pointBorderColor:  '#' + pal_15[0],
+    tension: 0.2,
+    fill: false
+} );
+dataset.push( {
+    label: 'KR-ALL Avg 7',
+    data: data['kr_all']['growth_rate_avg_7'].slice(29,64),
+    spanGaps: true,
+    borderWidth: 2,
+    borderColor: '#' + pal_15[0],
+    pointStyle: 'circle',
+    pointBorderColor:  '#' + pal_15[0],
+    tension: 0.2,
+    fill: false
+} );
 
 // The compare_growth_rates chart
 window.compare_growth_rates= new Chart(compare_growth_rates, {
@@ -367,8 +400,8 @@ window.compare_growth_rates= new Chart(compare_growth_rates, {
             }],
             yAxes: [{
                 ticks: {
-                    min: 0.9,
-                    suggestedMax: 2.2,
+                    //min: 0.9,
+                    //suggestedMax: 2.2,
                 }
             }]
         },

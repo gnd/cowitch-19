@@ -12,6 +12,11 @@ function log_decrease(day, speed) {
     return Math.log10(day)/speed;
 }
 
+// This is a logarithm base 10
+function lin_decrease(day, speed) {
+    return day/speed;
+}
+
 // This computes the average growth rate for days with data
 function avg_growth_rate(data) {
     var sum = 0;
@@ -150,6 +155,35 @@ function healthy(arr) {
     return sum;
 }
 
+function healthy_new(arr) {
+    sum = 0;
+    sum += 0.01 * arr[0]; // day 34
+    sum += 0.009 * arr[1];
+    sum += 0.01 * arr[2];
+    sum += 0.01 * arr[3];
+    sum += 0.01 * arr[4];
+    sum += 0.01 * arr[5];
+    sum += 0.01 * arr[6];
+    sum += 0.01 * arr[7];
+    sum += 0.01 * arr[8];
+    sum += 0.01 * arr[9];
+    sum += 0.01 * arr[10];
+    sum += 0.02 * arr[11];
+    sum += 0.079 * arr[12];
+    sum += 0.179 * arr[13];
+    sum += 0.169 * arr[14];
+    sum += 0.109 * arr[15];
+    sum += 0.089 * arr[16];
+    sum += 0.069 * arr[17];
+    sum += 0.059 * arr[18];
+    sum += 0.039 * arr[19];
+    sum += 0.029 * arr[20];
+    sum += 0.019 * arr[21];
+    sum += 0.02 * arr[22];
+    sum += 0.01 * arr[23];  // day 11
+    return sum;
+}
+
 // See above
 function dead(arr) {
     sum = 0;
@@ -166,24 +200,40 @@ function dead(arr) {
     return sum;
 }
 
+// See above
+function dead_new(arr) {
+    sum = 0;
+    sum += 0.003 * arr[4]; // day 20
+    sum += 0.003 * arr[5];
+    sum += 0.003 * arr[6];
+    sum += 0.003 * arr[7];
+    sum += 0.003 * arr[8];
+    sum += 0.003 * arr[9]; // day 15
+    return sum;
+}
+
 // Compute average if JITTER_COUNT > 1
 function get_average_jitter(params) {
     model[params.name]['rate']['avg'] = [];
     model[params.name]['total']['avg'] = [];
+    model[params.name]['healed_cum']['avg'] = [];
     for (i=0; i<params.model_duration; i++) {
         rate = 0;
         total = 0;
+        healed_cum = 0;
         for (j=0; j<params.jitter_count; j++) {
             rate += model[params.name]['rate'][j][i];
             total += model[params.name]['total'][j][i];
+            healed_cum += model[params.name]['healed_cum'][j][i];
         }
         model[params.name]['rate']['avg'].push( rate / params.jitter_count );
         model[params.name]['total']['avg'].push( total / params.jitter_count );
+        model[params.name]['healed_cum']['avg'].push( healed_cum / params.jitter_count );
     }
 }
 
 // Sort of struct emulation in js
-function params(name, model_duration, growth_rate_seed, decay_func, decay_speed, decay_min, new_seed, jitter_count, jitter_amount) {
+function params(name, model_duration, growth_rate_seed, decay_func, decay_speed, decay_min, new_seed, jitter_count, jitter_amount, health_func, dead_func) {
     this.name = name;
     this.model_duration = model_duration;
     this.irs = growth_rate_seed;
@@ -193,6 +243,8 @@ function params(name, model_duration, growth_rate_seed, decay_func, decay_speed,
     this.new_seed = new_seed;
     this.jitter_count = jitter_count;
     this.jitter_amount = jitter_amount;
+    this.health_func = health_func;
+    this.dead_func = dead_func;
 }
 
 function run_model(params) {
@@ -233,6 +285,9 @@ function run_model(params) {
                     if (params.decay_func == 'log') {
                         new_rate = model[params.name]['rate'][jitter][i-1] - log_decrease(i+1, params.decay_speed);
                     }
+                    if (params.decay_func == 'lin') {
+                        new_rate = model[params.name]['rate'][jitter][i-1];
+                    }
                     // add some jitter
                     if (params.jitter_amount > 0) {
                         rnd = 1  + (Math.random()*params.jitter_amount*2) - (params.jitter_amount);
@@ -269,25 +324,47 @@ function run_model(params) {
                 model[params.name]['daily'][jitter].push( new_daily );
 
                 // Healed per day
-                daily_slice = zero_slice;
-                for (var j=34; j>10; j--) { // Create and fill the daily array slice starting at current day - 34 and ending at current day - 11
-                    if (i-j > 0) {
-                        daily_slice[34-j] = model[params.name]['daily'][jitter][i-j];
+                if (params.health_func == 'healthy') {
+                    daily_slice = zero_slice;
+                    for (var j=34; j>10; j--) { // Create and fill the daily array slice starting at current day - 34 and ending at current day - 11
+                        if (i-j > 0) {
+                            daily_slice[34-j] = model[params.name]['daily'][jitter][i-j];
+                        }
                     }
+                    healed = healthy(daily_slice);
+                } else
+                if (params.health_func == 'healthy_new') {
+                    daily_slice = zero_slice;
+                    for (var j=36; j>12; j--) { // Create and fill the daily array slice starting at current day - 34 and ending at current day - 11
+                        if (i-j > 0) {
+                            daily_slice[36-j] = model[params.name]['daily'][jitter][i-j];
+                        }
+                    }
+                    healed = healthy_new(daily_slice);
                 }
-                healed = healthy(daily_slice);
                 healed_cumulative += healed;
                 model[params.name]['healed'][jitter].push( healed );
                 model[params.name]['healed_cum'][jitter].push( healed_cumulative );
 
                 // Deaths per day
-                daily_slice = zero_slice;
-                for (var j=30; j>19; j--) { // Create and fill the daily array slice starting at current day - 30 and ending at current day - 20
-                    if (i-j > 0) {
-                        daily_slice[30-j] = model[params.name]['daily'][jitter][i-j];
+                if (params.dead_func == 'dead') {
+                    daily_slice = zero_slice;
+                    for (var j=30; j>19; j--) { // Create and fill the daily array slice starting at current day - 30 and ending at current day - 20
+                        if (i-j > 0) {
+                            daily_slice[30-j] = model[params.name]['daily'][jitter][i-j];
+                        }
                     }
+                    died = dead(daily_slice);
+                } else
+                if (params.dead_func == 'dead_new') {
+                    daily_slice = zero_slice;
+                    for (var j=9; j>3; j--) { // Create and fill the daily array slice starting at current day - 20 and ending at current day - 15
+                        if (i-j > 0) {
+                            daily_slice[9-j] = model[params.name]['daily'][jitter][i-j];
+                        }
+                    }
+                    died = dead_new(daily_slice);
                 }
-                died = dead(daily_slice);
                 died_cumulative += died;
                 model[params.name]['deaths'][jitter].push( died );
                 model[params.name]['deaths_cum'][jitter].push( died_cumulative );
