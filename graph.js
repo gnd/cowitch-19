@@ -68,7 +68,7 @@ chart_max = Math.max(get_max(model['projection']['total']), get_max(model['proje
 // Create datasets for infected projections
 infected_dataset = [];
 infected_dataset[0] = {
-    label: 'Confirmed cases',
+    label: 'Confirmed',
     data: current_values,
     spanGaps: true,
     borderWidth: 3,
@@ -79,7 +79,7 @@ infected_dataset[0] = {
     fill: false
 };
 infected_dataset[1] = {
-    label: 'Standard model',
+    label: 'Predicted',
     data:  model['projection']['total']['avg'],
     spanGaps: true,
     borderWidth: 2,
@@ -90,7 +90,7 @@ infected_dataset[1] = {
     fill: false
 };
 infected_dataset[2] = {
-    label: 'Optimistic model',
+    label: 'Optimistic',
     data: model['projection-optimistic']['total']['avg'],
     spanGaps: true,
     borderWidth: 2,
@@ -102,9 +102,9 @@ infected_dataset[2] = {
 };
 for (i=0; i<JITTER_COUNT; i++) {
     if (i>0) {
-        label = 'Standard model' + '-' + i;
+        label = 'Predicted' + '-' + i;
     } else {
-        label = 'Standard model';
+        label = 'Predicted';
     }
     projection = {
         label: label,
@@ -120,9 +120,9 @@ for (i=0; i<JITTER_COUNT; i++) {
         fill: false
     };
     if (i>0) {
-        label = 'Optimistic model' + '-' + i;
+        label = 'Optimistic' + '-' + i;
     } else {
-        label = 'Optimistic model';
+        label = 'Optimistic';
     }
     projection_optimistic = {
         label: label,
@@ -152,7 +152,7 @@ window.infected_chart = new Chart(infected_chart, {
         aspectRatio: aspect_ratio,
         title: {
             display: true,
-            text: 'Current confirmed and predicted cases of COVID-19 in Czech republic'
+            text: 'Confirmed and predicted cases of COVID-19 in Czech republic'
         },
         scales: {
             xAxes: [{
@@ -245,7 +245,7 @@ growth_rate_dataset[2] = {
     fill: false
 };
 growth_rate_dataset[3] = {
-    label: 'Standard model',
+    label: 'Predicted',
     data: model['projection']['rate']['avg'],
     spanGaps: true,
     borderWidth: 2,
@@ -256,7 +256,7 @@ growth_rate_dataset[3] = {
     fill: false
 };
 growth_rate_dataset[4] = {
-    label: 'Optimistic model',
+    label: 'Optimistic',
     data: model['projection-optimistic']['rate']['avg'],
     spanGaps: true,
     borderWidth: 2,
@@ -268,9 +268,9 @@ growth_rate_dataset[4] = {
 };
 for (i=0; i<JITTER_COUNT; i++) {
     if (i>0) {
-        label = 'Standard model' + '-' + i;
+        label = 'Predicted' + '-' + i;
     } else {
-        label = 'Standard model';
+        label = 'Predicted';
     }
     projection = {
         label: label,
@@ -286,9 +286,9 @@ for (i=0; i<JITTER_COUNT; i++) {
         fill: false
     };
     if (i>0) {
-        label = 'Optimistic model' + '-' + i;
+        label = 'Optimistic' + '-' + i;
     } else {
-        label = 'Optimistic model';
+        label = 'Optimistic';
     }
     projection_optimistic =  {
         label: label,
@@ -318,7 +318,7 @@ window.growth_rate_chart = new Chart(growth_rate_chart, {
         aspectRatio: aspect_ratio,
         title: {
             display: true,
-            text: 'Current confirmed, average and predicted growth rate of COVID-19 in Czech republic'
+            text: 'Confirmed, average and predicted growth rate of COVID-19 in Czech republic'
         },
         scales: {
             xAxes: [{
