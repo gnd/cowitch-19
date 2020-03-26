@@ -45,6 +45,7 @@ div.graph_filler {
 }
 
 div.canvas_container {
+    position: relative;
     width: 96%;
     float: left;
 }

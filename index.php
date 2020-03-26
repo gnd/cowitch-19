@@ -64,6 +64,9 @@
 
 <!-- SEED AND PREPARE THE MODEL -->
 <script>
+    aspect_ratio = 2; // Desktop graph aspect ratio
+    aspect_ratio_mobile = 1.15; // Mobile graph aspect ratio
+
     // Create the data array using values from https://onemocneni-aktualne.mzcr.cz/covid-19
     data = {};
     current_values = [3,3,5,5,8,19,26,32,38,63,94,116,141,189,298,383,464,572,774,904,1047,1165,1289,1497,1775];
@@ -147,6 +150,11 @@
 		</div>
     </div>
 </body>
+
+<!-- FUNCTIONS -->
+<script src="functions.js?v=<?php echo filemtime($cwd . 'functions.js'); ?>"></script>
+
 <!-- GRAPH -->
 <script src="graph.js?v=<?php echo filemtime($cwd . 'graph.js'); ?>"></script>
+
 </html>

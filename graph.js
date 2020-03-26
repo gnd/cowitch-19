@@ -57,7 +57,6 @@ var labels = [];
 for (var i=1; i<MAXDAYS; i++) {
     labels.push( moment(new Date(2020, 02, i)) );
 }
-console.log(moment(new Date(2020, 02, 30)));
 
 // the infected graph
 var infected_chart = document.getElementById("infected").getContext('2d');
@@ -150,6 +149,7 @@ window.infected_chart = new Chart(infected_chart, {
         datasets: infected_dataset,
     },
     options: {
+        aspectRatio: aspect_ratio,
         title: {
             display: true,
             text: 'Current confirmed and predicted cases of COVID-19 in Czech republic'
@@ -315,6 +315,7 @@ window.growth_rate_chart = new Chart(growth_rate_chart, {
         datasets: growth_rate_dataset,
     },
     options: {
+        aspectRatio: aspect_ratio,
         title: {
             display: true,
             text: 'Current confirmed, average and predicted growth rate of COVID-19 in Czech republic'
