@@ -21,6 +21,7 @@
 <meta property="og:image:secure_url" content="https://co.witch19.space/corona-chan-black.jpg" />
 
 <!--TODO:
+- rename infected palette
 - modify model to incorporate lessons from KR
 - add descriptions to graphs
 - use SIER to predict longterm
@@ -62,14 +63,14 @@
     $max = max($max, filemtime($cwd . 'model.js'));
 ?>
 
-<!-- SEED AND PREPARE THE MODEL -->
+<!-- SEED AND PREPARE MODELS AND GRAPHS -->
 <script>
     aspect_ratio = 2; // Desktop graph aspect ratio
     aspect_ratio_mobile = 1.15; // Mobile graph aspect ratio
 
-    // Create the data array using values
+    // Create the data arrays using values
     // cz - from https://onemocneni-aktualne.mzcr.cz/covid-19
-    // jp, kr - from https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_confirmed_global.csv
+    // jp, kr, sg, it - from https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_confirmed_global.csv
     data = {};
     current_values = {};
     days_elapsed = {};
@@ -79,20 +80,36 @@
     current_values['kr'] = [1,1,2,2,3,4,4,4,4,11,12,15,15,16,19,23,24,24,25,27,28,28,28,28,28,29,30,31,31,104,204,433,602,833,977,1261,1766,2337,3150,3736,4335,5186,5621,6088,6593,7041,7314,7478,7513,7755,7869,7979,8086,8162,8236,8320,8413,8565,8652,8799,8961,8961,9037,9137];
     current_values['sg'] = [1,3,3,4,5,7,7,10,13,16,18,18,24,28,28,30,33,40,45,47,50,58,67,72,75,77,81,84,84,85,85,89,89,91,93,93,93,102,106,108,110,110,117,130,138,150,150,160,178,178,200,212,226,243,266,313,345,385,432,455,509,558,631];
     current_values['it'] = [2,2,2,2,2,2,2,3,3,3,3,3,3,3,3,3,3,3,3,3,3,20,62,155,229,322,453,655,888,1128,1694,2036,2502,3089,3858,4636,5883,7375,9172,10149,12462,12462,17660,21157,24747,27980,31506,35713,41035,47021,53578,59138,63927,69176,74386];
+
+    // Fill initial stats for countries
     days_elapsed['cz'] = fill_initial(data, current_values, 'cz');
     days_elapsed['jp'] = fill_initial(data, current_values, 'jp');
     days_elapsed['kr'] = fill_initial(data, current_values, 'kr');
     days_elapsed['sg'] = fill_initial(data, current_values, 'sg');
     days_elapsed['it'] = fill_initial(data, current_values, 'it');
 
+    // Create growth_rate seed and new cases seed for modelling
+    create_seeds(seed, days_elapsed, 'cz');
+
+    // prepare values for compare_100
+    prepare_100(current_values, 'cz');
+    prepare_100(current_values, 'jp');
+    prepare_100(current_values, 'kr');
+    prepare_100(current_values, 'sg');
+    prepare_100(current_values, 'it');
+
+    // prepare values for compare_growth_rates
+    fill_initial(data, current_values, 'cz_100');
+    fill_initial(data, current_values, 'jp_100');
+    fill_initial(data, current_values, 'kr_100');
+    fill_initial(data, current_values, 'sg_100');
+    fill_initial(data, current_values, 'it_100');
+
     // Prepare the model
     model = {};
     MAXDAYS = 90;
     JITTER_COUNT = 50;
     JITTER_AMOUNT = 0.015;
-
-    // Create growth_rate seed  and new cases seed for the cz model
-    create_seeds(seed, days_elapsed, 'cz');
 
     // Put together the models parameters
     var model1 = new params(
@@ -123,19 +140,6 @@
     // Run the model for infected_cz and growth_rate_cz
     run_model( model1 );
     run_model( model2 );
-
-    // prepare values for compare_100
-    prepare_100(current_values, 'cz');
-    prepare_100(current_values, 'jp');
-    prepare_100(current_values, 'kr');
-    prepare_100(current_values, 'sg');
-    prepare_100(current_values, 'it');
-
-    // Create growth_rate seed  and new cases seed for the comparative graph
-    create_seeds(seed, days_elapsed, 'jp');
-    create_seeds(seed, days_elapsed, 'kr');
-    create_seeds(seed, days_elapsed, 'sg');
-
 </script>
 </head>
 <body>
@@ -172,6 +176,13 @@
         <div class="graph_filler">&nbsp;</div>
         <div class="canvas_container">
             <canvas id="compare_100" class="graph"></canvas>
+        </div>
+        <br class="clear"/>
+    </div>
+    <div class="graph_container">
+        <div class="graph_filler">&nbsp;</div>
+        <div class="canvas_container">
+            <canvas id="compare_growth_rates" class="graph"></canvas>
         </div>
         <br class="clear"/>
     </div>
