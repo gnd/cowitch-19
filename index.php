@@ -5,6 +5,8 @@
 </title>
 
 <!--TODO:
+- move style into css
+- make css for mobile
 - verify model against JP, SG, HK and KR
 - add DOI to studies
 - use SIER to predict longterm
@@ -14,6 +16,7 @@
 - add interface to change params from web
 - add a way to access older states (eg. state from 22.3, etc)
 - implement a graph estimating real infected numbers https://www.scmp.com/news/china/society/article/3076323/third-coronavirus-cases-may-be-silent-carriers-classified
+    - use also https://www.cssz.cz/web/cz/nemocenska-statistika#section_5
 -->
 
 <!-- MOMENT.JS -->
@@ -33,7 +36,7 @@
 <script>
     // Create the data array using values from https://onemocneni-aktualne.mzcr.cz/covid-19
     data = {};
-    current_values = [3,3,5,5,8,19,26,32,38,63,94,116,141,189,298,383,464,572,774,904,1047,1165,1289,1497];
+    current_values = [3,3,5,5,8,19,26,32,38,63,94,116,141,189,298,383,464,572,774,904,1047,1165,1289,1497,1775];
     days_elapsed = fill_initial(data, current_values);
 
     // Prepare the model
