@@ -1,0 +1,65 @@
+a.menu_link {
+    text-decoration: none;
+    font-weight: bold;
+    color: black;
+}
+
+a.menu_link:hover {
+    text-decoration: underline;
+}
+
+body {
+    margin: 0;
+    background-image: url('corona-chan-black.jpg');
+}
+
+div.top {
+    width: 100%;
+    border-bottom: 1px solid black;
+    padding-bottom: 1%;
+    margin-bottom: 1%;
+}
+
+div.header {
+    margin-top: 1%;
+    margin-left: 12.5%;
+}
+
+span.white {
+    background-color: white;
+}
+
+span.small_white {
+    background-color: white;
+}
+
+div.graph_container {
+    margin-bottom: 3%;
+}
+
+div.canvas_container {
+    margin-left: 12.5%;
+    position: relative;
+    width: 75%;
+    float: left;
+}
+
+canvas.graph {
+    background-color: rgba(255,255,255,0.85);
+}
+
+br.clear {
+    clear: both;
+}
+
+div.bottom_container {
+    width: 100%;
+    background-color: gold;
+    border: 2px;
+    border-color: black;
+}
+
+div.bottom_nav {
+    padding-left: 3%;
+    float: left;
+}

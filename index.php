@@ -4,11 +4,25 @@
     cowitch-19 - epidemiological witch-doctory
 </title>
 
+<!-- META -->
+<meta charset="UTF-8">
+<meta name="description" content="Epidemiological witch-doctory / datamancy / Covid-19 fortune telling" />
+<meta name="keywords" content="covid-19 czechia czech republic quarantine pandemy epidemy corona coronavirus graph model" />
+<meta name="revisit-after" content="1 days" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+
+<!-- OPEN GRAPH -->
+<meta property="og:locale" content="en_EN" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="Cowitch-19" />
+<meta property="og:description" content="Epidemiological witch doctory / datamancy / Covid-19 fortune telling" />
+<meta property="og:url" content="co.witch19.space" />
+<meta property="og:image" content="https://co.witch19.space/corona-chan-black.jpg" />
+<meta property="og:image:secure_url" content="https://co.witch19.space/corona-chan-black.jpg" />
+
 <!--TODO:
-- move style into css
-- make css for mobile
-- verify model against JP, SG, HK and KR
 - add DOI to studies
+- verify model against JP, SG, HK and KR
 - use SIER to predict longterm
     - add population size, immune pool, dead pool, etc
 - add healed / dead / new per day
@@ -29,8 +43,24 @@
 <!-- PALETTE.JS -->
 <script src="palette.js"></script>
 
+<!-- MOBILE & DESKTOP STYLES -->
+<link rel="stylesheet" media='screen and (min-width: 300px) and (max-width: 340px)' href="mobile.css?v=<?php echo filemtime($cwd . 'mobile.css'); ?>"/>
+<link rel="stylesheet" media='screen and (min-width: 341px) and (max-width: 365px)' href="mobile.css?v=<?php echo filemtime($cwd . 'mobile.css'); ?>"/>
+<link rel="stylesheet" media='screen and (min-width: 370px) and (max-width: 380px)' href="mobile.css?v=<?php echo filemtime($cwd . 'mobile.css'); ?>"/>
+<link rel="stylesheet" media='screen and (min-width: 400px) and (max-width: 1000px)' href="mobile.css?v=<?php echo filemtime($cwd . 'mobile.css'); ?>"/>
+<link rel="stylesheet" media='screen and (min-width: 1001px) and (max-width: 1300px)' href="desktop.css?v=<?php echo filemtime($cwd . 'desktop.css'); ?>"/>
+<link rel="stylesheet" media='screen and (min-width: 1301px) and (max-width: 1599px)' href="desktop.css?v=<?php echo filemtime($cwd . 'desktop.css'); ?>"/>
+<link rel="stylesheet" media='screen and (min-width: 1600px)' href="desktop.css?v=<?php echo filemtime($cwd . 'desktop.css'); ?>"/>
+
 <!-- MODEL -->
 <script src="model.js?v=<?php echo filemtime($cwd . 'model.js'); ?>"></script>
+
+<?php
+    // compute last change to the model(s)
+    $max = filemtime($cwd . 'index.php');
+    $max = max($max, filemtime($cwd . 'graph.js'));
+    $max = max($max, filemtime($cwd . 'model.js'));
+?>
 
 <!-- SEED AND PREPARE THE MODEL -->
 <script>
@@ -87,52 +117,36 @@
     run_model( model1 );
     run_model( model2 );
 </script>
-
-<!-- MOBILE & DESKTOP STYLES -->
-<link rel="stylesheet" media='screen' href="style.css"/>
-
-<?php
-    // compute last change to the model(s)
-    $max = filemtime($cwd . 'index.php');
-    $max = max($max, filemtime($cwd . 'graph.js'));
-    $max = max($max, filemtime($cwd . 'model.js'));
-?>
-
 </head>
-<body style="margin: 0;">
-    <div id="nav_top" style="width: 100%; padding-left: 13.5%; padding-top: 0.5%; border-bottom: 1px solid black; padding-bottom: 1%;">
-        <h1><span style="background-color: white;">Cowitch-19 datamancy</span></h1>
-        <h3><span style="background-color: white;">This model is based on an elaborate data witch-doctory using observed Covid-19 growth rate in Czech republic.</span></h3>
-        <span style="background-color: white;">Initial data taken from: <a href=https://onemocneni-aktualne.mzcr.cz/covid-19>https://onemocneni-aktualne.mzcr.cz/covid-19</a>.
-        Last change: <?php echo date("d/m/y H:i", $max); ?></span>
+<body>
+    <div class="top">
+        <div class="header">
+            <h1><span class="white">Cowitch-19 datamancy</span></h1>
+            <h3><span class="white">This model is based on an elaborate data witch-doctory using observed Covid-19 growth rate in Czech republic.</span></h3>
+            <span class="small_white">Initial data taken from: <a href=https://onemocneni-aktualne.mzcr.cz/covid-19>https://onemocneni-aktualne.mzcr.cz/covid-19</a>.<br/>
+            Last change: <?php echo date("d/m/y H:i", $max); ?></span>
+        </div>
     </div>
-    <div style="margin-bottom: 3%;">
-        <div style="float: left; width: 12.5%;">&nbsp;</div>
-        <div class="chart-container" style="padding-left: 1%; position: relative; width:75%; float: left;">
-    		<canvas id="infected" style="background-color: rgba(255,255,255,0.85);"></canvas>
+    <div class="graph_container">
+        <div class="graph_filler">&nbsp;</div>
+        <div class="canvas_container">
+    		<canvas id="infected" class="graph"></canvas>
     	</div>
-        <br style="clear: both;"/>
+        <br class="clear"/>
     </div>
-    <div style="margin-bottom: 3%">
-        <div style="float: left; width: 12.5%;">&nbsp;</div>
-        <div class="chart-container" style="padding-left: 1%; position: relative; width:75%; float: left;">
-    		<canvas id="growth_rate" style="background-color: rgba(255,255,255,0.85);"></canvas>
-    	</div>
-        <br style="clear: both;"/>
+    <div class="graph_container">
+        <div class="graph_filler">&nbsp;</div>
+        <div class="canvas_container">
+            <canvas id="growth_rate" class="graph"></canvas>
+        </div>
+        <br class="clear"/>
     </div>
-    <div id="nav_bottom" style="width: 100%; background-color: gold; border: 2px; border-color: black;">
-        <div style="padding-left: 3%; float: left;">
-            <br/>Future controls here.
+    <div class="bottom_container">
+        <div class="bottom_nav">
+            Future controls here.
 		</div>
     </div>
 </body>
-
 <!-- GRAPH -->
 <script src="graph.js?v=<?php echo filemtime($cwd . 'graph.js'); ?>"></script>
-
-<!-- BACKGROUND -->
-<script>
-    document.body.style.backgroundImage = "url('corona-chan-black.jpg')";
-</script>
-
 </html>
