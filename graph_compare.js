@@ -68,7 +68,7 @@ window.compare= new Chart(compare, {
         aspectRatio: aspect_ratio,
         title: {
             display: true,
-            text: 'Confirmed cases of COVID-19 in Japan, Czechia, Korea, relative by first day of occurence  (click on the legend to show/hide data)'
+            text: ["Confirmed cases of COVID-19 in Japan, Czechia, Korea, relative by first day of occurence", "(click on the legend to show/hide data)"]
         },
         scales: {
             xAxes: [{
@@ -159,7 +159,7 @@ window.compare_100= new Chart(compare_100, {
         aspectRatio: aspect_ratio,
         title: {
             display: true,
-            text: 'Confirmed cases of COVID-19 in Japan, Czechia, Korea, Singapore, Italy relative by day of first 100 cases (click on the legend to show/hide data)'
+            text: ["Confirmed cases of COVID-19 in Japan, Czechia, Korea, Singapore, Italy relative by day of first 100 cases", "(click on the legend to show/hide data)"]
         },
         scales: {
             xAxes: [{

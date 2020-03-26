@@ -129,7 +129,7 @@ window.infected_chart = new Chart(infected_chart_cz, {
         aspectRatio: aspect_ratio,
         title: {
             display: true,
-            text: 'Confirmed and predicted cases of COVID-19 in Czech republic (click on the legend to show/hide data)'
+            text: ["Confirmed and predicted cases of COVID-19 in Czech republic", "(click on the legend to show/hide data)"]
         },
         scales: {
             xAxes: [{
@@ -292,7 +292,7 @@ window.growth_rate_chart = new Chart(growth_rate_chart_cz, {
         aspectRatio: aspect_ratio,
         title: {
             display: true,
-            text: 'Confirmed, average and predicted growth rate of COVID-19 in Czech republic (click on the legend to show/hide data)'
+            text: ["Confirmed, average and predicted growth rate of COVID-19 in Czech republic", "(click on the legend to show/hide data)"]
         },
         scales: {
             xAxes: [{
