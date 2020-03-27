@@ -95,7 +95,7 @@ dataset.push( {
 window.korea_test= new Chart(korea_test, {
     type: 'line',
     data: {
-        labels: labels_relative,
+        labels: gen_days_relative(MAXDAYS),
         datasets: dataset,
     },
     options: {
@@ -147,8 +147,8 @@ dataset.push( {
     fill: false
 } );
 dataset.push( {
-    label: 'KR Healthy - Predicted',
-    data:  model['model_kr2']['healed_cum']['avg'],
+    label: 'KRa Predicted',
+    data:  model['model_kr2a']['total']['avg'],
     spanGaps: true,
     borderWidth: 2,
     borderColor: '#' + pal_8[2],
@@ -177,12 +177,31 @@ for (i=0; i<JITTER_COUNT; i++) {
         fill: false
     };
     dataset.push( projection );
+    if (i>0) {
+        label = 'KRa Predicted' + '-' + i;
+    } else {
+        label = 'KRa Predicted';
+    }
+    projection = {
+        label: label,
+        data: model['model_kr2a']['total'][i],
+        spanGaps: true,
+        borderWidth: 1,
+        borderDash: [5, 5],
+        borderColor: hexToRGBA('#' + pal_8[2], 0.4),
+        pointStyle: 'circle',
+        radius: 0,
+        pointBorderColor:  '#' + pal_8[2],
+        tension: 0.2,
+        fill: false
+    };
+    dataset.push( projection );
 }
 // The infected chart
 window.korea_pred = new Chart(korea_pred, {
     type: 'line',
     data: {
-        labels: labels_relative,
+        labels: gen_days(21, 0, 300),
         datasets: dataset,
     },
     options: {
@@ -193,11 +212,15 @@ window.korea_pred = new Chart(korea_pred, {
         },
         scales: {
             xAxes: [{
+                type: 'time',
+                time: {
+                    unit: 'day'
+                }
             }],
             yAxes: [{
                 ticks: {
                     min: 0,
-                    suggestedMax: 10000,
+                    max: 15000,
                 }
             }]
         },
@@ -206,7 +229,7 @@ window.korea_pred = new Chart(korea_pred, {
             labels: {
                 // Show only first three labels
                 filter: function (legendItem, chartData) {
-                    if (legendItem.datasetIndex < 2) {
+                    if (legendItem.datasetIndex < 3) {
                         return (chartData.datasets[legendItem.datasetIndex].label)
                     }
 
