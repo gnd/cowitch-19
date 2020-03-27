@@ -117,7 +117,7 @@ function prepare_100(values, name) {
 // 1% - day 20-30 - dead
 //
 // To make things simpler the above can be represented like this:
-// 1,2,3,7,18,20,17,13,3,2,0.9,0.9,0.9,0.9,0.9,0.9,0.9,0.9,0.9,0.9,1,1,1,1
+// 1,2,3,7,18,20,17,14,4,3,0.9,0.9,0.9,0.9,0.9,0.9,0.9,0.9,0.9,0.9,1,1,1,1
 //
 // Where the first number is the percentage of healed cases on day 11, the next one is the percentage of healed on day 12, and so on
 //
@@ -142,9 +142,9 @@ function healthy(arr) {
     sum += 0.009 * arr[11];
     sum += 0.009 * arr[12];
     sum += 0.009 * arr[13];
-    sum += 0.02 * arr[14];
-    sum += 0.03 * arr[15];
-    sum += 0.13 * arr[16];
+    sum += 0.03 * arr[14];
+    sum += 0.04 * arr[15];
+    sum += 0.14 * arr[16];
     sum += 0.17 * arr[17];
     sum += 0.20 * arr[18];
     sum += 0.18 * arr[19];
@@ -158,7 +158,7 @@ function healthy(arr) {
 function healthy_new(arr) {
     sum = 0;
     sum += 0.01 * arr[0]; // day 34
-    sum += 0.009 * arr[1];
+    sum += 0.01 * arr[1];
     sum += 0.01 * arr[2];
     sum += 0.01 * arr[3];
     sum += 0.01 * arr[4];
@@ -169,22 +169,23 @@ function healthy_new(arr) {
     sum += 0.01 * arr[9];
     sum += 0.01 * arr[10];
     sum += 0.02 * arr[11];
-    sum += 0.079 * arr[12];
-    sum += 0.179 * arr[13];
-    sum += 0.169 * arr[14];
-    sum += 0.109 * arr[15];
-    sum += 0.089 * arr[16];
-    sum += 0.069 * arr[17];
-    sum += 0.059 * arr[18];
-    sum += 0.039 * arr[19];
-    sum += 0.029 * arr[20];
-    sum += 0.019 * arr[21];
+    sum += 0.07 * arr[12];
+    sum += 0.1665 * arr[13]; // 0.18 - 0.0135
+    sum += 0.17 * arr[14];
+    sum += 0.11 * arr[15];
+    sum += 0.09 * arr[16];
+    sum += 0.07 * arr[17];
+    sum += 0.06 * arr[18];
+    sum += 0.04 * arr[19];
+    sum += 0.03 * arr[20];
+    sum += 0.02 * arr[21];
     sum += 0.02 * arr[22];
     sum += 0.01 * arr[23];  // day 11
     return sum;
 }
 
 // See above
+// 1% mortality
 function dead(arr) {
     sum = 0;
     sum += 0.001 * arr[0]; // day 30
@@ -201,14 +202,14 @@ function dead(arr) {
 }
 
 // See above
+// 1.35 % mortality
 function dead_new(arr) {
     sum = 0;
-    sum += 0.003 * arr[4]; // day 20
-    sum += 0.003 * arr[5];
-    sum += 0.003 * arr[6];
-    sum += 0.003 * arr[7];
-    sum += 0.003 * arr[8];
-    sum += 0.003 * arr[9]; // day 15
+    sum += 0.0027 * arr[0]; // day 11
+    sum += 0.0027 * arr[1];
+    sum += 0.0027 * arr[2];
+    sum += 0.0027 * arr[3];
+    sum += 0.0027 * arr[4]; // day 7
     return sum;
 }
 
@@ -248,20 +249,20 @@ function params(name, model_duration, growth_rate_seed, decay_func, decay_speed,
 }
 
 function run_model(params) {
-    zero_slice = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
-
     // setup arrays
-    model[params.name] = {}
+    model[params.name] = {};
     model[params.name]['rate'] = {};
     model[params.name]['new'] = {};
-    model[params.name]['daily'] = {}
-    model[params.name]['healed'] = {}
-    model[params.name]['healed_cum'] = {}
-    model[params.name]['deaths'] = {}
-    model[params.name]['deaths_cum'] = {}
-    model[params.name]['total'] = {}
+    model[params.name]['daily'] = {};
+    model[params.name]['healed'] = {};
+    model[params.name]['healed_cum'] = {};
+    model[params.name]['deaths'] = {};
+    model[params.name]['deaths_cum'] = {};
+    model[params.name]['total'] = {};
+    model[params.name]['total_sick'] = {}; //debug array
 
     for (jitter=0; jitter<params.jitter_count; jitter++) {
+
         // setup more arrays
         model[params.name]['rate'][jitter] = [];
         model[params.name]['new'][jitter] = [];
@@ -271,6 +272,7 @@ function run_model(params) {
         model[params.name]['deaths'][jitter] = [0];
         model[params.name]['deaths_cum'][jitter] = [0];
         model[params.name]['total'][jitter] = [0];
+        model[params.name]['total_sick'][jitter] = [0]; //debug array
 
         // seed & compute growth rate
         for (var i=0; i < params.model_duration; i++) {
@@ -312,20 +314,30 @@ function run_model(params) {
             if (i in params.new_seed) {
                 new_infected = params.new_seed[i];
                 model[params.name]['new'][jitter].push( new_infected );
+                if (params.name == 'model_kr2') {
+                    console.log("new["+jitter+"]["+i+"] = " + new_infected);
+                }
             } else {
                 // new infected are yesterda's total * yesterdays growth rate
                 new_infected = model[params.name]['rate'][jitter][i-1] * model[params.name]['total'][jitter][i-1];
                 model[params.name]['new'][jitter].push( new_infected );
+                if (params.name == 'model_kr2') {
+                    console.log("new["+jitter+"]["+i+"] = " + model[params.name]['rate'][jitter][i-1] + " * " + model[params.name]['total'][jitter][i-1] + " = "+new_infected);
+                }
             }
 
             if (i > 0) {
                 // New per day
                 new_daily = Math.max(model[params.name]['new'][jitter][i] - model[params.name]['total'][jitter][i-1], 0);
                 model[params.name]['daily'][jitter].push( new_daily );
+                if (params.name == 'model_kr2') {
+                    console.log("daily["+jitter+"]["+i+"] = " + model[params.name]['new'][jitter][i] + " - " + model[params.name]['total'][jitter][i-1] + " = " + new_daily);
+                }
+                model[params.name]['total_sick'][jitter].push( model[params.name]['total_sick'][jitter][i-1] + new_daily );
 
                 // Healed per day
                 if (params.health_func == 'healthy') {
-                    daily_slice = zero_slice;
+                    daily_slice = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
                     for (var j=34; j>10; j--) { // Create and fill the daily array slice starting at current day - 34 and ending at current day - 11
                         if (i-j > 0) {
                             daily_slice[34-j] = model[params.name]['daily'][jitter][i-j];
@@ -334,7 +346,7 @@ function run_model(params) {
                     healed = healthy(daily_slice);
                 } else
                 if (params.health_func == 'healthy_new') {
-                    daily_slice = zero_slice;
+                    daily_slice = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
                     for (var j=36; j>12; j--) { // Create and fill the daily array slice starting at current day - 34 and ending at current day - 11
                         if (i-j > 0) {
                             daily_slice[36-j] = model[params.name]['daily'][jitter][i-j];
@@ -348,7 +360,7 @@ function run_model(params) {
 
                 // Deaths per day
                 if (params.dead_func == 'dead') {
-                    daily_slice = zero_slice;
+                    daily_slice = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
                     for (var j=30; j>19; j--) { // Create and fill the daily array slice starting at current day - 30 and ending at current day - 20
                         if (i-j > 0) {
                             daily_slice[30-j] = model[params.name]['daily'][jitter][i-j];
@@ -357,10 +369,10 @@ function run_model(params) {
                     died = dead(daily_slice);
                 } else
                 if (params.dead_func == 'dead_new') {
-                    daily_slice = zero_slice;
-                    for (var j=9; j>3; j--) { // Create and fill the daily array slice starting at current day - 20 and ending at current day - 15
+                    daily_slice = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
+                    for (var j=11; j>6; j--) { // Create and fill the daily array slice starting at current day - 20 and ending at current day - 15
                         if (i-j > 0) {
-                            daily_slice[9-j] = model[params.name]['daily'][jitter][i-j];
+                            daily_slice[11-j] = model[params.name]['daily'][jitter][i-j];
                         }
                     }
                     died = dead_new(daily_slice);
@@ -372,6 +384,9 @@ function run_model(params) {
                 // Total = New - Healed - Died
                 total = new_infected - healed - died;
                 model[params.name]['total'][jitter].push( total );
+                if (params.name == 'model_kr2') {
+                    console.log("total["+jitter+"]["+i+"] = " + new_infected + " - " + healed + " - " + died + " = " + total);
+                }
 
                 // Log to console
                 rate = model[params.name]['rate'][jitter][i];
