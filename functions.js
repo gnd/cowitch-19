@@ -19,13 +19,21 @@ var pal_15 = palette('mpn65', 15);
 var pal_8 = palette('sol-accent', 8);
 
 // generate labels
-var labels = [];
-for (var i=1; i<MAXDAYS; i++) {
-    labels.push( moment(new Date(2020, 02, i)) );
+function gen_days(start_day, start_month, count) {
+    var labels = [];
+    for (var i=1; i<count; i++) {
+        labels.push( moment(new Date(2020, start_month, start_day+i)) );
+    }
+    return labels;
 }
-var labels_relative = [];
-for (var i=1; i<MAXDAYS; i++) {
-    labels_relative.push( "Day "+i );
+
+// generate labels
+function gen_days_relative(count) {
+    var labels_relative = [];
+    for (var i=1; i<count; i++) {
+        labels_relative.push( "Day "+i );
+    }
+    return labels_relative;
 }
 
 // default legend callback - see https://www.chartjs.org/docs/latest/configuration/legend.html

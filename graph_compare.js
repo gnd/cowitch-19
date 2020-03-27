@@ -61,7 +61,7 @@ dataset.push( {
 window.compare= new Chart(compare, {
     type: 'line',
     data: {
-        labels: labels_relative,
+        labels: gen_days_relative(MAXDAYS),
         datasets: dataset,
     },
     options: {
@@ -152,7 +152,7 @@ dataset.push( {
 window.compare_100= new Chart(compare_100, {
     type: 'line',
     data: {
-        labels: labels_relative,
+        labels: gen_days_relative(MAXDAYS),
         datasets: dataset,
     },
     options: {
@@ -386,7 +386,7 @@ dataset.push( {
 window.compare_growth_rates= new Chart(compare_growth_rates, {
     type: 'line',
     data: {
-        labels: labels_relative.slice(0,45),
+        labels: gen_days_relative(45),
         datasets: dataset,
     },
     options: {
