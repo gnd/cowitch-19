@@ -6,9 +6,9 @@ dataset.push( {
     data: current_values['sg'],
     spanGaps: true,
     borderWidth: 3,
-    borderColor: '#' + infected_pal[dataset.length],
+    borderColor: '#' + pal_8_sol[dataset.length],
     pointStyle: 'circle',
-    pointBorderColor:  '#' + infected_pal[dataset.length],
+    pointBorderColor:  '#' + pal_8_sol[dataset.length],
     tension: 0,
     fill: false
 } );
@@ -17,9 +17,9 @@ dataset.push( {
     data: current_values['jp'],
     spanGaps: true,
     borderWidth: 3,
-    borderColor: '#' + infected_pal[dataset.length],
+    borderColor: '#' + pal_8_sol[dataset.length],
     pointStyle: 'circle',
-    pointBorderColor:  '#' + infected_pal[dataset.length],
+    pointBorderColor:  '#' + pal_8_sol[dataset.length],
     tension: 0,
     fill: false
 } );
@@ -28,9 +28,9 @@ dataset.push( {
     data: current_values['kr-real'],
     spanGaps: true,
     borderWidth: 3,
-    borderColor: '#' + infected_pal[dataset.length],
+    borderColor: '#' + pal_8_sol[dataset.length],
     pointStyle: 'circle',
-    pointBorderColor:  '#' + infected_pal[dataset.length],
+    pointBorderColor:  '#' + pal_8_sol[dataset.length],
     tension: 0,
     fill: false
 } );
@@ -39,9 +39,9 @@ dataset.push( {
     data: current_values['cz'],
     spanGaps: true,
     borderWidth: 3,
-    borderColor: '#' + infected_pal[dataset.length],
+    borderColor: '#' + pal_8_sol[dataset.length],
     pointStyle: 'circle',
-    pointBorderColor:  '#' + infected_pal[dataset.length],
+    pointBorderColor:  '#' + pal_8_sol[dataset.length],
     tension: 0,
     fill: false
 } );
@@ -50,9 +50,9 @@ dataset.push( {
     data: current_values['it'],
     spanGaps: true,
     borderWidth: 3,
-    borderColor: '#' + infected_pal[dataset.length],
+    borderColor: '#' + pal_8_sol[dataset.length],
     pointStyle: 'circle',
-    pointBorderColor:  '#' + infected_pal[dataset.length],
+    pointBorderColor:  '#' + pal_8_sol[dataset.length],
     tension: 0,
     fill: false
 } );
@@ -97,9 +97,9 @@ dataset.push( {
     data: current_values['sg_100'],
     spanGaps: true,
     borderWidth: 3,
-    borderColor: '#' + infected_pal[dataset.length],
+    borderColor: '#' + pal_8_sol[dataset.length],
     pointStyle: 'circle',
-    pointBorderColor:  '#' + infected_pal[dataset.length],
+    pointBorderColor:  '#' + pal_8_sol[dataset.length],
     tension: 0,
     fill: false
 } );
@@ -108,9 +108,9 @@ dataset.push( {
     data: current_values['jp_100'],
     spanGaps: true,
     borderWidth: 3,
-    borderColor: '#' + infected_pal[dataset.length],
+    borderColor: '#' + pal_8_sol[dataset.length],
     pointStyle: 'circle',
-    pointBorderColor:  '#' + infected_pal[dataset.length],
+    pointBorderColor:  '#' + pal_8_sol[dataset.length],
     tension: 0,
     fill: false
 } );
@@ -119,9 +119,9 @@ dataset.push( {
     data: current_values['kr-real_100'],
     spanGaps: true,
     borderWidth: 3,
-    borderColor: '#' + infected_pal[dataset.length],
+    borderColor: '#' + pal_8_sol[dataset.length],
     pointStyle: 'circle',
-    pointBorderColor:  '#' + infected_pal[dataset.length],
+    pointBorderColor:  '#' + pal_8_sol[dataset.length],
     tension: 0,
     fill: false
 } );
@@ -130,9 +130,9 @@ dataset.push( {
     data: current_values['cz_100'],
     spanGaps: true,
     borderWidth: 3,
-    borderColor: '#' + infected_pal[dataset.length],
+    borderColor: '#' + pal_8_sol[dataset.length],
     pointStyle: 'circle',
-    pointBorderColor:  '#' + infected_pal[dataset.length],
+    pointBorderColor:  '#' + pal_8_sol[dataset.length],
     tension: 0,
     fill: false
 } );
@@ -141,9 +141,9 @@ dataset.push( {
     data: current_values['it_100'],
     spanGaps: true,
     borderWidth: 3,
-    borderColor: '#' + infected_pal[dataset.length],
+    borderColor: '#' + pal_8_sol[dataset.length],
     pointStyle: 'circle',
-    pointBorderColor:  '#' + infected_pal[dataset.length],
+    pointBorderColor:  '#' + pal_8_sol[dataset.length],
     tension: 0,
     fill: false
 } );
@@ -188,9 +188,9 @@ dataset.push( {
     data: data['cz_100']['growth_rate'],
     spanGaps: true,
     borderWidth: 3,
-    borderColor: '#' + pal_15[dataset.length],
+    borderColor: '#' + pal_18[dataset.length],
     pointStyle: 'circle',
-    pointBorderColor:  '#' + pal_15[dataset.length],
+    pointBorderColor:  '#' + pal_18[dataset.length],
     tension: 0.2,
     fill: false
 } );
@@ -199,9 +199,9 @@ dataset.push( {
     data: data['cz_100']['growth_rate_avg'],
     spanGaps: true,
     borderWidth: 2,
-    borderColor: '#' + pal_15[dataset.length],
+    borderColor: '#' + pal_18[dataset.length],
     pointStyle: 'circle',
-    pointBorderColor:  '#' + pal_15[dataset.length],
+    pointBorderColor:  '#' + pal_18[dataset.length],
     tension: 0.2,
     fill: false
 } );
@@ -210,9 +210,9 @@ dataset.push( {
     data: data['cz_100']['growth_rate_avg_7'],
     spanGaps: true,
     borderWidth: 2,
-    borderColor: '#' + pal_15[dataset.length],
+    borderColor: '#' + pal_18[dataset.length],
     pointStyle: 'circle',
-    pointBorderColor:  '#' + pal_15[dataset.length],
+    pointBorderColor:  '#' + pal_18[dataset.length],
     tension: 0.2,
     fill: false
 } );
@@ -221,9 +221,9 @@ dataset.push( {
     data: data['jp_100']['growth_rate'],
     spanGaps: true,
     borderWidth: 3,
-    borderColor: '#' + pal_15[dataset.length],
+    borderColor: '#' + pal_18[dataset.length],
     pointStyle: 'circle',
-    pointBorderColor:  '#' + pal_15[dataset.length],
+    pointBorderColor:  '#' + pal_18[dataset.length],
     tension: 0.2,
     fill: false
 } );
@@ -232,9 +232,9 @@ dataset.push( {
     data: data['jp_100']['growth_rate_avg'],
     spanGaps: true,
     borderWidth: 2,
-    borderColor: '#' + pal_15[dataset.length],
+    borderColor: '#' + pal_18[dataset.length],
     pointStyle: 'circle',
-    pointBorderColor:  '#' + pal_15[dataset.length],
+    pointBorderColor:  '#' + pal_18[dataset.length],
     tension: 0.2,
     fill: false
 } );
@@ -243,9 +243,9 @@ dataset.push( {
     data: data['jp_100']['growth_rate_avg_7'],
     spanGaps: true,
     borderWidth: 2,
-    borderColor: '#' + pal_15[dataset.length],
+    borderColor: '#' + pal_18[dataset.length],
     pointStyle: 'circle',
-    pointBorderColor:  '#' + pal_15[dataset.length],
+    pointBorderColor:  '#' + pal_18[dataset.length],
     tension: 0.2,
     fill: false
 } );
@@ -254,9 +254,9 @@ dataset.push( {
     data: data['sg_100']['growth_rate'],
     spanGaps: true,
     borderWidth: 3,
-    borderColor: '#' + pal_15[dataset.length],
+    borderColor: '#' + pal_18[dataset.length],
     pointStyle: 'circle',
-    pointBorderColor:  '#' + pal_15[dataset.length],
+    pointBorderColor:  '#' + pal_18[dataset.length],
     tension: 0.2,
     fill: false
 } );
@@ -265,9 +265,9 @@ dataset.push( {
     data: data['sg_100']['growth_rate_avg'],
     spanGaps: true,
     borderWidth: 2,
-    borderColor: '#' + pal_15[dataset.length],
+    borderColor: '#' + pal_18[dataset.length],
     pointStyle: 'circle',
-    pointBorderColor:  '#' + pal_15[dataset.length],
+    pointBorderColor:  '#' + pal_18[dataset.length],
     tension: 0.2,
     fill: false
 } );
@@ -276,9 +276,9 @@ dataset.push( {
     data: data['sg_100']['growth_rate_avg_7'],
     spanGaps: true,
     borderWidth: 2,
-    borderColor: '#' + pal_15[dataset.length],
+    borderColor: '#' + pal_18[dataset.length],
     pointStyle: 'circle',
-    pointBorderColor:  '#' + pal_15[dataset.length],
+    pointBorderColor:  '#' + pal_18[dataset.length],
     tension: 0.2,
     fill: false
 } );
@@ -287,9 +287,9 @@ dataset.push( {
     data: data['kr-real_100']['growth_rate'],
     spanGaps: true,
     borderWidth: 3,
-    borderColor: '#' + pal_15[dataset.length],
+    borderColor: '#' + pal_18[dataset.length],
     pointStyle: 'circle',
-    pointBorderColor:  '#' + pal_15[dataset.length],
+    pointBorderColor:  '#' + pal_18[dataset.length],
     tension: 0.2,
     fill: false
 } );
@@ -298,9 +298,9 @@ dataset.push( {
     data: data['kr-real_100']['growth_rate_avg'],
     spanGaps: true,
     borderWidth: 2,
-    borderColor: '#' + pal_15[dataset.length],
+    borderColor: '#' + pal_18[dataset.length],
     pointStyle: 'circle',
-    pointBorderColor:  '#' + pal_15[dataset.length],
+    pointBorderColor:  '#' + pal_18[dataset.length],
     tension: 0.2,
     fill: false
 } );
@@ -309,9 +309,9 @@ dataset.push( {
     data: data['kr-real_100']['growth_rate_avg_7'],
     spanGaps: true,
     borderWidth: 2,
-    borderColor: '#' + pal_15[dataset.length],
+    borderColor: '#' + pal_18[dataset.length],
     pointStyle: 'circle',
-    pointBorderColor:  '#' + pal_15[dataset.length],
+    pointBorderColor:  '#' + pal_18[dataset.length],
     tension: 0.2,
     fill: false
 } );
@@ -320,9 +320,9 @@ dataset.push( {
     data: data['it_100']['growth_rate'],
     spanGaps: true,
     borderWidth: 3,
-    borderColor: '#' + pal_15[dataset.length],
+    borderColor: '#' + pal_18[dataset.length],
     pointStyle: 'circle',
-    pointBorderColor:  '#' + pal_15[dataset.length],
+    pointBorderColor:  '#' + pal_18[dataset.length],
     tension: 0.2,
     fill: false
 } );
@@ -331,9 +331,9 @@ dataset.push( {
     data: data['it_100']['growth_rate_avg'],
     spanGaps: true,
     borderWidth: 2,
-    borderColor: '#' + pal_15[dataset.length],
+    borderColor: '#' + pal_18[dataset.length],
     pointStyle: 'circle',
-    pointBorderColor:  '#' + pal_15[dataset.length],
+    pointBorderColor:  '#' + pal_18[dataset.length],
     tension: 0.2,
     fill: false
 } );
@@ -342,9 +342,9 @@ dataset.push( {
     data: data['it_100']['growth_rate_avg_7'],
     spanGaps: true,
     borderWidth: 2,
-    borderColor: '#' + pal_15[dataset.length],
+    borderColor: '#' + pal_18[dataset.length],
     pointStyle: 'circle',
-    pointBorderColor:  '#' + pal_15[dataset.length],
+    pointBorderColor:  '#' + pal_18[dataset.length],
     tension: 0.2,
     fill: false
 } );
@@ -353,9 +353,9 @@ dataset.push( {
     data: data['kr-real_all']['growth_rate'].slice(29,64),
     spanGaps: true,
     borderWidth: 3,
-    borderColor: '#' + pal_15[0],
+    borderColor: '#' + pal_18[dataset.length],
     pointStyle: 'circle',
-    pointBorderColor:  '#' + pal_15[0],
+    pointBorderColor:  '#' + pal_18[dataset.length],
     tension: 0.2,
     fill: false
 } );
@@ -364,9 +364,9 @@ dataset.push( {
     data: data['kr-real_all']['growth_rate_avg'].slice(29,64),
     spanGaps: true,
     borderWidth: 2,
-    borderColor: '#' + pal_15[0],
+    borderColor: '#' + pal_18[dataset.length],
     pointStyle: 'circle',
-    pointBorderColor:  '#' + pal_15[0],
+    pointBorderColor:  '#' + pal_18[dataset.length],
     tension: 0.2,
     fill: false
 } );
@@ -375,9 +375,9 @@ dataset.push( {
     data: data['kr-real_all']['growth_rate_avg_7'].slice(29,64),
     spanGaps: true,
     borderWidth: 2,
-    borderColor: '#' + pal_15[0],
+    borderColor: '#' + pal_18[dataset.length],
     pointStyle: 'circle',
-    pointBorderColor:  '#' + pal_15[0],
+    pointBorderColor:  '#' +pal_18[dataset.length],
     tension: 0.2,
     fill: false
 } );

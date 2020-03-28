@@ -40,7 +40,6 @@ function legendCallbackGrowthRate(e, legendItem) {
 
 // the infected graph
 var infected_chart_cz = document.getElementById("infected_cz").getContext('2d');
-chart_max = Math.max(get_max(model['projection']['total']), get_max(model['projection-optimistic']['total']));
 
 // Create datasets for infected projections
 infected_dataset = [];
@@ -49,31 +48,31 @@ infected_dataset[0] = {
     data: current_values['cz'],
     spanGaps: true,
     borderWidth: 3,
-    borderColor: '#' + infected_pal[1],
+    borderColor: '#' + pal_8[1],
     pointStyle: 'circle',
-    pointBorderColor:  '#' + infected_pal[1],
+    pointBorderColor:  '#' + pal_8[1],
     tension: 0,
     fill: false
 };
 infected_dataset[1] = {
     label: 'Predicted',
-    data:  model['projection']['total']['avg'],
+    data:  model['cz_a']['total']['avg'],
     spanGaps: true,
     borderWidth: 2,
-    borderColor: '#' + infected_pal[0],
+    borderColor: '#' + pal_8[0],
     pointStyle: 'circle',
-    pointBorderColor:  '#' + infected_pal[0],
+    pointBorderColor:  '#' + pal_8[0],
     tension: 0,
     fill: false
 };
 infected_dataset[2] = {
     label: 'Optimistic',
-    data: model['projection-optimistic']['total']['avg'],
+    data: model['cz_b']['total']['avg'],
     spanGaps: true,
     borderWidth: 2,
-    borderColor: '#' + infected_pal[2],
+    borderColor: '#' + pal_8[2],
     pointStyle: 'circle',
-    pointBorderColor:  '#' + infected_pal[2],
+    pointBorderColor:  '#' + pal_8[2],
     tension: 0,
     fill: false
 };
@@ -83,46 +82,46 @@ for (i=0; i<JITTER_COUNT; i++) {
     } else {
         label = 'Predicted';
     }
-    projection = {
+    cz_a = {
         label: label,
-        data: model['projection']['total'][i],
+        data: model['cz_a']['total'][i],
         spanGaps: true,
         borderWidth: 1,
         borderDash: [5, 5],
-        borderColor: hexToRGBA('#' + infected_pal[0], 0.4),
+        borderColor: hexToRGBA('#' + pal_8[0], 0.4),
         pointStyle: 'circle',
         radius: 0,
-        pointBorderColor:  '#' + infected_pal[0],
+        pointBorderColor:  '#' + pal_8[0],
         tension: 0.2,
         fill: false
     };
     if (i>0) {
-        label = 'Optimistic' + '-' + i;
+        label = 'Old' + '-' + i;
     } else {
-        label = 'Optimistic';
+        label = 'Old';
     }
-    projection_optimistic = {
+    cz_b = {
         label: label,
-        data: model['projection-optimistic']['total'][i],
+        data: model['cz_b']['total'][i],
         spanGaps: true,
         borderWidth: 1,
         borderDash: [5, 5],
-        borderColor: hexToRGBA('#' + infected_pal[2], 0.4),
+        borderColor: hexToRGBA('#' + pal_8[2], 0.4),
         pointStyle: 'circle',
         radius: 0,
-        pointBorderColor:  '#' + infected_pal[2],
+        pointBorderColor:  '#' + pal_8[2],
         tension: 0.2,
         fill: false
     };
-    infected_dataset.push( projection );
-    infected_dataset.push( projection_optimistic );
+    infected_dataset.push( cz_a );
+    infected_dataset.push( cz_b );
 }
 
 // The infected chart
 window.infected_chart = new Chart(infected_chart_cz, {
     type: 'line',
     data: {
-        labels: gen_days(0, 2, MAXDAYS),
+        labels: gen_days(0, 2, 150),
         datasets: infected_dataset,
     },
     options: {
@@ -181,7 +180,6 @@ window.infected_chart = new Chart(infected_chart_cz, {
 
 // the growth rate
 var growth_rate_chart_cz = document.getElementById("growth_rate_cz").getContext('2d');
-chart_max = Math.max(get_max(model['projection']['total']), get_max(model['projection-optimistic']['total']));
 
 // Create datasets for growth_rate
 growth_rate_dataset = [];
@@ -190,9 +188,9 @@ growth_rate_dataset[0] = {
     data: data['cz']['growth_rate'],
     spanGaps: true,
     borderWidth: 3,
-    borderColor: '#' + infected_pal[1],
+    borderColor: '#' + pal_8[1],
     pointStyle: 'circle',
-    pointBorderColor:  '#' + infected_pal[1],
+    pointBorderColor:  '#' + pal_8[1],
     tension: 0.2,
     fill: false
 };
@@ -201,9 +199,9 @@ growth_rate_dataset[1] = {
     data: data['cz']['growth_rate_avg'],
     spanGaps: true,
     borderWidth: 2,
-    borderColor: '#' + infected_pal[3],
+    borderColor: '#' + pal_8[3],
     pointStyle: 'circle',
-    pointBorderColor:  '#' + infected_pal[3],
+    pointBorderColor:  '#' + pal_8[3],
     tension: 0.2,
     fill: false
 };
@@ -212,31 +210,31 @@ growth_rate_dataset[2] = {
     data: data['cz']['growth_rate_avg_7'],
     spanGaps: true,
     borderWidth: 2,
-    borderColor: '#' + infected_pal[4],
+    borderColor: '#' + pal_8[4],
     pointStyle: 'circle',
-    pointBorderColor:  '#' + infected_pal[4],
+    pointBorderColor:  '#' + pal_8[4],
     tension: 0.2,
     fill: false
 };
 growth_rate_dataset[3] = {
     label: 'Predicted',
-    data: model['projection']['rate']['avg'],
+    data: model['cz_a']['rate']['avg'],
     spanGaps: true,
     borderWidth: 2,
-    borderColor: '#' + infected_pal[0],
+    borderColor: '#' + pal_8[0],
     pointStyle: 'circle',
-    pointBorderColor:  '#' + infected_pal[0],
+    pointBorderColor:  '#' + pal_8[0],
     tension: 0.2,
     fill: false
 };
 growth_rate_dataset[4] = {
-    label: 'Optimistic',
-    data: model['projection-optimistic']['rate']['avg'],
+    label: 'Predicted - optimistic',
+    data: model['cz_b']['rate']['avg'],
     spanGaps: true,
     borderWidth: 2,
-    borderColor: '#' + infected_pal[2],
+    borderColor: '#' + pal_8[2],
     pointStyle: 'circle',
-    pointBorderColor:  '#' + infected_pal[2],
+    pointBorderColor:  '#' + pal_8[2],
     tension: 0.2,
     fill: false
 };
@@ -246,46 +244,46 @@ for (i=0; i<JITTER_COUNT; i++) {
     } else {
         label = 'Predicted';
     }
-    projection = {
+    cz_a = {
         label: label,
-        data: model['projection']['rate'][i],
+        data: model['cz_a']['rate'][i],
         spanGaps: true,
         borderWidth: 1,
         borderDash: [5, 5],
-        borderColor: hexToRGBA('#' + infected_pal[0], 0.2),
+        borderColor: hexToRGBA('#' + pal_8[0], 0.2),
         pointStyle: 'circle',
         radius: 0,
-        pointBorderColor:  '#' + infected_pal[0],
+        pointBorderColor:  '#' + pal_8[0],
         tension: 0.2,
         fill: false
     };
     if (i>0) {
-        label = 'Optimistic' + '-' + i;
+        label = 'Predicted - optimistic' + '-' + i;
     } else {
-        label = 'Optimistic';
+        label = 'Predicted - optimistic';
     }
-    projection_optimistic =  {
+    cz_b =  {
         label: label,
-        data: model['projection-optimistic']['rate'][i],
+        data: model['cz_b']['rate'][i],
         spanGaps: true,
         borderWidth: 1,
         borderDash: [5, 5],
-        borderColor: hexToRGBA('#' + infected_pal[2], 0.2),
+        borderColor: hexToRGBA('#' + pal_8[2], 0.2),
         pointStyle: 'circle',
         radius: 0,
-        pointBorderColor: '#' + infected_pal[2],
+        pointBorderColor: '#' + pal_8[2],
         tension: 0.2,
         fill: false
     };
-    growth_rate_dataset.push( projection );
-    growth_rate_dataset.push( projection_optimistic );
+    growth_rate_dataset.push( cz_a );
+    growth_rate_dataset.push( cz_b );
 }
 
 // The growth rate chart
 window.growth_rate_chart = new Chart(growth_rate_chart_cz, {
     type: 'line',
     data: {
-        labels: gen_days(0, 2, 40),
+        labels: gen_days(0, 2, 50),
         datasets: growth_rate_dataset,
     },
     options: {

@@ -88,6 +88,17 @@ function create_seeds(seed_arr, elapsed, name) {
     }
 }
 
+
+function create_seeds7(seed_arr, elapsed, name) {
+    seed_arr['rate7'][name] = {};
+    seed_arr['new'][name] = {};
+    for (var i=0; i < elapsed[name]; i++) {
+        seed['rate7'][name][i] = data[name]['growth_rate_avg_7'][i];
+        seed['new'][name][i] = data[name]['infected_confirmed'][i];
+    }
+}
+
+
 // Fills current_values[name_100] with current values above 100 cases
 // Used in compare_100 graph
 function prepare_100(values, name) {

@@ -10,13 +10,13 @@ function hexToRGBA(h, alpha) {
 }
 
 // generate palette
-var infected_pal = palette('mpn65', 6);
+var pal_8 = palette('mpn65', 8);
 
 // generate palette
-var pal_15 = palette('mpn65', 15);
+var pal_8_sol = palette('sol-accent', 8);
 
 // generate palette
-var pal_8 = palette('sol-accent', 8);
+var pal_18 = palette('sol-accent', 18);
 
 // generate labels
 function gen_days(start_day, start_month, count) {

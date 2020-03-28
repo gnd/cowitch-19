@@ -6,9 +6,9 @@ dataset.push( {
     data: current_values['kr-real'],
     spanGaps: true,
     borderWidth: 3,
-    borderColor: '#' + pal_8[dataset.length],
+    borderColor: '#' + pal_8_sol[dataset.length],
     pointStyle: 'circle',
-    pointBorderColor:  '#' + pal_8[dataset.length],
+    pointBorderColor:  '#' + pal_8_sol[dataset.length],
     tension: 0,
     fill: false
 } );
@@ -17,9 +17,9 @@ dataset.push( {
     data: current_values['cz'],
     spanGaps: true,
     borderWidth: 3,
-    borderColor: '#' + pal_8[dataset.length],
+    borderColor: '#' + pal_8_sol[dataset.length],
     pointStyle: 'circle',
-    pointBorderColor:  '#' + pal_8[dataset.length],
+    pointBorderColor:  '#' + pal_8_sol[dataset.length],
     tension: 0,
     fill: false
 } );
@@ -28,9 +28,9 @@ dataset.push( {
     data: current_values['kr-rec'],
     spanGaps: true,
     borderWidth: 3,
-    borderColor: '#' + pal_8[dataset.length],
+    borderColor: '#' + pal_8_sol[dataset.length],
     pointStyle: 'circle',
-    pointBorderColor:  '#' + pal_8[dataset.length],
+    pointBorderColor:  '#' + pal_8_sol[dataset.length],
     tension: 0,
     fill: false
 } );
@@ -39,9 +39,9 @@ dataset.push ( {
     data:  model['model_kr']['healed_cum'][0],
     spanGaps: true,
     borderWidth: 2,
-    borderColor: '#' + pal_8[dataset.length],
+    borderColor: '#' + pal_8_sol[dataset.length],
     pointStyle: 'circle',
-    pointBorderColor:  '#' + pal_8[dataset.length],
+    pointBorderColor:  '#' + pal_8_sol[dataset.length],
     tension: 0,
     fill: false
 } );
@@ -50,9 +50,9 @@ dataset.push( {
     data: current_values['kr-dead'],
     spanGaps: true,
     borderWidth: 3,
-    borderColor: '#' + pal_8[dataset.length],
+    borderColor: '#' + pal_8_sol[dataset.length],
     pointStyle: 'circle',
-    pointBorderColor:  '#' + pal_8[dataset.length],
+    pointBorderColor:  '#' + pal_8_sol[dataset.length],
     tension: 0,
     fill: false
 } );
@@ -61,9 +61,9 @@ dataset.push( {
     data: model['model_kr']['deaths_cum'][0],
     spanGaps: true,
     borderWidth: 3,
-    borderColor: '#' + pal_8[dataset.length],
+    borderColor: '#' + pal_8_sol[dataset.length],
     pointStyle: 'circle',
-    pointBorderColor:  '#' + pal_8[dataset.length],
+    pointBorderColor:  '#' + pal_8_sol[dataset.length],
     tension: 0,
     fill: false
 } );
@@ -72,20 +72,20 @@ dataset.push( {
     data: current_values['cz-dead'],
     spanGaps: true,
     borderWidth: 3,
-    borderColor: '#' + pal_8[dataset.length],
+    borderColor: '#' + pal_8_sol[dataset.length],
     pointStyle: 'circle',
-    pointBorderColor:  '#' + pal_8[dataset.length],
+    pointBorderColor:  '#' + pal_8_sol[dataset.length],
     tension: 0,
     fill: false
 } );
 dataset.push( {
     label: 'CZ dead - prediction',
-    data: model['projection']['deaths_cum'][0],
+    data: model['cz_a']['deaths_cum'][0],
     spanGaps: true,
     borderWidth: 3,
-    borderColor: '#' + pal_8[dataset.length],
+    borderColor: '#' + pal_8_sol[dataset.length],
     pointStyle: 'circle',
-    pointBorderColor:  '#' + pal_8[dataset.length],
+    pointBorderColor:  '#' + pal_8_sol[dataset.length],
     tension: 0,
     fill: false
 } );
@@ -129,39 +129,39 @@ dataset.push( {
     data: current_values['kr-real'],
     spanGaps: true,
     borderWidth: 3,
-    borderColor: '#' + pal_8[0],
+    borderColor: '#' + pal_8_sol[0],
     pointStyle: 'circle',
-    pointBorderColor:  '#' + pal_8[0],
+    pointBorderColor:  '#' + pal_8_sol[0],
     tension: 0,
     fill: false
 } );
 dataset.push( {
-    label: 'Korea (predicted from day 40)',
+    label: 'Korea (predicted from Day 38)',
     data:  model['model_kr2']['total']['avg'],
     spanGaps: true,
     borderWidth: 2,
-    borderColor: '#' + pal_8[1],
+    borderColor: '#' + pal_8_sol[1],
     pointStyle: 'circle',
-    pointBorderColor:  '#' + pal_8[1],
+    pointBorderColor:  '#' + pal_8_sol[1],
     tension: 0,
     fill: false
 } );
 dataset.push( {
-    label: 'Korea (predicted from day 50)',
+    label: 'Korea (predicted from day 59)',
     data:  model['model_kr2a']['total']['avg'],
     spanGaps: true,
     borderWidth: 2,
-    borderColor: '#' + pal_8[2],
+    borderColor: '#' + pal_8_sol[2],
     pointStyle: 'circle',
-    pointBorderColor:  '#' + pal_8[2],
+    pointBorderColor:  '#' + pal_8_sol[2],
     tension: 0,
     fill: false
 } );
 for (i=0; i<JITTER_COUNT; i++) {
     if (i>0) {
-        label = 'Korea (predicted from day 40)' + '-' + i;
+        label = 'Korea (predicted from Day 38)' + '-' + i;
     } else {
-        label = 'Korea (predicted from day 40)';
+        label = 'Korea (predicted from Day 38)';
     }
     projection = {
         label: label,
@@ -169,18 +169,18 @@ for (i=0; i<JITTER_COUNT; i++) {
         spanGaps: true,
         borderWidth: 1,
         borderDash: [5, 5],
-        borderColor: hexToRGBA('#' + pal_8[1], 0.4),
+        borderColor: hexToRGBA('#' + pal_8_sol[1], 0.4),
         pointStyle: 'circle',
         radius: 0,
-        pointBorderColor:  '#' + pal_8[1],
+        pointBorderColor:  '#' + pal_8_sol[1],
         tension: 0.2,
         fill: false
     };
     dataset.push( projection );
     if (i>0) {
-        label = 'Korea (predicted from day 50)' + '-' + i;
+        label = 'Korea (predicted from day 59)' + '-' + i;
     } else {
-        label = 'Korea (predicted from day 50)';
+        label = 'Korea (predicted from day 59)';
     }
     projection = {
         label: label,
@@ -188,10 +188,10 @@ for (i=0; i<JITTER_COUNT; i++) {
         spanGaps: true,
         borderWidth: 1,
         borderDash: [5, 5],
-        borderColor: hexToRGBA('#' + pal_8[2], 0.4),
+        borderColor: hexToRGBA('#' + pal_8_sol[2], 0.4),
         pointStyle: 'circle',
         radius: 0,
-        pointBorderColor:  '#' + pal_8[2],
+        pointBorderColor:  '#' + pal_8_sol[2],
         tension: 0.2,
         fill: false
     };
@@ -235,6 +235,38 @@ window.korea_pred = new Chart(korea_pred, {
 
                 },
             }
+        },
+        annotation: {
+            drawTime: 'afterDatasetsDraw',
+            events: ['click'],
+            annotations: [
+                {
+                    type: 'line',
+                    mode: 'vertical',
+                    scaleID: 'x-axis-0',
+                    value: moment(new Date(2020, 0, 22+38)),
+                    borderColor: 'red',
+                    borderWidth: 2,
+                    label: {
+                        backgroundColor: "red",
+                        content: "Day 38",
+                        enabled: true
+                    }
+                },
+                {
+                    type: 'line',
+                    mode: 'vertical',
+                    scaleID: 'x-axis-0',
+                    value: moment(new Date(2020, 0, 22+59)),
+                    borderColor: 'red',
+                    borderWidth: 2,
+                    label: {
+                        backgroundColor: "red",
+                        content: "Day 59",
+                        enabled: true
+                    }
+                },
+            ]
         },
     }
 });

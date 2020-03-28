@@ -21,9 +21,9 @@
 <meta property="og:image:secure_url" content="https://co.witch19.space/corona-chan-black.jpg" />
 
 <!--TODO:
-- rename infected palette
-- modify model to incorporate lessons from KR
 - add descriptions to graphs
+- pull sg /jp / kr / it data from github - crontab
+- how to correctly estimate slow-down rate ?
 - use SIER to predict longterm
     - add population size, immune pool, dead pool, etc
 - add healed / dead / new per day
@@ -74,7 +74,7 @@
     data = {};
     current_values = {};
     days_elapsed = {};
-    seed = {'rate': {}, 'new': {}};
+    seed = {'rate': {}, 'rate7': {}, 'new': {}};
     current_values['cz'] = [3,3,5,5,8,19,26,32,38,63,94,116,141,189,298,383,464,572,774,904,1047,1165,1289,1497,1775,2062,2422];
     current_values['cz-dead'] = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,3,6,9,9,9];
     current_values['jp'] = [2,2,2,2,4,4,7,7,11,15,20,20,20,22,22,22,25,25,26,26,26,28,28,29,43,59,66,74,84,94,105,122,147,159,170,189,214,228,241,256,274,293,331,360,420,461,502,511,581,639,639,701,773,839,839,878,889,924,963,1007,1101,1128,1193,1307];
@@ -98,6 +98,7 @@
     // Create growth_rate seed and new cases seed for modelling
     create_seeds(seed, days_elapsed, 'cz');
     create_seeds(seed, days_elapsed, 'kr-real');
+    create_seeds7(seed, days_elapsed, 'kr-real');
 
     // prepare values for compare_100
     prepare_100(current_values, 'cz');
@@ -121,32 +122,32 @@
 
     // Put together the models parameters
     var model1 = new params(
-        'projection',
-        MAXDAYS,
+        'cz_a',
+        150,
         seed['rate']['cz'],
         'log',
         120,                    // rate of slowdown, smaller is faster
-        1.01,                   // min possible growth rate
+        1.02,                   // min possible growth rate
         seed['new']['cz'],      // the confirmed cases so far
         JITTER_COUNT,           // jitter count
-        JITTER_AMOUNT,          // jitter amount
-        'healthy',
+        JITTER_AMOUNT/2,          // jitter amount
+        'healthy_new',
         'dead_new',
     );
 
     // Add another scenario
     var model2 = new params(
-        'projection-optimistic',
-        MAXDAYS,
+        'cz_b',
+        150,
         seed['rate']['cz'],
         'log',
-        50,                     // rate of slowdown, smaller is faster
-        1.001,                  // min possible growth rate
+        70,                     // rate of slowdown, smaller is faster
+        1.027,                  // min possible growth rate
         seed['new']['cz'],      // the confirmed cases so far
         JITTER_COUNT,           // jitter count
-        JITTER_AMOUNT,          // jitter amount
-        'healthy',
-        'dead',
+        JITTER_AMOUNT/2,          // jitter amount
+        'healthy_new',
+        'dead_new',
     );
 
     // Run the model for infected_cz and growth_rate_cz
@@ -183,7 +184,7 @@
     // Once more model korea
     rateslice = {};
     newslice = {};
-    for (i=0; i<41; i++) {
+    for (i=0; i<38; i++) {
         rateslice[i] = seed['rate']['kr-real'][i];
         newslice[i] = seed['new']['kr-real'][i];
     }
@@ -192,7 +193,7 @@
         150,
         rateslice,
         'log',
-        55,                    // rate of slowdown, smaller is faster
+        30,                    // rate of slowdown, smaller is faster
         1.027,                  // min possible growth rate
         newslice,               // the confirmed cases so far
         JITTER_COUNT,                      // jitter count
@@ -206,7 +207,7 @@
     // try predict from day 50
     rateslice = {};
     newslice = {};
-    for (i=0; i<51; i++) {
+    for (i=0; i<60; i++) {
         rateslice[i] = seed['rate']['kr-real'][i];
         newslice[i] = seed['new']['kr-real'][i];
     }
