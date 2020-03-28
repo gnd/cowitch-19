@@ -23,6 +23,7 @@
 <!--TODO:
 - add descriptions to graphs
 - pull sg /jp / kr / it data from github - crontab
+- fix sg, jp, kr, it data (conf - healty - dead)
 - how to correctly estimate slow-down rate ?
 - use SIER to predict longterm
     - add population size, immune pool, dead pool, etc
@@ -86,7 +87,8 @@
         current_values['kr-real'].push( current_values['kr'][i] - current_values['kr-rec'][i] - current_values['kr-dead'][i] );
     }
     current_values['sg'] = [1,3,3,4,5,7,7,10,13,16,18,18,24,28,28,30,33,40,45,47,50,58,67,72,75,77,81,84,84,85,85,89,89,91,93,93,93,102,106,108,110,110,117,130,138,150,150,160,178,178,200,212,226,243,266,313,345,385,432,455,509,558,631];
-    current_values['it'] = [2,2,2,2,2,2,2,3,3,3,3,3,3,3,3,3,3,3,3,3,3,20,62,155,229,322,453,655,888,1128,1694,2036,2502,3089,3858,4636,5883,7375,9172,10149,12462,12462,17660,21157,24747,27980,31506,35713,41035,47021,53578,59138,63927,69176,74386];
+    current_values['it'] = [2,2,2,2,2,2,2,3,3,3,3,3,3,3,3,3,3,3,3,3,3,20,62,155,229,322,453,655,888,1128,1694,2036,2502,3089,3858,4636,5883,7375,9172,10149,12462,12462,17660,21157,24747,27980,31506,35713,41035,47021,53578,59138,63927,69176,74386,80589,86498];
+
 
     // Fill initial stats for countries
     days_elapsed['cz'] = fill_initial(data, current_values, 'cz');
