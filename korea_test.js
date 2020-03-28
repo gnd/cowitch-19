@@ -3,7 +3,7 @@ var compare = document.getElementById("korea_test").getContext('2d');
 dataset = [];
 dataset.push( {
     label: 'Korea',
-    data: current_values['kr'],
+    data: current_values['kr-real'],
     spanGaps: true,
     borderWidth: 3,
     borderColor: '#' + pal_8[dataset.length],
@@ -126,7 +126,7 @@ var korea_pred = document.getElementById("korea_pred").getContext('2d');
 dataset = [];
 dataset.push( {
     label: 'KR Confirmed',
-    data: current_values['kr'],
+    data: current_values['kr-real'],
     spanGaps: true,
     borderWidth: 3,
     borderColor: '#' + pal_8[0],
@@ -201,7 +201,7 @@ for (i=0; i<JITTER_COUNT; i++) {
 window.korea_pred = new Chart(korea_pred, {
     type: 'line',
     data: {
-        labels: gen_days(21, 0, 300),
+        labels: gen_days(21, 0, 150),
         datasets: dataset,
     },
     options: {
@@ -220,7 +220,7 @@ window.korea_pred = new Chart(korea_pred, {
             yAxes: [{
                 ticks: {
                     min: 0,
-                    max: 15000,
+                    suggestedMax: 10000,
                 }
             }]
         },

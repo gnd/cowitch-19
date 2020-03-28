@@ -25,7 +25,7 @@ dataset.push( {
 } );
 dataset.push( {
     label: 'Korea',
-    data: current_values['kr'],
+    data: current_values['kr-real'],
     spanGaps: true,
     borderWidth: 3,
     borderColor: '#' + infected_pal[dataset.length],
@@ -116,7 +116,7 @@ dataset.push( {
 } );
 dataset.push( {
     label: 'Korea',
-    data: current_values['kr_100'],
+    data: current_values['kr-real_100'],
     spanGaps: true,
     borderWidth: 3,
     borderColor: '#' + infected_pal[dataset.length],
@@ -284,7 +284,7 @@ dataset.push( {
 } );
 dataset.push( {
     label: 'KR',
-    data: data['kr_100']['growth_rate'],
+    data: data['kr-real_100']['growth_rate'],
     spanGaps: true,
     borderWidth: 3,
     borderColor: '#' + pal_15[dataset.length],
@@ -295,7 +295,7 @@ dataset.push( {
 } );
 dataset.push( {
     label: 'KR Avg',
-    data: data['kr_100']['growth_rate_avg'],
+    data: data['kr-real_100']['growth_rate_avg'],
     spanGaps: true,
     borderWidth: 2,
     borderColor: '#' + pal_15[dataset.length],
@@ -306,7 +306,7 @@ dataset.push( {
 } );
 dataset.push( {
     label: 'KR Avg 7',
-    data: data['kr_100']['growth_rate_avg_7'],
+    data: data['kr-real_100']['growth_rate_avg_7'],
     spanGaps: true,
     borderWidth: 2,
     borderColor: '#' + pal_15[dataset.length],
@@ -350,7 +350,7 @@ dataset.push( {
 } );
 dataset.push( {
     label: 'KR-ALL',
-    data: data['kr_all']['growth_rate'].slice(29,64),
+    data: data['kr-real_all']['growth_rate'].slice(29,64),
     spanGaps: true,
     borderWidth: 3,
     borderColor: '#' + pal_15[0],
@@ -361,7 +361,7 @@ dataset.push( {
 } );
 dataset.push( {
     label: 'KR-ALL Avg',
-    data: data['kr_all']['growth_rate_avg'].slice(29,64),
+    data: data['kr-real_all']['growth_rate_avg'].slice(29,64),
     spanGaps: true,
     borderWidth: 2,
     borderColor: '#' + pal_15[0],
@@ -372,7 +372,7 @@ dataset.push( {
 } );
 dataset.push( {
     label: 'KR-ALL Avg 7',
-    data: data['kr_all']['growth_rate_avg_7'].slice(29,64),
+    data: data['kr-real_all']['growth_rate_avg_7'].slice(29,64),
     spanGaps: true,
     borderWidth: 2,
     borderColor: '#' + pal_15[0],
