@@ -160,11 +160,11 @@
         MAXDAYS,
         seed['rate']['kr-real'],
         'log',
-        200,                    // rate of slowdown, smaller is faster
-        1.001,                  // min possible growth rate
-        seed['new']['kr-real'],      // the confirmed cases so far
-        1,           // jitter count
-        JITTER_AMOUNT,          // jitter amount
+        55,                        // rate of slowdown, smaller is faster
+        1.027,                      // min possible growth rate
+        seed['new']['kr-real'],     // the confirmed cases so far
+        1,                          // jitter count
+        JITTER_AMOUNT,              // jitter amount
         'healthy_new',
         'dead_new',
     );
@@ -202,16 +202,24 @@
     );
     // Run the model for korea
     run_model( model_kr2 );
+
+    // try predict from day 50
+    rateslice = {};
+    newslice = {};
+    for (i=0; i<51; i++) {
+        rateslice[i] = seed['rate']['kr-real'][i];
+        newslice[i] = seed['new']['kr-real'][i];
+    }
     var model_kr2a = new params(
         'model_kr2a',
         150,
         rateslice,
         'log',
-        60,                    // rate of slowdown, smaller is faster
-        1.025,                  // min possible growth rate
+        55,                    // rate of slowdown, smaller is faster
+        1.027,                  // min possible growth rate
         newslice,               // the confirmed cases so far
         JITTER_COUNT,                      // jitter count
-        JITTER_AMOUNT*2,          // jitter amount
+        JITTER_AMOUNT*4,          // jitter amount
         'healthy_new',
         'dead_new',
     );

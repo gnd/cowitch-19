@@ -125,7 +125,7 @@ window.korea_test= new Chart(korea_test, {
 var korea_pred = document.getElementById("korea_pred").getContext('2d');
 dataset = [];
 dataset.push( {
-    label: 'KR Confirmed',
+    label: 'Korea - confirmed',
     data: current_values['kr-real'],
     spanGaps: true,
     borderWidth: 3,
@@ -136,7 +136,7 @@ dataset.push( {
     fill: false
 } );
 dataset.push( {
-    label: 'KR Predicted',
+    label: 'Korea (predicted from day 40)',
     data:  model['model_kr2']['total']['avg'],
     spanGaps: true,
     borderWidth: 2,
@@ -147,7 +147,7 @@ dataset.push( {
     fill: false
 } );
 dataset.push( {
-    label: 'KRa Predicted',
+    label: 'Korea (predicted from day 50)',
     data:  model['model_kr2a']['total']['avg'],
     spanGaps: true,
     borderWidth: 2,
@@ -159,9 +159,9 @@ dataset.push( {
 } );
 for (i=0; i<JITTER_COUNT; i++) {
     if (i>0) {
-        label = 'KR Predicted' + '-' + i;
+        label = 'Korea (predicted from day 40)' + '-' + i;
     } else {
-        label = 'KR Predicted';
+        label = 'Korea (predicted from day 40)';
     }
     projection = {
         label: label,
@@ -178,9 +178,9 @@ for (i=0; i<JITTER_COUNT; i++) {
     };
     dataset.push( projection );
     if (i>0) {
-        label = 'KRa Predicted' + '-' + i;
+        label = 'Korea (predicted from day 50)' + '-' + i;
     } else {
-        label = 'KRa Predicted';
+        label = 'Korea (predicted from day 50)';
     }
     projection = {
         label: label,
