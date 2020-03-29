@@ -1,5 +1,5 @@
 // the compare graph
-var compare = document.getElementById("korea_test").getContext('2d');
+var compare = document.getElementById("canvas_korea_test").getContext('2d');
 dataset = [];
 dataset.push( {
     label: 'Korea',
@@ -114,7 +114,7 @@ dataset.push( {
 
 
 // The infected chart
-window.korea_test= new Chart(korea_test, {
+window.korea_test= new Chart(compare, {
     type: 'line',
     data: {
         labels: gen_days_relative(MAXDAYS),
@@ -144,7 +144,7 @@ window.korea_test= new Chart(korea_test, {
 
 
 // the korea_pred graph
-var korea_pred = document.getElementById("korea_pred").getContext('2d');
+var korea_pred = document.getElementById("canvas_korea_pred").getContext('2d');
 dataset = [];
 dataset.push( {
     label: 'Korea - confirmed',

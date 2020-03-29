@@ -97,5 +97,3 @@ function detect_client() {
         aspect_ratio = aspect_ratio_mobile;
     }
 };
-
-detect_client();

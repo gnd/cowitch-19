@@ -1,5 +1,5 @@
 // the compare graph
-var compare = document.getElementById("compare").getContext('2d');
+var compare = document.getElementById("canvas_compare").getContext('2d');
 dataset = [];
 dataset.push( {
     label: 'Singapore',
@@ -90,7 +90,7 @@ window.compare.data.datasets[4].hidden = true;
 window.compare.update();
 
 // the compare_100 graph
-var compare_100 = document.getElementById("compare_100").getContext('2d');
+var compare_100 = document.getElementById("canvas_compare_100").getContext('2d');
 dataset = [];
 dataset.push( {
     label: 'Singapore',
@@ -181,7 +181,7 @@ window.compare_100.data.datasets[4].hidden = true;
 window.compare_100.update();
 
 // Compare rowth rates
-var compare_100 = document.getElementById("compare_growth_rates").getContext('2d');
+var compare_100 = document.getElementById("canvas_compare_growth_rates").getContext('2d');
 dataset = [];
 dataset.push( {
     label: 'CZ',
@@ -383,7 +383,7 @@ dataset.push( {
 } );
 
 // The compare_growth_rates chart
-window.compare_growth_rates= new Chart(compare_growth_rates, {
+window.compare_growth_rates= new Chart(compare_100, {
     type: 'line',
     data: {
         labels: gen_days_relative(45),
