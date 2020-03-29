@@ -6,10 +6,10 @@
 
 <!-- META -->
 <meta charset="UTF-8">
-<meta name="description" content="Epidemiological witch-doctory / datamancy / Covid-19 fortune telling" />
-<meta name="keywords" content="covid-19 czechia czech republic quarantine pandemy epidemy corona coronavirus graph model" />
-<meta name="revisit-after" content="1 days" />
-<meta name="viewport" content="width=device-width,initial-scale=1" />
+<meta id="description" content="Epidemiological witch-doctory / datamancy / Covid-19 fortune telling" />
+<meta id="keywords" content="covid-19 czechia czech republic quarantine pandemy epidemy corona coronavirus graph model" />
+<meta id="revisit-after" content="1 days" />
+<meta id="viewport" content="width=device-width,initial-scale=1" />
 
 <!-- OPEN GRAPH -->
 <meta property="og:locale" content="en_EN" />
@@ -21,6 +21,8 @@
 <meta property="og:image:secure_url" content="https://co.witch19.space/corona-chan-black.jpg" />
 
 <!--TODO:
+- add anchors to graphs for easy linking
+- add functors on rate able to increase / decrease rate with some speed and beginning at day n
 - use SIER to predict longterm
     - add population size, immune pool, dead pool, etc
 - add tables to graphs
@@ -126,7 +128,7 @@
     // Put together the models parameters
     var model1 = new params(
         'cz_a',
-        150,
+        300,
         seed['rate']['cz'],
         'log',
         120,                    // rate of slowdown, smaller is faster
@@ -172,6 +174,34 @@
     run_model( model1 );
     run_model( model2 );
     run_model( model3 );
+
+    // CZ future model
+    // Czech government decides to lift quarantine after Easter Monday 13.4
+    // People already start celebrating on Friday 10.4 after the peak of the epidemy was announced
+    // During the whole week infection rates slowly grow
+    day = 42;
+    seed['rate']['cz'][day] = 1.07;
+    seed['rate']['cz'][day+1] = 1.08;
+    seed['rate']['cz'][day+2] = 1.09;
+    seed['rate']['cz'][day+3] = 1.10;
+    seed['rate']['cz'][day+4] = 1.11;
+    seed['rate']['cz'][day+5] = 1.12;
+    seed['rate']['cz'][day+6] = 1.13;
+    seed['rate']['cz'][day+7] = 1.14;
+    var cz_future_1 = new params(
+        'cz_future_1',
+        300,
+        seed['rate']['cz'],
+        'log',
+        120,                    // rate of slowdown, smaller is faster
+        1.02,                   // min possible growth rate
+        seed['new']['cz'],      // the confirmed cases so far
+        JITTER_COUNT,           // jitter count
+        JITTER_AMOUNT/4,          // jitter amount
+        'healthy_new',
+        'dead_new',
+    );
+    run_model( cz_future_1 );
 
     // Add Korea as a model
     var model_kr = new params(
@@ -254,51 +284,74 @@
         </div>
     </div>
     <div class="graph_container">
+        <a id="cz"></a>
         <div class="graph_filler">&nbsp;</div>
         <div class="canvas_container">
     		<canvas id="infected_cz" class="graph"></canvas>
+            <a class="link" href="https://co.witch19.space#cz">link</a>
     	</div>
         <br class="clear"/>
     </div>
     <div class="graph_container">
+        <a id="cz_growth"></a>
         <div class="graph_filler">&nbsp;</div>
         <div class="canvas_container">
             <canvas id="growth_rate_cz" class="graph"></canvas>
+            <a class="link" href="#cz_growth">link</a>
         </div>
         <br class="clear"/>
     </div>
     <div class="graph_container">
+        <a id="cz_future_1"></a>
         <div class="graph_filler">&nbsp;</div>
         <div class="canvas_container">
-            <canvas id="compare" class="graph"></canvas>
+            <canvas id="cz_future" class="graph"></canvas>
+            <a class="link" href="https://co.witch19.space#cz_future_1">link</a>
         </div>
         <br class="clear"/>
     </div>
     <div class="graph_container">
+        <a id="compare"></a>
         <div class="graph_filler">&nbsp;</div>
         <div class="canvas_container">
-            <canvas id="compare_100" class="graph"></canvas>
+            <canvas id="canvas_compare" class="graph"></canvas>
+            <a class="link" href="https://co.witch19.space#compare">link</a>
         </div>
         <br class="clear"/>
     </div>
     <div class="graph_container">
+        <a id="compare100"></a>
         <div class="graph_filler">&nbsp;</div>
         <div class="canvas_container">
-            <canvas id="compare_growth_rates" class="graph"></canvas>
+            <canvas id="canvas_compare_100" class="graph"></canvas>
+            <a class="link" href="https://co.witch19.space#compare100">link</a>
         </div>
         <br class="clear"/>
     </div>
     <div class="graph_container">
+        <a id="compare_growth"></a>
         <div class="graph_filler">&nbsp;</div>
         <div class="canvas_container">
-            <canvas id="korea_test" class="graph"></canvas>
+            <canvas id="canvas_compare_growth_rates" class="graph"></canvas>
+            <a class="link" href="https://co.witch19.space#compare_growth">link</a>
         </div>
         <br class="clear"/>
     </div>
     <div class="graph_container">
+        <a id="korea_test"></a>
         <div class="graph_filler">&nbsp;</div>
         <div class="canvas_container">
-            <canvas id="korea_pred" class="graph"></canvas>
+            <canvas id="canvas_korea_test" class="graph"></canvas>
+            <a class="link" href="https://co.witch19.space#korea_test">link</a>
+        </div>
+        <br class="clear"/>
+    </div>
+    <div class="graph_container">
+        <a id="korea_future"></a>
+        <div class="graph_filler">&nbsp;</div>
+        <div class="canvas_container">
+            <canvas id="canvas_korea_pred" class="graph"></canvas>
+            <a class="link" href="https://co.witch19.space#korea_future">link</a>
         </div>
         <br class="clear"/>
     </div>
@@ -316,10 +369,13 @@
 <!-- GRAPH CZ -->
 <script src="graph_cz.js?v=<?php echo filemtime($cwd . 'graph_cz.js'); ?>"></script>
 
+<!-- GRAPH CZ FUTURE -->
+<script src="graph_cz_future.js?v=<?php echo filemtime($cwd . 'graph_cz_future.js'); ?>"></script>
+
 <!-- GRAPH compare (CZ / JP / KR / SG)  & compare_100-->
 <script src="graph_compare.js?v=<?php echo filemtime($cwd . 'graph_compare.js'); ?>"></script>
 
-<!-- kr -->
+<!-- Korea -->
 <script src="korea_test.js?v=<?php echo filemtime($cwd . 'korea_test.js'); ?>"></script>
 
 </html>
