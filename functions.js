@@ -16,7 +16,10 @@ var pal_8 = palette('mpn65', 8);
 var pal_8_sol = palette('sol-accent', 8);
 
 // generate palette
-var pal_18 = palette('sol-accent', 18);
+var pal_10 = palette('tol-rainbow', 10);
+
+// generate palette
+var pal_18 = palette('mpn65', 18);
 
 // generate labels
 function gen_days(start_day, start_month, count) {
@@ -43,6 +46,37 @@ function legendCallback(e, legendItem) {
     meta = ci.getDatasetMeta(index);
     meta.hidden = meta.hidden === null ? !ci.data.datasets[index].hidden : null;
     ci.update();
+}
+
+// Extract data from CSV arrays
+function extract_data(csv, current, country, dest_name) {
+    var now = moment(new Date());
+    var start = moment("2020-1-22");
+    var duration = moment.duration(now.diff(start));
+    var days = duration.asDays()
+
+    // prepare arrays
+    current[dest_name] = [];
+    current[dest_name + '_confirmed'] = [];
+    current[dest_name + '_recovered'] = [];
+    current[dest_name + '_deaths'] = [];
+
+
+    for (i=0; i<days-1; i++) {
+        column = moment(new Date(2020, 0, 22 + i)).format('M/D/YY');    // data starting from 1/22/20
+
+        // extract confirmed
+        current[dest_name + '_confirmed'].push( csv['confirmed'][country][column] );
+
+        // extract recovered
+        current[dest_name + '_recovered'].push( csv['recovered'][country][column] );
+
+        // extract deaths
+        current[dest_name + '_deaths'].push( csv['deaths'][country][column] );
+
+        // push into dest_name array
+        current[dest_name].push( current[dest_name + '_confirmed'][i] - current[dest_name + '_recovered'][i] - current[dest_name + '_deaths'][i] );
+    }
 }
 
 function detect_client() {

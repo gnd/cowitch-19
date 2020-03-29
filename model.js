@@ -81,20 +81,12 @@ function fill_initial(arr, values, name) {
 
 function create_seeds(seed_arr, elapsed, name) {
     seed_arr['rate'][name] = {};
+    seed_arr['rate7'][name] = {};
     seed_arr['new'][name] = {};
     for (var i=0; i < elapsed[name]; i++) {
         seed['rate'][name][i] = data[name]['growth_rate'][i];
         seed['new'][name][i] = data[name]['infected_confirmed'][i];
-    }
-}
-
-
-function create_seeds7(seed_arr, elapsed, name) {
-    seed_arr['rate7'][name] = {};
-    seed_arr['new'][name] = {};
-    for (var i=0; i < elapsed[name]; i++) {
         seed['rate7'][name][i] = data[name]['growth_rate_avg_7'][i];
-        seed['new'][name][i] = data[name]['infected_confirmed'][i];
     }
 }
 
@@ -325,25 +317,25 @@ function run_model(params) {
             if (i in params.new_seed) {
                 new_infected = params.new_seed[i];
                 model[params.name]['new'][jitter].push( new_infected );
-                if (params.name == 'model_kr2') {
-                    console.log("new["+jitter+"]["+i+"] = " + new_infected);
-                }
+                //if (params.name == 'model_kr2') {
+            //        console.log("new["+jitter+"]["+i+"] = " + new_infected);
+            //    }
             } else {
                 // new infected are yesterda's total * yesterdays growth rate
                 new_infected = model[params.name]['rate'][jitter][i-1] * model[params.name]['total'][jitter][i-1];
                 model[params.name]['new'][jitter].push( new_infected );
-                if (params.name == 'model_kr2') {
-                    console.log("new["+jitter+"]["+i+"] = " + model[params.name]['rate'][jitter][i-1] + " * " + model[params.name]['total'][jitter][i-1] + " = "+new_infected);
-                }
+            //    if (params.name == 'model_kr2') {
+                //    console.log("new["+jitter+"]["+i+"] = " + model[params.name]['rate'][jitter][i-1] + " * " + model[params.name]['total'][jitter][i-1] + " = "+new_infected);
+            //    }
             }
 
             if (i > 0) {
                 // New per day
                 new_daily = Math.max(model[params.name]['new'][jitter][i] - model[params.name]['total'][jitter][i-1], 0);
                 model[params.name]['daily'][jitter].push( new_daily );
-                if (params.name == 'model_kr2') {
-                    console.log("daily["+jitter+"]["+i+"] = " + model[params.name]['new'][jitter][i] + " - " + model[params.name]['total'][jitter][i-1] + " = " + new_daily);
-                }
+            //    if (params.name == 'model_kr2') {
+            //        console.log("daily["+jitter+"]["+i+"] = " + model[params.name]['new'][jitter][i] + " - " + model[params.name]['total'][jitter][i-1] + " = " + new_daily);
+            //    }
                 model[params.name]['total_sick'][jitter].push( model[params.name]['total_sick'][jitter][i-1] + new_daily );
 
                 // Healed per day
@@ -395,9 +387,9 @@ function run_model(params) {
                 // Total = New - Healed - Died
                 total = new_infected - healed - died;
                 model[params.name]['total'][jitter].push( total );
-                if (params.name == 'model_kr2') {
-                    console.log("total["+jitter+"]["+i+"] = " + new_infected + " - " + healed + " - " + died + " = " + total);
-                }
+            //    if (params.name == 'model_kr2') {
+            //        console.log("total["+jitter+"]["+i+"] = " + new_infected + " - " + healed + " - " + died + " = " + total);
+            //    }
 
                 // Log to console
                 rate = model[params.name]['rate'][jitter][i];

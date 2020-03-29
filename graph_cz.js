@@ -9,7 +9,7 @@ function legendCallbackInfected(e, legendItem) {
         meta.hidden = meta.hidden === null ? !ci.data.datasets[index].hidden : null;
     } else { // predictions
         for (i=0; i<=JITTER_COUNT; i++) {
-            var meta = ci.getDatasetMeta(index+i*2);
+            var meta = ci.getDatasetMeta(index+i*3);
             meta.hidden = meta.hidden === null ? !ci.data.datasets[index+i*2].hidden : null;
         }
     }
@@ -29,7 +29,7 @@ function legendCallbackGrowthRate(e, legendItem) {
         meta.hidden = meta.hidden === null ? !ci.data.datasets[index].hidden : null;
     } else { // predictions
         for (i=0; i<=JITTER_COUNT; i++) {
-            var meta = ci.getDatasetMeta(index+i*2);
+            var meta = ci.getDatasetMeta(index+i*3);
             meta.hidden = meta.hidden === null ? !ci.data.datasets[index+i*2].hidden : null;
         }
     }
@@ -76,6 +76,17 @@ infected_dataset[2] = {
     tension: 0,
     fill: false
 };
+infected_dataset[3] = {
+    label: '7 Day Average',
+    data: model['cz_c']['total']['avg'],
+    spanGaps: true,
+    borderWidth: 2,
+    borderColor: '#' + pal_8[5],
+    pointStyle: 'circle',
+    pointBorderColor:  '#' + pal_8[5],
+    tension: 0,
+    fill: false
+};
 for (i=0; i<JITTER_COUNT; i++) {
     if (i>0) {
         label = 'Predicted' + '-' + i;
@@ -113,8 +124,27 @@ for (i=0; i<JITTER_COUNT; i++) {
         tension: 0.2,
         fill: false
     };
+    if (i>0) {
+        label = '7 Day Average' + '-' + i;
+    } else {
+        label = '7 Day Average';
+    }
+    cz_c = {
+        label: label,
+        data: model['cz_c']['total'][i],
+        spanGaps: true,
+        borderWidth: 1,
+        borderDash: [5, 5],
+        borderColor: hexToRGBA('#' + pal_8[5], 0.4),
+        pointStyle: 'circle',
+        radius: 0,
+        pointBorderColor:  '#' + pal_8[5],
+        tension: 0.2,
+        fill: false
+    };
     infected_dataset.push( cz_a );
     infected_dataset.push( cz_b );
+    infected_dataset.push( cz_c );
 }
 
 // The infected chart
@@ -151,7 +181,7 @@ window.infected_chart = new Chart(infected_chart_cz, {
             labels: {
                 // Show only first three labels
                 filter: function (legendItem, chartData) {
-                    if (legendItem.datasetIndex < 3) {
+                    if (legendItem.datasetIndex < 4) {
                         return (chartData.datasets[legendItem.datasetIndex].label)
                     }
 
@@ -238,6 +268,17 @@ growth_rate_dataset[4] = {
     tension: 0.2,
     fill: false
 };
+growth_rate_dataset[5] = {
+    label: 'Predicted - avg7',
+    data: model['cz_c']['rate']['avg'],
+    spanGaps: true,
+    borderWidth: 2,
+    borderColor: '#' + pal_8[5],
+    pointStyle: 'circle',
+    pointBorderColor:  '#' + pal_8[5],
+    tension: 0.2,
+    fill: false
+};
 for (i=0; i<JITTER_COUNT; i++) {
     if (i>0) {
         label = 'Predicted' + '-' + i;
@@ -275,8 +316,27 @@ for (i=0; i<JITTER_COUNT; i++) {
         tension: 0.2,
         fill: false
     };
+    if (i>0) {
+        label = 'Predicted - avg7' + '-' + i;
+    } else {
+        label = 'Predicted - avg7';
+    }
+    cz_c =  {
+        label: label,
+        data: model['cz_c']['rate'][i],
+        spanGaps: true,
+        borderWidth: 1,
+        borderDash: [5, 5],
+        borderColor: hexToRGBA('#' + pal_8[5], 0.2),
+        pointStyle: 'circle',
+        radius: 0,
+        pointBorderColor: '#' + pal_8[5],
+        tension: 0.2,
+        fill: false
+    };
     growth_rate_dataset.push( cz_a );
     growth_rate_dataset.push( cz_b );
+    growth_rate_dataset.push( cz_c );
 }
 
 // The growth rate chart
@@ -312,7 +372,7 @@ window.growth_rate_chart = new Chart(growth_rate_chart_cz, {
             labels: {
                 // Show only first three labels
                 filter: function (legendItem, chartData) {
-                    if (legendItem.datasetIndex < 5) {
+                    if (legendItem.datasetIndex < 6) {
                         return (chartData.datasets[legendItem.datasetIndex].label)
                     }
 

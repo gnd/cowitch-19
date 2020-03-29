@@ -25,7 +25,7 @@ dataset.push( {
 } );
 dataset.push( {
     label: 'Korea',
-    data: current_values['kr-real'],
+    data: current_values['kr'],
     spanGaps: true,
     borderWidth: 3,
     borderColor: '#' + pal_8_sol[dataset.length],
@@ -116,7 +116,7 @@ dataset.push( {
 } );
 dataset.push( {
     label: 'Korea',
-    data: current_values['kr-real_100'],
+    data: current_values['kr_100'],
     spanGaps: true,
     borderWidth: 3,
     borderColor: '#' + pal_8_sol[dataset.length],
@@ -188,7 +188,7 @@ dataset.push( {
     data: data['cz_100']['growth_rate'],
     spanGaps: true,
     borderWidth: 3,
-    borderColor: '#' + pal_18[dataset.length],
+    borderColor: '#' + pal_18[0],
     pointStyle: 'circle',
     pointBorderColor:  '#' + pal_18[dataset.length],
     tension: 0.2,
@@ -284,7 +284,7 @@ dataset.push( {
 } );
 dataset.push( {
     label: 'KR',
-    data: data['kr-real_100']['growth_rate'],
+    data: data['kr_100']['growth_rate'],
     spanGaps: true,
     borderWidth: 3,
     borderColor: '#' + pal_18[dataset.length],
@@ -295,7 +295,7 @@ dataset.push( {
 } );
 dataset.push( {
     label: 'KR Avg',
-    data: data['kr-real_100']['growth_rate_avg'],
+    data: data['kr_100']['growth_rate_avg'],
     spanGaps: true,
     borderWidth: 2,
     borderColor: '#' + pal_18[dataset.length],
@@ -306,7 +306,7 @@ dataset.push( {
 } );
 dataset.push( {
     label: 'KR Avg 7',
-    data: data['kr-real_100']['growth_rate_avg_7'],
+    data: data['kr_100']['growth_rate_avg_7'],
     spanGaps: true,
     borderWidth: 2,
     borderColor: '#' + pal_18[dataset.length],
@@ -349,8 +349,8 @@ dataset.push( {
     fill: false
 } );
 dataset.push( {
-    label: 'KR-ALL',
-    data: data['kr-real_all']['growth_rate'].slice(29,64),
+    label: 'KR Confirmed',
+    data: data['kr_confirmed']['growth_rate'].slice(29,64),
     spanGaps: true,
     borderWidth: 3,
     borderColor: '#' + pal_18[dataset.length],
@@ -360,8 +360,8 @@ dataset.push( {
     fill: false
 } );
 dataset.push( {
-    label: 'KR-ALL Avg',
-    data: data['kr-real_all']['growth_rate_avg'].slice(29,64),
+    label: 'KR Confirmed Avg',
+    data: data['kr_confirmed']['growth_rate_avg'].slice(29,64),
     spanGaps: true,
     borderWidth: 2,
     borderColor: '#' + pal_18[dataset.length],
@@ -371,8 +371,8 @@ dataset.push( {
     fill: false
 } );
 dataset.push( {
-    label: 'KR-ALL Avg 7',
-    data: data['kr-real_all']['growth_rate_avg_7'].slice(29,64),
+    label: 'KR Confirmed Avg 7',
+    data: data['kr_confirmed']['growth_rate_avg_7'].slice(29,64),
     spanGaps: true,
     borderWidth: 2,
     borderColor: '#' + pal_18[dataset.length],

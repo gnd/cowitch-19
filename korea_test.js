@@ -3,12 +3,12 @@ var compare = document.getElementById("korea_test").getContext('2d');
 dataset = [];
 dataset.push( {
     label: 'Korea',
-    data: current_values['kr-real'],
+    data: current_values['kr'],
     spanGaps: true,
     borderWidth: 3,
-    borderColor: '#' + pal_8_sol[dataset.length],
+    borderColor: '#' + pal_10[dataset.length],
     pointStyle: 'circle',
-    pointBorderColor:  '#' + pal_8_sol[dataset.length],
+    pointBorderColor:  '#' + pal_10[dataset.length],
     tension: 0,
     fill: false
 } );
@@ -17,20 +17,42 @@ dataset.push( {
     data: current_values['cz'],
     spanGaps: true,
     borderWidth: 3,
-    borderColor: '#' + pal_8_sol[dataset.length],
+    borderColor: '#' + pal_10[dataset.length],
     pointStyle: 'circle',
-    pointBorderColor:  '#' + pal_8_sol[dataset.length],
+    pointBorderColor:  '#' + pal_10[dataset.length],
+    tension: 0,
+    fill: false
+} );
+dataset.push( {
+    label: 'Czechia recovered',
+    data: current_values['cz_recovered'],
+    spanGaps: true,
+    borderWidth: 3,
+    borderColor: '#' + pal_10[dataset.length],
+    pointStyle: 'circle',
+    pointBorderColor:  '#' + pal_10[dataset.length],
+    tension: 0,
+    fill: false
+} );
+dataset.push( {
+    label: 'Czechia recovered - prediction',
+    data: model['cz_a']['healed_cum'][0],
+    spanGaps: true,
+    borderWidth: 3,
+    borderColor: '#' + pal_10[dataset.length],
+    pointStyle: 'circle',
+    pointBorderColor:  '#' + pal_10[dataset.length],
     tension: 0,
     fill: false
 } );
 dataset.push( {
     label: 'Korea recovered',
-    data: current_values['kr-rec'],
+    data: current_values['kr_recovered'],
     spanGaps: true,
     borderWidth: 3,
-    borderColor: '#' + pal_8_sol[dataset.length],
+    borderColor: '#' + pal_10[dataset.length],
     pointStyle: 'circle',
-    pointBorderColor:  '#' + pal_8_sol[dataset.length],
+    pointBorderColor:  '#' + pal_10[dataset.length],
     tension: 0,
     fill: false
 } );
@@ -39,20 +61,20 @@ dataset.push ( {
     data:  model['model_kr']['healed_cum'][0],
     spanGaps: true,
     borderWidth: 2,
-    borderColor: '#' + pal_8_sol[dataset.length],
+    borderColor: '#' + pal_10[dataset.length],
     pointStyle: 'circle',
-    pointBorderColor:  '#' + pal_8_sol[dataset.length],
+    pointBorderColor:  '#' + pal_10[dataset.length],
     tension: 0,
     fill: false
 } );
 dataset.push( {
     label: 'Korea dead',
-    data: current_values['kr-dead'],
+    data: current_values['kr_deaths'],
     spanGaps: true,
     borderWidth: 3,
-    borderColor: '#' + pal_8_sol[dataset.length],
+    borderColor: '#' + pal_10[dataset.length],
     pointStyle: 'circle',
-    pointBorderColor:  '#' + pal_8_sol[dataset.length],
+    pointBorderColor:  '#' + pal_10[dataset.length],
     tension: 0,
     fill: false
 } );
@@ -61,31 +83,31 @@ dataset.push( {
     data: model['model_kr']['deaths_cum'][0],
     spanGaps: true,
     borderWidth: 3,
-    borderColor: '#' + pal_8_sol[dataset.length],
+    borderColor: '#' + pal_10[dataset.length],
     pointStyle: 'circle',
-    pointBorderColor:  '#' + pal_8_sol[dataset.length],
+    pointBorderColor:  '#' + pal_10[dataset.length],
     tension: 0,
     fill: false
 } );
 dataset.push( {
     label: 'CZ dead',
-    data: current_values['cz-dead'],
+    data: current_values['cz_deaths'],
     spanGaps: true,
     borderWidth: 3,
-    borderColor: '#' + pal_8_sol[dataset.length],
+    borderColor: '#' + pal_10[dataset.length],
     pointStyle: 'circle',
-    pointBorderColor:  '#' + pal_8_sol[dataset.length],
+    pointBorderColor:  '#' + pal_10[dataset.length],
     tension: 0,
     fill: false
 } );
 dataset.push( {
-    label: 'CZ dead - prediction',
+    label: 'CZ deaths - prediction',
     data: model['cz_a']['deaths_cum'][0],
     spanGaps: true,
     borderWidth: 3,
-    borderColor: '#' + pal_8_sol[dataset.length],
+    borderColor: '#' + pal_10[dataset.length],
     pointStyle: 'circle',
-    pointBorderColor:  '#' + pal_8_sol[dataset.length],
+    pointBorderColor:  '#' + pal_10[dataset.length],
     tension: 0,
     fill: false
 } );
@@ -126,7 +148,7 @@ var korea_pred = document.getElementById("korea_pred").getContext('2d');
 dataset = [];
 dataset.push( {
     label: 'Korea - confirmed',
-    data: current_values['kr-real'],
+    data: current_values['kr'],
     spanGaps: true,
     borderWidth: 3,
     borderColor: '#' + pal_8_sol[0],
