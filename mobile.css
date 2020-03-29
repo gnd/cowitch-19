@@ -8,6 +8,14 @@ a.menu_link:hover {
     text-decoration: underline;
 }
 
+
+a.link {
+    color: black;
+    underline: none;
+    background-color: white;
+    font-size: 1.5em;
+}
+
 body {
     margin: 0;
     background-image: url('corona-chan-black.jpg');
@@ -52,6 +60,7 @@ div.canvas_container {
 
 canvas.graph {
     background-color: rgba(255,255,255,0.85);
+    margin-bottom: 0.5%;
 }
 
 br.clear {
