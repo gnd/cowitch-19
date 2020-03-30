@@ -21,9 +21,7 @@
 <meta property="og:image:secure_url" content="https://co.witch19.space/corona-chan-black.jpg" />
 
 <!--TODO:
-- verify jp / sg numbers
-- replace model_kr in the korea_test graphs, with the model from day 38
-- add functors on rate able to increase / decrease rate with some speed and beginning at day n
+- add functors on rate able to increase / decrease rate with some speed and beginning at day N
 - use SIER to predict longterm
     - add population size, immune pool, dead pool, etc
 - add tables to graphs
@@ -93,7 +91,8 @@
     // The data are not exactly precise, when verifying against data like
     // Japan: https://covid19japan.com/
     // Singapore: https://experience.arcgis.com/experience/7e30edc490a5441a874f9efe67bd8b89
-    // The differences usually make just a few percent difference tho..
+    // Italy: http://www.salute.gov.it/nuovocoronavirus
+    // The difference is usually around 1-2% which is ok given what kind of data we work with..
     extract_data(global_data, current_values, 'Korea South', 'kr');
     extract_data(global_data, current_values, 'Japan', 'jp');
     extract_data(global_data, current_values, 'Singapore', 'sg');
@@ -135,10 +134,10 @@
     // Modelling Covid-19 is like trying to glimplse reality through a broken and distorted plastic mirror taken out from a trash heap..
     var model1 = new params(
         'cz_a',
-        250,
+        123,
         seed['rate']['cz'],
         'log',
-        200,                    // rate of slowdown, smaller is faster
+        250,                    // rate of slowdown, smaller is faster
         1.02,                   // min possible growth rate
         seed['new']['cz'],      // the confirmed cases so far
         JITTER_COUNT,           // jitter count
@@ -152,7 +151,7 @@
     // This could be a representation of the strictest quarantine behavior which is not gonna happen
     var model2 = new params(
         'cz_b',
-        150,
+        123,
         seed['rate']['cz'],
         'log',
         100,                     // rate of slowdown, smaller is faster
@@ -169,10 +168,10 @@
     // The rate of slowdown was chosen so as to hit 1 around 22 days from 30.03 - to resemble the historic Korean 7day average
     var model3 = new params(
         'cz_c',
-        150,
+        123,
         seed['rate7']['cz'],
         'log',
-        200,                    // rate of slowdown, smaller is faster
+        250,                    // rate of slowdown, smaller is faster
         1.02,                   // min possible growth rate
         seed['new']['cz'],      // the confirmed cases so far
         JITTER_COUNT,           // jitter count
@@ -202,10 +201,10 @@
     seed['rate']['cz'][day+7] = 1.14;
     var cz_future_1 = new params(
         'cz_future_1',
-        300,
+        123,
         seed['rate']['cz'],
         'log',
-        200,                    // rate of slowdown, smaller is faster
+        250,                    // rate of slowdown, smaller is faster
         1.02,                   // min possible growth rate
         seed['new']['cz'],      // the confirmed cases so far
         JITTER_COUNT,           // jitter count
@@ -215,23 +214,8 @@
     );
     run_model( cz_future_1 );
 
-    // First Korean model
-    // This is actually doing nothing
-    var model_kr = new params(
-        'model_kr',
-        MAXDAYS,
-        seed['rate']['kr'],
-        'log',
-        55,                        // rate of slowdown, smaller is faster
-        1.027,                      // min possible growth rate
-        seed['new']['kr'],     // the confirmed cases so far
-        1,                          // jitter count
-        JITTER_AMOUNT,              // jitter amount
-        'healthy_new',
-        'dead_new',
-    );
-    run_model( model_kr );
 
+    // Korean models & data
     // compute growth rate for kr_confirmed & use the data in the compare_growth chart
     fill_initial(data, current_values, 'kr_confirmed');
 
@@ -280,10 +264,7 @@
     );
     run_model( model_kr2a );
 
-    console.log(current_values['jp_confirmed']);
-    console.log(current_values['jp_recovered']);
-    console.log(current_values['jp_deaths']);
-    console.log(current_values['jp']);
+    dump_country('it');
 
 </script>
 </head>

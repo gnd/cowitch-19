@@ -9,6 +9,14 @@ function hexToRGBA(h, alpha) {
     return "rgba(" + hexToR(h) + "," + hexToG(h) + "," + hexToB(h) + "," + alpha + ")";
 }
 
+// Dump actual data about country
+function dump_country(name) {
+    console.log(current_values[name + '_confirmed']);
+    console.log(current_values[name + '_recovered']);
+    console.log(current_values[name + '_deaths']);
+    console.log(current_values[name]);
+}
+
 // generate palette
 var pal_8 = palette('mpn65', 8);
 

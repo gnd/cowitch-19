@@ -81,7 +81,7 @@ for (i=0; i<JITTER_COUNT; i++) {
 window.cz_future_chart = new Chart(cz_future, {
     type: 'line',
     data: {
-        labels: gen_days(0, 2, 300),
+        labels: gen_days(0, 2, 123),
         datasets: dataset,
     },
     options: {

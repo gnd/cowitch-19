@@ -58,7 +58,7 @@ dataset.push( {
 } );
 dataset.push ( {
     label: 'Korea recovered - prediction',
-    data:  model['model_kr']['healed_cum'][0],
+    data:  model['model_kr2']['healed_cum'][0],
     spanGaps: true,
     borderWidth: 2,
     borderColor: '#' + pal_10[dataset.length],
@@ -80,7 +80,7 @@ dataset.push( {
 } );
 dataset.push( {
     label: 'Korea dead - prediction',
-    data: model['model_kr']['deaths_cum'][0],
+    data: model['model_kr2']['deaths_cum'][0],
     spanGaps: true,
     borderWidth: 3,
     borderColor: '#' + pal_10[dataset.length],
