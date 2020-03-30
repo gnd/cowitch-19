@@ -61,9 +61,9 @@
 <script src="model.js?v=<?php echo filemtime($cwd . 'model.js'); ?>"></script>
 
 <!-- DATA -->
-<script src="data/confirmed.js"></script>
-<script src="data/recovered.js"></script>
-<script src="data/deaths.js"></script>
+<script src="data/confirmed.js?v=<?php echo filemtime($cwd . 'data/confirmed.js'); ?>"></script>
+<script src="data/recovered.js?v=<?php echo filemtime($cwd . 'data/recovered.js'); ?>"></script>
+<script src="data/deaths.js?v=<?php echo filemtime($cwd . 'data/deaths.js'); ?>"></script>
 
 <?php
     // compute last change to the model(s)
@@ -90,6 +90,10 @@
     current_values['cz_deaths'] = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,3,6,9,9,11,16,17]
 
     // Get rest of the data from https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_confirmed_global.csv
+    // The data are not exactly precise, when verifying against data like
+    // Japan: https://covid19japan.com/
+    // Singapore: https://experience.arcgis.com/experience/7e30edc490a5441a874f9efe67bd8b89
+    // The differences usually make just a few percent difference tho..
     extract_data(global_data, current_values, 'Korea South', 'kr');
     extract_data(global_data, current_values, 'Japan', 'jp');
     extract_data(global_data, current_values, 'Singapore', 'sg');
@@ -276,8 +280,10 @@
     );
     run_model( model_kr2a );
 
-    console.log(current_values['kr_confirmed']);
-    console.log(current_values['kr']);
+    console.log(current_values['jp_confirmed']);
+    console.log(current_values['jp_recovered']);
+    console.log(current_values['jp_deaths']);
+    console.log(current_values['jp']);
 
 </script>
 </head>
