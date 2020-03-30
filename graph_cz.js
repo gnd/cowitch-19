@@ -170,7 +170,7 @@ window.infected_chart = new Chart(infected_chart_cz, {
             yAxes: [{
                 ticks: {
                     min: 0,
-                    suggestedMax: 3500,
+                    max: 10000,
                 }
             }]
         },
@@ -343,7 +343,7 @@ for (i=0; i<JITTER_COUNT; i++) {
 window.growth_rate_chart = new Chart(growth_rate_chart_cz, {
     type: 'line',
     data: {
-        labels: gen_days(0, 2, 50),
+        labels: gen_days(0, 2, 60),
         datasets: growth_rate_dataset,
     },
     options: {

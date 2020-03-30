@@ -21,7 +21,8 @@
 <meta property="og:image:secure_url" content="https://co.witch19.space/corona-chan-black.jpg" />
 
 <!--TODO:
-- add anchors to graphs for easy linking
+- verify jp / sg numbers
+- replace model_kr in the korea_test graphs, with the model from day 38
 - add functors on rate able to increase / decrease rate with some speed and beginning at day n
 - use SIER to predict longterm
     - add population size, immune pool, dead pool, etc
@@ -84,9 +85,9 @@
     seed = {'rate': {}, 'rate7': {}, 'new': {}};
 
     // Get Czech data from https://onemocneni-aktualne.mzcr.cz/covid-19
-    current_values['cz'] = [3,3,5,5,8,19,26,32,38,63,94,116,141,189,298,383,464,572,774,904,1047,1165,1289,1497,1775,2062,2422,2689];
-    current_values['cz_recovered'] = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,3,6,9,9,9,11];
-    current_values['cz_deaths'] = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,3,6,9,9,11,16]
+    current_values['cz'] = [3,3,5,5,8,19,26,32,38,63,94,116,141,189,298,383,464,572,774,904,1047,1165,1289,1497,1775,2062,2422,2689,2859];
+    current_values['cz_recovered'] = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,3,6,9,9,9,11,11];
+    current_values['cz_deaths'] = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,3,6,9,9,11,16,17]
 
     // Get rest of the data from https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_confirmed_global.csv
     extract_data(global_data, current_values, 'Korea South', 'kr');
@@ -125,28 +126,32 @@
     JITTER_COUNT = 50;
     JITTER_AMOUNT = 0.015;
 
-    // Put together the models parameters
+    // What do we even model here ? Right, young padawan, nothing. This model has no claim to reality
+    // The data we try to aproximate are imprecise, incomplete measurements, obtained with a dubious methodology and abysmal success rates.
+    // Modelling Covid-19 is like trying to glimplse reality through a broken and distorted plastic mirror taken out from a trash heap..
     var model1 = new params(
         'cz_a',
-        300,
+        250,
         seed['rate']['cz'],
         'log',
-        120,                    // rate of slowdown, smaller is faster
+        200,                    // rate of slowdown, smaller is faster
         1.02,                   // min possible growth rate
         seed['new']['cz'],      // the confirmed cases so far
         JITTER_COUNT,           // jitter count
-        JITTER_AMOUNT/2,          // jitter amount
+        JITTER_AMOUNT,          // jitter amount
         'healthy_new',
         'dead_new',
     );
+    run_model( model1 );
 
-    // Add another scenario
+    // This is the so-called optimistic model, where we set the rate of slowdown to be pretty fast
+    // This could be a representation of the strictest quarantine behavior which is not gonna happen
     var model2 = new params(
         'cz_b',
         150,
         seed['rate']['cz'],
         'log',
-        70,                     // rate of slowdown, smaller is faster
+        100,                     // rate of slowdown, smaller is faster
         1.027,                  // min possible growth rate
         seed['new']['cz'],      // the confirmed cases so far
         JITTER_COUNT,           // jitter count
@@ -154,14 +159,16 @@
         'healthy_new',
         'dead_new',
     );
+    run_model( model2 );
 
-    // Put together the models parameters
+    // This is a model following the 7-day rolling average of growth rate in Czech republic
+    // The rate of slowdown was chosen so as to hit 1 around 22 days from 30.03 - to resemble the historic Korean 7day average
     var model3 = new params(
         'cz_c',
         150,
         seed['rate7']['cz'],
         'log',
-        120,                    // rate of slowdown, smaller is faster
+        200,                    // rate of slowdown, smaller is faster
         1.02,                   // min possible growth rate
         seed['new']['cz'],      // the confirmed cases so far
         JITTER_COUNT,           // jitter count
@@ -169,16 +176,17 @@
         'healthy_new',
         'dead_new',
     );
-
-    // Run the model for infected_cz and growth_rate_cz
-    run_model( model1 );
-    run_model( model2 );
     run_model( model3 );
 
-    // CZ future model
+
+    // cz_future_1 model
+    // Scenario:
     // Czech government decides to lift quarantine after Easter Monday 13.4
     // People already start celebrating on Friday 10.4 after the peak of the epidemy was announced
     // During the whole week infection rates slowly grow
+    //
+    // We take as a basis the cz_a model from above, seed some additional values
+    // and reduce jitter fourfold (too much noise)
     day = 42;
     seed['rate']['cz'][day] = 1.07;
     seed['rate']['cz'][day+1] = 1.08;
@@ -193,7 +201,7 @@
         300,
         seed['rate']['cz'],
         'log',
-        120,                    // rate of slowdown, smaller is faster
+        200,                    // rate of slowdown, smaller is faster
         1.02,                   // min possible growth rate
         seed['new']['cz'],      // the confirmed cases so far
         JITTER_COUNT,           // jitter count
@@ -203,7 +211,8 @@
     );
     run_model( cz_future_1 );
 
-    // Add Korea as a model
+    // First Korean model
+    // This is actually doing nothing
     var model_kr = new params(
         'model_kr',
         MAXDAYS,
@@ -217,8 +226,6 @@
         'healthy_new',
         'dead_new',
     );
-
-    // Run the model for korea
     run_model( model_kr );
 
     // compute growth rate for kr_confirmed & use the data in the compare_growth chart
@@ -267,10 +274,10 @@
         'healthy_new',
         'dead_new',
     );
-
-    // Run the model for korea
     run_model( model_kr2a );
-    //console.log(model['model_kr2']);
+
+    console.log(current_values['kr_confirmed']);
+    console.log(current_values['kr']);
 
 </script>
 </head>
