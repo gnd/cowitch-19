@@ -351,7 +351,7 @@
     </div>
     <div class="bottom_container">
         <div class="bottom_nav">
-            contact: data 💔 witch19.space
+            Do you want to know your future ? Ask at fortune 💔 witch19.space
 		</div>
     </div>
 </body>
