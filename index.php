@@ -21,9 +21,11 @@
 <meta property="og:image:secure_url" content="https://co.witch19.space/corona-chan-black.jpg" />
 
 <!--TODO:
+- make heading nicer on mobile
 - add functors on rate able to increase / decrease rate with some speed and beginning at day N
 - use SIER to predict longterm
     - add population size, immune pool, dead pool, etc
+- needs tighter fit on czech recovered & deaths.
 - add tables to graphs
 - add descriptions to graphs
 - add interface to change params from web
@@ -83,9 +85,9 @@
     seed = {'rate': {}, 'rate7': {}, 'new': {}};
 
     // Get Czech data from https://onemocneni-aktualne.mzcr.cz/covid-19
-    current_values['cz'] = [3,3,5,5,8,19,26,32,38,63,94,116,141,189,298,383,464,572,774,904,1047,1165,1289,1497,1775,2062,2422,2689,2859];
-    current_values['cz_recovered'] = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,3,6,9,9,9,11,11];
-    current_values['cz_deaths'] = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,3,6,9,9,11,16,17]
+    current_values['cz'] = [3,3,5,5,8,19,26,32,38,63,94,116,141,189,298,383,464,572,774,904,1047,1165,1289,1497,1775,2062,2422,2689,2859,3002];
+    current_values['cz_recovered'] = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,3,6,9,9,9,11,11,25];
+    current_values['cz_deaths'] = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,3,6,9,9,11,16,17,24]
 
     // Get rest of the data from https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_confirmed_global.csv
     // The data are not exactly precise, when verifying against data like
@@ -155,10 +157,10 @@
         seed['rate']['cz'],
         'log',
         100,                     // rate of slowdown, smaller is faster
-        1.027,                  // min possible growth rate
-        seed['new']['cz'],      // the confirmed cases so far
-        JITTER_COUNT,           // jitter count
-        JITTER_AMOUNT/2,          // jitter amount
+        1.027,                   // min possible growth rate
+        seed['new']['cz'],       // the confirmed cases so far
+        JITTER_COUNT,            // jitter count
+        JITTER_AMOUNT/2,         // jitter amount
         'healthy_new',
         'dead_new',
     );
@@ -175,7 +177,7 @@
         1.02,                   // min possible growth rate
         seed['new']['cz'],      // the confirmed cases so far
         JITTER_COUNT,           // jitter count
-        JITTER_AMOUNT/2,          // jitter amount
+        JITTER_AMOUNT/2,        // jitter amount
         'healthy_new',
         'dead_new',
     );
@@ -208,7 +210,7 @@
         1.02,                   // min possible growth rate
         seed['new']['cz'],      // the confirmed cases so far
         JITTER_COUNT,           // jitter count
-        JITTER_AMOUNT/4,          // jitter amount
+        JITTER_AMOUNT/4,        // jitter amount
         'healthy_new',
         'dead_new',
     );
@@ -231,11 +233,11 @@
         150,
         rateslice,
         'log',
-        30,                    // rate of slowdown, smaller is faster
+        30,                     // rate of slowdown, smaller is faster
         1.027,                  // min possible growth rate
         newslice,               // the confirmed cases so far
-        JITTER_COUNT,                      // jitter count
-        JITTER_AMOUNT/2,          // jitter amount
+        JITTER_COUNT,           // jitter count
+        JITTER_AMOUNT/2,        // jitter amount
         'healthy_new',
         'dead_new',
     );
@@ -254,11 +256,11 @@
         150,
         rateslice,
         'log',
-        55,                    // rate of slowdown, smaller is faster
+        55,                     // rate of slowdown, smaller is faster
         1.027,                  // min possible growth rate
         newslice,               // the confirmed cases so far
-        JITTER_COUNT,                      // jitter count
-        JITTER_AMOUNT*4,          // jitter amount
+        JITTER_COUNT,           // jitter count
+        JITTER_AMOUNT*4,        // jitter amount
         'healthy_new',
         'dead_new',
     );
