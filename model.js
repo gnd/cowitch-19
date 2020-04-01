@@ -1,126 +1,3 @@
-// Get maximum value for array
-function get_max(arr) {
-    max = 0;
-    for (var i=0; i < arr.length; i++) {
-        max = Math.max( arr[i], max );
-    }
-    return max;
-}
-
-// This is a logarithm base 10
-function log_decrease(day, speed) {
-    return Math.log10(day)/speed;
-}
-
-// This is a logarithm base 10
-function lin_decrease(day, speed) {
-    return day/speed;
-}
-
-// This computes the average growth rate for days with data
-function avg_growth_rate(data) {
-    var sum = 0;
-    for (var i=0; i < data.length; i++) {
-        sum += data[i];
-    }
-    return sum / data.length;
-}
-
-// New rate control functions - linear ramp
-function lin(x, steps) {
-    return x/(steps);
-}
-
-// New rate control functions - log ramp
-function log(x, steps, steepness) {
-    x = (x)*steepness;
-    return Math.log(x+1)/Math.log(steps*steepness+1);
-}
-
-// New rate control functions - exponential ramp
-function exp(x, steps, steepness) {
-    return Math.pow(x,steepness) / Math.pow(steps,steepness);
-}
-
-// Function fills initial arrays:
-//  - infected_confirmed:
-//      how many persons are confirmed infected, cumulative, eg.:
-//      [3,3,5,7] - 3 on day 1, 3 on day 2, 5 on day 3, 7 n day 4
-//  - infected_daily:
-//      daily increase of infected confirmed, eg.:
-//      [3,0,2,4] - 3 new on day 1, 0 new on day 2, 2 new on day 3, 4 new on day 4
-//  - growth_rate:
-//      the ratio of infected confirmed on day n+1 to confirmed infected on day n, eg:
-//      [1,1,1.66,1.4]
-//  - growth_rate_avg:
-//      average on growth_rate over all values up to i:
-//      [1, 1, 1.22, 1.26]
-//  - growth_rate_avg_7:
-//      seven day rolling average of growth_rate
-//
-//  These data are used to seed the model
-function fill_initial(arr, values, name) {
-    // prepare the arrays
-    arr[name] = {}
-    arr[name]['infected_confirmed'] = [];
-    arr[name]['infected_daily'] = [];
-    arr[name]['growth_rate'] = [];
-    arr[name]['growth_rate_avg'] = [];
-    arr[name]['growth_rate_avg_7'] = [];
-
-    // seed the arr[name]ays
-    arr[name]['infected_confirmed'] = values[name];
-    arr[name]['infected_daily'].push( arr[name]['infected_confirmed'][0] );
-    arr[name]['growth_rate'].push( 1 );
-    arr[name]['growth_rate_avg'].push( 1 );
-    arr[name]['growth_rate_avg_7'].push( 1 );
-
-    elapsed = arr[name]['infected_confirmed'].length;
-    for (var i=1; i < elapsed; i++) {
-        /// compute daily new cases
-        arr[name]['infected_daily'].push( arr[name]['infected_confirmed'][i] - arr[name]['infected_confirmed'][i-1] );
-
-        /// compute daily growth rate
-        arr[name]['growth_rate'].push( arr[name]['infected_confirmed'][i] / arr[name]['infected_confirmed'][i-1] );
-
-        /// compute daily average growth rate
-        arr[name]['growth_rate_avg'].push( avg_growth_rate( arr[name]['growth_rate'].slice(0,i+1) ) );
-
-        /// compute rolling average growth rate for last 7 days
-        slice_start = Math.min(i, 7);
-        arr[name]['growth_rate_avg_7'].push( avg_growth_rate( arr[name]['growth_rate'].slice(i-slice_start,i+1) ) );
-    }
-
-    return elapsed;
-}
-
-
-function create_seeds(seed_arr, elapsed, name) {
-    seed_arr['rate'][name] = {};
-    seed_arr['rate7'][name] = {};
-    seed_arr['new'][name] = {};
-    for (var i=0; i < elapsed[name]; i++) {
-        seed['rate'][name][i] = data[name]['growth_rate'][i];
-        seed['new'][name][i] = data[name]['infected_confirmed'][i];
-        seed['rate7'][name][i] = data[name]['growth_rate_avg_7'][i];
-    }
-}
-
-
-// Fills current_values[name_100] with current values above 100 cases
-// Used in compare_100 graph
-function prepare_100(values, name) {
-    new_name = name+'_100';
-    values[new_name] = [];
-
-    for (i=0; i<values[name].length; i++) {
-        if (values[name][i] > 100) {
-            values[new_name].push( values[name][i] );
-        }
-    }
-}
-
-
 // This computes the amount of people getting healthy on a given day
 // Earliest recovery is after 11 days, latest recovery after 35 days
 // For data these two studies were used:
@@ -232,6 +109,144 @@ function dead_new(arr) {
     return sum;
 }
 
+// Get maximum value for array
+function get_max(arr) {
+    max = 0;
+    for (var i=0; i < arr.length; i++) {
+        max = Math.max( arr[i], max );
+    }
+    return max;
+}
+
+// This is a logarithm base 10
+function log_decrease(day, speed) {
+    return Math.log10(day)/speed;
+}
+
+// This is a logarithm base 10
+function lin_decrease(day, speed) {
+    return day/speed;
+}
+
+// This computes the average growth rate for days with data
+function avg_growth_rate(data) {
+    var sum = 0;
+    for (var i=0; i < data.length; i++) {
+        sum += data[i];
+    }
+    return sum / data.length;
+}
+
+// New rate control functions - linear ramp
+function lin(x, steps, speed, scale) {
+    // return (x / steps * scale) - ((x-1) / steps * scale); this can be simplified to:
+    return 1 / steps * scale
+}
+
+// New rate control functions - log ramp
+function log(x, steps, speed, scale) {
+    x = (x)*speed;
+    if (x > 0) {
+        return (Math.log(x+1) / Math.log(steps*speed+1) * scale) - (Math.log(x) / Math.log(steps*speed+1) * scale);
+    } else {
+        return Math.log(x+1) / Math.log(steps*speed+1) * scale;
+    }
+
+}
+
+// New rate control functions - exponential ramp
+function exp(x, steps, speed, scale) {
+    if (x > 0) {
+        // f[x] - f[x-1]
+        return ( Math.pow(x,speed) / Math.pow(steps,speed) - Math.pow(x-1,speed) / Math.pow(steps,speed) ) * scale;
+    } else {
+        return Math.pow(x,speed) / Math.pow(steps,speed) * scale;
+    }
+}
+
+// old func for compatibility
+function old_log(day, steps, speed, scale) {
+    return Math.log10(day) / speed * scale;
+}
+
+// Function fills initial arrays:
+//  - infected_confirmed:
+//      how many persons are confirmed infected, cumulative, eg.:
+//      [3,3,5,7] - 3 on day 1, 3 on day 2, 5 on day 3, 7 n day 4
+//  - infected_daily:
+//      daily increase of infected confirmed, eg.:
+//      [3,0,2,4] - 3 new on day 1, 0 new on day 2, 2 new on day 3, 4 new on day 4
+//  - growth_rate:
+//      the ratio of infected confirmed on day n+1 to confirmed infected on day n, eg:
+//      [1,1,1.66,1.4]
+//  - growth_rate_avg:
+//      average on growth_rate over all values up to i:
+//      [1, 1, 1.22, 1.26]
+//  - growth_rate_avg_7:
+//      seven day rolling average of growth_rate
+//
+//  These data are used to seed the model
+function fill_initial(arr, values, name) {
+    // prepare the arrays
+    arr[name] = {}
+    arr[name]['infected_confirmed'] = [];
+    arr[name]['infected_daily'] = [];
+    arr[name]['growth_rate'] = [];
+    arr[name]['growth_rate_avg'] = [];
+    arr[name]['growth_rate_avg_7'] = [];
+
+    // seed the arr[name]ays
+    arr[name]['infected_confirmed'] = values[name];
+    arr[name]['infected_daily'].push( arr[name]['infected_confirmed'][0] );
+    arr[name]['growth_rate'].push( 1 );
+    arr[name]['growth_rate_avg'].push( 1 );
+    arr[name]['growth_rate_avg_7'].push( 1 );
+
+    elapsed = arr[name]['infected_confirmed'].length;
+    for (var i=1; i < elapsed; i++) {
+        /// compute daily new cases
+        arr[name]['infected_daily'].push( arr[name]['infected_confirmed'][i] - arr[name]['infected_confirmed'][i-1] );
+
+        /// compute daily growth rate
+        arr[name]['growth_rate'].push( arr[name]['infected_confirmed'][i] / arr[name]['infected_confirmed'][i-1] );
+
+        /// compute daily average growth rate
+        arr[name]['growth_rate_avg'].push( avg_growth_rate( arr[name]['growth_rate'].slice(0,i+1) ) );
+
+        /// compute rolling average growth rate for last 7 days
+        slice_start = Math.min(i, 7);
+        arr[name]['growth_rate_avg_7'].push( avg_growth_rate( arr[name]['growth_rate'].slice(i-slice_start,i+1) ) );
+    }
+
+    return elapsed;
+}
+
+
+function create_seeds(seed_arr, elapsed, name) {
+    seed_arr['rate'][name] = {};
+    seed_arr['rate7'][name] = {};
+    seed_arr['new'][name] = {};
+    for (var i=0; i < elapsed[name]; i++) {
+        seed['rate'][name][i] = data[name]['growth_rate'][i];
+        seed['new'][name][i] = data[name]['infected_confirmed'][i];
+        seed['rate7'][name][i] = data[name]['growth_rate_avg_7'][i];
+    }
+}
+
+
+// Fills current_values[name_100] with current values above 100 cases
+// Used in compare_100 graph
+function prepare_100(values, name) {
+    new_name = name+'_100';
+    values[new_name] = [];
+
+    for (i=0; i<values[name].length; i++) {
+        if (values[name][i] > 100) {
+            values[new_name].push( values[name][i] );
+        }
+    }
+}
+
 // Compute average if JITTER_COUNT > 1
 function get_average_jitter(params) {
     model[params.name]['rate']['avg'] = [];
@@ -252,8 +267,17 @@ function get_average_jitter(params) {
     }
 }
 
+// Sort of struct emulation in js - rate function parameters
+function rate_func(name, start, steps, speed, scale) {
+    this.name = name;
+    this.start = start;
+    this.steps = steps;
+    this.speed = speed;
+    this.scale = scale;
+}
+
 // Sort of struct emulation in js - model prameters
-function params(name, model_duration, growth_rate_seed, decay_func, decay_speed, decay_min, new_seed, jitter_count, jitter_amount, health_func, dead_func, rate_func) {
+function params(name, model_duration, growth_rate_seed, decay_func, decay_speed, decay_min, new_seed, jitter_count, jitter_amount, health_func, dead_func, rate_funcs) {
     this.name = name;
     this.model_duration = model_duration;
     this.irs = growth_rate_seed;
@@ -265,15 +289,7 @@ function params(name, model_duration, growth_rate_seed, decay_func, decay_speed,
     this.jitter_amount = jitter_amount;
     this.health_func = health_func;
     this.dead_func = dead_func;
-    this.rate_func = rate_func;
-}
-
-// Sort of struct emulation in js - rate function parameters
-function rate_func(name, start, duration, parameters) {
-    this.name = name;
-    this.start = start;
-    this.duration = duration;
-    this.parameters = parameters;
+    this.rate_funcs = rate_funcs;
 }
 
 function run_model(params) {
@@ -309,14 +325,13 @@ function run_model(params) {
                 model[params.name]['rate'][jitter].push( params.irs[i] );
             } else {
                 // otherwise determine next value from the previous one
-                // we need to seed at least the first value
                 if (i > 0) {
-                    // decrease by log(day_number)/speed
-                    if (params.decay_func == 'log') {
-                        new_rate = model[params.name]['rate'][jitter][i-1] - log_decrease(i+1, params.decay_speed);
-                    }
-                    if (params.decay_func == 'lin') {
-                        new_rate = model[params.name]['rate'][jitter][i-1];
+                    // apply all valid ratefuncs to the current step
+                    for (j=0; j<params.rate_funcs.length; j++) {
+                        var rate_func = params.rate_funcs[j];
+                        if ((rate_func.start <= i) && (i < (rate_func.start + rate_func.steps))) {
+                            new_rate = model[params.name]['rate'][jitter][i-1] + window[rate_func.name]( i-rate_func.start, rate_func.steps, rate_func.speed, rate_func.scale );
+                        }
                     }
                     // add some jitter
                     if (params.jitter_amount > 0) {
@@ -325,7 +340,6 @@ function run_model(params) {
                     }
                     // check if new_rate over allowed min
                     new_rate = Math.max( new_rate, params.decay_min );
-
                     // add rate into model
                     model[params.name]['rate'][jitter].push( new_rate );
                 }
