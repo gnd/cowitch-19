@@ -25,6 +25,7 @@
 - add functors on rate able to increase / decrease rate with some speed and beginning at day N
 - use SIER to predict longterm
     - add population size, immune pool, dead pool, etc
+- automate czech data retrieval
 - needs tighter fit on czech recovered & deaths.
 - add tables to graphs
 - add descriptions to graphs
@@ -85,9 +86,9 @@
     seed = {'rate': {}, 'rate7': {}, 'new': {}};
 
     // Get Czech data from https://onemocneni-aktualne.mzcr.cz/covid-19
-    current_values['cz'] = [3,3,5,5,8,19,26,32,38,63,94,116,141,189,298,383,464,572,774,904,1047,1165,1289,1497,1775,2062,2422,2689,2859,3002];
-    current_values['cz_recovered'] = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,3,6,9,9,9,11,11,25];
-    current_values['cz_deaths'] = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,3,6,9,9,11,16,17,24]
+    current_values['cz'] = [3,3,5,5,8,19,26,32,38,63,94,116,141,189,298,383,464,572,774,904,1047,1165,1289,1497,1775,2062,2422,2689,2859,3002,3330];
+    current_values['cz_recovered'] = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,3,6,9,9,9,11,11,25,45];
+    current_values['cz_deaths'] = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,3,6,9,9,11,16,17,24,32]
 
     // Get rest of the data from https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_confirmed_global.csv
     // The data are not exactly precise, when verifying against data like
@@ -216,10 +217,38 @@
     );
     run_model( cz_future_1 );
 
+    // cz_future_2 model
+    // Scenario:
+    // Long-term modelling of Covid-19 in Czech republic
+    /*
+    var rate_funcs = [];
+    rate_funcs.push( new rate_func(
+        log,
+        0,
+        360,
+        {'speed': '250'},
+    ));
+    var cz_future_2 = new params(
+        'cz_future_2',
+        360,
+        seed['rate']['cz'],
+        'log',
+        250,                    // rate of slowdown, smaller is faster
+        1.02,                   // min possible growth rate
+        seed['new']['cz'],      // the confirmed cases so far
+        10,                     // jitter count
+        JITTER_AMOUNT/4,        // jitter amount
+        'healthy_new',
+        'dead_new',
+    );
+    run_model( cz_future_2 );*/
+
+
 
     // Korean models & data
     // compute growth rate for kr_confirmed & use the data in the compare_growth chart
     fill_initial(data, current_values, 'kr_confirmed');
+
 
     // Once more model korea
     rateslice = {};
@@ -307,6 +336,15 @@
         <br class="clear"/>
     </div>
     <div class="graph_container">
+        <a id="cz_future_2"></a>
+        <div class="graph_filler">&nbsp;</div>
+        <div class="canvas_container">
+            <canvas id="cz_growth_rate_future_2" class="graph"></canvas>
+            <a class="link" href="https://co.witch19.space#cz_future_2">link</a>
+        </div>
+        <br class="clear"/>
+    </div>
+    <div class="graph_container">
         <a id="compare"></a>
         <div class="graph_filler">&nbsp;</div>
         <div class="canvas_container">
@@ -367,6 +405,9 @@
 
 <!-- GRAPH CZ FUTURE -->
 <script src="graph_cz_future.js?v=<?php echo filemtime($cwd . 'graph_cz_future.js'); ?>"></script>
+
+<!-- GRAPH CZ FUTURE -->
+<script src="graph_cz_future_2.js?v=<?php echo filemtime($cwd . 'graph_cz_future_2.js'); ?>"></script>
 
 <!-- GRAPH compare (CZ / JP / KR / SG)  & compare_100-->
 <script src="graph_compare.js?v=<?php echo filemtime($cwd . 'graph_compare.js'); ?>"></script>
