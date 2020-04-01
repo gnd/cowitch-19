@@ -26,6 +26,22 @@ function avg_growth_rate(data) {
     return sum / data.length;
 }
 
+// New rate control functions - linear ramp
+function lin(x, steps) {
+    return x/(steps);
+}
+
+// New rate control functions - log ramp
+function log(x, steps, steepness) {
+    x = (x)*steepness;
+    return Math.log(x+1)/Math.log(steps*steepness+1);
+}
+
+// New rate control functions - exponential ramp
+function exp(x, steps, steepness) {
+    return Math.pow(x,steepness) / Math.pow(steps,steepness);
+}
+
 // Function fills initial arrays:
 //  - infected_confirmed:
 //      how many persons are confirmed infected, cumulative, eg.:
@@ -236,8 +252,8 @@ function get_average_jitter(params) {
     }
 }
 
-// Sort of struct emulation in js
-function params(name, model_duration, growth_rate_seed, decay_func, decay_speed, decay_min, new_seed, jitter_count, jitter_amount, health_func, dead_func) {
+// Sort of struct emulation in js - model prameters
+function params(name, model_duration, growth_rate_seed, decay_func, decay_speed, decay_min, new_seed, jitter_count, jitter_amount, health_func, dead_func, rate_func) {
     this.name = name;
     this.model_duration = model_duration;
     this.irs = growth_rate_seed;
@@ -249,6 +265,15 @@ function params(name, model_duration, growth_rate_seed, decay_func, decay_speed,
     this.jitter_amount = jitter_amount;
     this.health_func = health_func;
     this.dead_func = dead_func;
+    this.rate_func = rate_func;
+}
+
+// Sort of struct emulation in js - rate function parameters
+function rate_func(name, start, duration, parameters) {
+    this.name = name;
+    this.start = start;
+    this.duration = duration;
+    this.parameters = parameters;
 }
 
 function run_model(params) {
