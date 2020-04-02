@@ -22,9 +22,10 @@
 
 <!--TODO:
 - make heading nicer on mobile
-- add functors on rate able to increase / decrease rate with some speed and beginning at day N
 - use SIER to predict longterm
     - add population size, immune pool, dead pool, etc
+- verify math on rate functors, they are a bit shabby
+- simplify functor math
 - automate czech data retrieval
 - needs tighter fit on czech recovered & deaths.
 - add tables to graphs
@@ -86,9 +87,9 @@
     seed = {'rate': {}, 'rate7': {}, 'new': {}};
 
     // Get Czech data from https://onemocneni-aktualne.mzcr.cz/covid-19
-    current_values['cz'] = [3,3,5,5,8,19,26,32,38,63,94,116,141,189,298,383,464,572,774,904,1047,1165,1289,1497,1775,2062,2422,2689,2859,3002,3330];
-    current_values['cz_recovered'] = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,3,6,9,9,9,11,11,25,45];
-    current_values['cz_deaths'] = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,3,6,9,9,11,16,17,24,32]
+    current_values['cz'] = [3,3,5,5,8,19,26,32,38,63,94,116,141,189,298,383,464,572,774,904,1047,1165,1289,1497,1775,2062,2422,2689,2859,3002,3330,3604];
+    current_values['cz_recovered'] = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,3,6,9,9,9,11,11,25,45,61];
+    current_values['cz_deaths'] = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,3,6,9,9,11,16,17,24,32,40]
 
     // Get rest of the data from https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_confirmed_global.csv
     // The data are not exactly precise, when verifying against data like
@@ -135,6 +136,14 @@
     // What do we even model here ? Right, young padawan, nothing. This model has no claim to reality
     // The data we try to aproximate are imprecise, incomplete measurements, obtained with a dubious methodology and abysmal success rates.
     // Modelling Covid-19 is like trying to glimplse reality through a broken and distorted plastic mirror taken out from a trash heap..
+    rate_funcs = [];
+    rate_funcs.push( new rate_func(
+        'old_log',                  // name
+        0,                          // start
+        123,                        // steps
+        250,                        // speed (rate of slowdown)
+        -1,                          // scale
+    ));
     var model1 = new params(
         'cz_a',
         123,
@@ -147,11 +156,20 @@
         JITTER_AMOUNT,          // jitter amount
         'healthy_new',
         'dead_new',
+        rate_funcs,
     );
     run_model( model1 );
 
     // This is the so-called optimistic model, where we set the rate of slowdown to be pretty fast
     // This could be a representation of the strictest quarantine behavior which is not gonna happen
+    rate_funcs = [];
+    rate_funcs.push( new rate_func(
+        'old_log',                  // name
+        0,                          // start
+        123,                        // steps
+        100,                        // speed (rate of slowdown)
+        -1,                          // scale
+    ));
     var model2 = new params(
         'cz_b',
         123,
@@ -164,11 +182,20 @@
         JITTER_AMOUNT/2,         // jitter amount
         'healthy_new',
         'dead_new',
+        rate_funcs,
     );
     run_model( model2 );
 
     // This is a model following the 7-day rolling average of growth rate in Czech republic
     // The rate of slowdown was chosen so as to hit 1 around 22 days from 30.03 - to resemble the historic Korean 7day average
+    rate_funcs = [];
+    rate_funcs.push( new rate_func(
+        'old_log',                  // name
+        0,                          // start
+        123,                        // steps
+        250,                        // speed (rate of slowdown)
+        -1,                          // scale
+    ));
     var model3 = new params(
         'cz_c',
         123,
@@ -181,6 +208,7 @@
         JITTER_AMOUNT/2,        // jitter amount
         'healthy_new',
         'dead_new',
+        rate_funcs,
     );
     run_model( model3 );
 
@@ -202,6 +230,14 @@
     seed['rate']['cz'][day+5] = 1.12;
     seed['rate']['cz'][day+6] = 1.13;
     seed['rate']['cz'][day+7] = 1.14;
+    rate_funcs = [];
+    rate_funcs.push( new rate_func(
+        'old_log',                  // name
+        0,                          // start
+        123,                        // steps
+        250,                        // speed (rate of slowdown)
+        -1,                          // scale
+    ));
     var cz_future_1 = new params(
         'cz_future_1',
         123,
@@ -214,6 +250,7 @@
         JITTER_AMOUNT/4,        // jitter amount
         'healthy_new',
         'dead_new',
+        rate_funcs,
     );
     run_model( cz_future_1 );
 
@@ -221,12 +258,13 @@
     // Scenario:
     // Long-term modelling of Covid-19 in Czech republic
     /*
-    var rate_funcs = [];
+    rate_funcs = [];
     rate_funcs.push( new rate_func(
-        log,
-        0,
-        360,
-        {'speed': '250'},
+        'old_log',                  // name
+        0,                          // start
+        1000,                       // steps - just high enough here to last the whole time
+        250,                        // speed - formerly rate of slowdown
+        scale,                      // scale
     ));
     var cz_future_2 = new params(
         'cz_future_2',
@@ -240,8 +278,10 @@
         JITTER_AMOUNT/4,        // jitter amount
         'healthy_new',
         'dead_new',
+        rate_funcs,
     );
-    run_model( cz_future_2 );*/
+    run_model( cz_future_2 );
+    */
 
 
 
@@ -257,6 +297,14 @@
         rateslice[i] = seed['rate']['kr'][i];
         newslice[i] = seed['new']['kr'][i];
     }
+    rate_funcs = [];
+    rate_funcs.push( new rate_func(
+        'old_log',                  // name
+        0,                          // start
+        150,                        // steps
+        30,                        // speed (rate of slowdown)
+        -1,                          // scale
+    ));
     var model_kr2 = new params(
         'model_kr2',
         150,
@@ -269,6 +317,7 @@
         JITTER_AMOUNT/2,        // jitter amount
         'healthy_new',
         'dead_new',
+        rate_funcs,
     );
     // Run the model for korea
     run_model( model_kr2 );
@@ -280,6 +329,14 @@
         rateslice[i] = seed['rate']['kr'][i];
         newslice[i] = seed['new']['kr'][i];
     }
+    rate_funcs = [];
+    rate_funcs.push( new rate_func(
+        'old_log',                  // name
+        0,                          // start
+        150,                        // steps
+        55,                        // speed (rate of slowdown)
+        -1,                          // scale
+    ));
     var model_kr2a = new params(
         'model_kr2a',
         150,
@@ -292,6 +349,7 @@
         JITTER_AMOUNT*4,        // jitter amount
         'healthy_new',
         'dead_new',
+        rate_funcs,
     );
     run_model( model_kr2a );
 
