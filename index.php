@@ -464,8 +464,8 @@
 <!-- GRAPH CZ FUTURE -->
 <script src="graph_cz_future.js?v=<?php echo filemtime($cwd . 'graph_cz_future.js'); ?>"></script>
 
-<!-- GRAPH CZ FUTURE -->
-<script src="graph_cz_future_2.js?v=<?php echo filemtime($cwd . 'graph_cz_future_2.js'); ?>"></script>
+<!-- GRAPH CZ FUTURE
+<script src="graph_cz_future_2.js?v=<?php echo filemtime($cwd . 'graph_cz_future_2.js'); ?>"></script>-->
 
 <!-- GRAPH compare (CZ / JP / KR / SG)  & compare_100-->
 <script src="graph_compare.js?v=<?php echo filemtime($cwd . 'graph_compare.js'); ?>"></script>
