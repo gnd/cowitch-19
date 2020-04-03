@@ -36,7 +36,7 @@ dataset.push( {
 } );
 dataset.push( {
     label: 'Czechia recovered - prediction',
-    data: model['cz_a']['healed_cum'][0],
+    data: model['cz_a']['recovered'][0],
     spanGaps: true,
     borderWidth: 3,
     borderColor: '#' + pal_10[dataset.length],
@@ -58,7 +58,7 @@ dataset.push( {
 } );
 dataset.push ( {
     label: 'Korea recovered - prediction',
-    data:  model['model_kr2']['healed_cum'][0],
+    data:  model['model_kr2']['recovered'][0],
     spanGaps: true,
     borderWidth: 2,
     borderColor: '#' + pal_10[dataset.length],
@@ -80,7 +80,7 @@ dataset.push( {
 } );
 dataset.push( {
     label: 'Korea dead - prediction',
-    data: model['model_kr2']['deaths_cum'][0],
+    data: model['model_kr2']['deaths'][0],
     spanGaps: true,
     borderWidth: 3,
     borderColor: '#' + pal_10[dataset.length],
@@ -102,7 +102,7 @@ dataset.push( {
 } );
 dataset.push( {
     label: 'CZ deaths - prediction',
-    data: model['cz_a']['deaths_cum'][0],
+    data: model['cz_a']['deaths'][0],
     spanGaps: true,
     borderWidth: 3,
     borderColor: '#' + pal_10[dataset.length],

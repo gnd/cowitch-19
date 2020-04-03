@@ -84,7 +84,7 @@
     data = {};
     current_values = {};
     days_elapsed = {};
-    seed = {'rate': {}, 'rate7': {}, 'new': {}};
+    seed = {'growth_rate': {}, 'growth_rate_avg_7': {}, 'infected': {}};
 
     // Get Czech data from https://onemocneni-aktualne.mzcr.cz/covid-19
     current_values['cz'] = [3,3,5,5,8,19,26,32,38,63,94,116,141,189,298,383,464,572,774,904,1047,1165,1289,1497,1775,2062,2422,2689,2859,3002,3330,3604,3869];
@@ -147,11 +147,9 @@
     var model1 = new params(
         'cz_a',
         123,
-        seed['rate']['cz'],
-        'log',
-        250,                    // rate of slowdown, smaller is faster
+        seed['growth_rate']['cz'],
         1.02,                   // min possible growth rate
-        seed['new']['cz'],      // the confirmed cases so far
+        seed['infected']['cz'],      // the confirmed cases so far
         JITTER_COUNT,           // jitter count
         JITTER_AMOUNT,          // jitter amount
         'healthy_new',
@@ -173,11 +171,9 @@
     var model2 = new params(
         'cz_b',
         123,
-        seed['rate']['cz'],
-        'log',
-        100,                     // rate of slowdown, smaller is faster
+        seed['growth_rate']['cz'],
         1.027,                   // min possible growth rate
-        seed['new']['cz'],       // the confirmed cases so far
+        seed['infected']['cz'],       // the confirmed cases so far
         JITTER_COUNT,            // jitter count
         JITTER_AMOUNT/2,         // jitter amount
         'healthy_new',
@@ -199,11 +195,9 @@
     var model3 = new params(
         'cz_c',
         123,
-        seed['rate7']['cz'],
-        'log',
-        250,                    // rate of slowdown, smaller is faster
-        1.02,                   // min possible growth rate
-        seed['new']['cz'],      // the confirmed cases so far
+        seed['growth_rate_avg_7']['cz'],
+        1.02,                       // min possible growth rate
+        seed['infected']['cz'],      // the confirmed cases so far
         JITTER_COUNT,           // jitter count
         JITTER_AMOUNT/2,        // jitter amount
         'healthy_new',
@@ -222,14 +216,14 @@
     // We take as a basis the cz_a model from above, seed some additional values
     // and reduce jitter fourfold (too much noise)
     day = 42;
-    seed['rate']['cz'][day] = 1.07;
-    seed['rate']['cz'][day+1] = 1.08;
-    seed['rate']['cz'][day+2] = 1.09;
-    seed['rate']['cz'][day+3] = 1.10;
-    seed['rate']['cz'][day+4] = 1.11;
-    seed['rate']['cz'][day+5] = 1.12;
-    seed['rate']['cz'][day+6] = 1.13;
-    seed['rate']['cz'][day+7] = 1.14;
+    seed['growth_rate']['cz'][day] = 1.07;
+    seed['growth_rate']['cz'][day+1] = 1.08;
+    seed['growth_rate']['cz'][day+2] = 1.09;
+    seed['growth_rate']['cz'][day+3] = 1.10;
+    seed['growth_rate']['cz'][day+4] = 1.11;
+    seed['growth_rate']['cz'][day+5] = 1.12;
+    seed['growth_rate']['cz'][day+6] = 1.13;
+    seed['growth_rate']['cz'][day+7] = 1.14;
     rate_funcs = [];
     rate_funcs.push( new rate_func(
         'old_log',                  // name
@@ -241,11 +235,9 @@
     var cz_future_1 = new params(
         'cz_future_1',
         123,
-        seed['rate']['cz'],
-        'log',
-        250,                    // rate of slowdown, smaller is faster
+        seed['growth_rate']['cz'],
         1.02,                   // min possible growth rate
-        seed['new']['cz'],      // the confirmed cases so far
+        seed['infected']['cz'],      // the confirmed cases so far
         JITTER_COUNT,           // jitter count
         JITTER_AMOUNT/4,        // jitter amount
         'healthy_new',
@@ -273,7 +265,7 @@
         'log',
         250,                    // rate of slowdown, smaller is faster
         1.02,                   // min possible growth rate
-        seed['new']['cz'],      // the confirmed cases so far
+        seed['infected']['cz'],      // the confirmed cases so far
         10,                     // jitter count
         JITTER_AMOUNT/4,        // jitter amount
         'healthy_new',
@@ -294,8 +286,8 @@
     rateslice = {};
     newslice = {};
     for (i=0; i<38; i++) {
-        rateslice[i] = seed['rate']['kr'][i];
-        newslice[i] = seed['new']['kr'][i];
+        rateslice[i] = seed['growth_rate']['kr'][i];
+        newslice[i] = seed['infected']['kr'][i];
     }
     rate_funcs = [];
     rate_funcs.push( new rate_func(
@@ -309,8 +301,6 @@
         'model_kr2',
         150,
         rateslice,
-        'log',
-        30,                     // rate of slowdown, smaller is faster
         1.027,                  // min possible growth rate
         newslice,               // the confirmed cases so far
         JITTER_COUNT,           // jitter count
@@ -326,8 +316,8 @@
     rateslice = {};
     newslice = {};
     for (i=0; i<60; i++) {
-        rateslice[i] = seed['rate']['kr'][i];
-        newslice[i] = seed['new']['kr'][i];
+        rateslice[i] = seed['growth_rate']['kr'][i];
+        newslice[i] = seed['infected']['kr'][i];
     }
     rate_funcs = [];
     rate_funcs.push( new rate_func(
@@ -341,8 +331,6 @@
         'model_kr2a',
         150,
         rateslice,
-        'log',
-        55,                     // rate of slowdown, smaller is faster
         1.027,                  // min possible growth rate
         newslice,               // the confirmed cases so far
         JITTER_COUNT,           // jitter count
@@ -352,8 +340,6 @@
         rate_funcs,
     );
     run_model( model_kr2a );
-
-    dump_country('it');
 
 </script>
 </head>
@@ -393,6 +379,7 @@
         </div>
         <br class="clear"/>
     </div>
+    <!--
     <div class="graph_container">
         <a id="cz_future_2"></a>
         <div class="graph_filler">&nbsp;</div>
@@ -402,6 +389,7 @@
         </div>
         <br class="clear"/>
     </div>
+    -->
     <div class="graph_container">
         <a id="compare"></a>
         <div class="graph_filler">&nbsp;</div>

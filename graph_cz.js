@@ -248,7 +248,7 @@ growth_rate_dataset[2] = {
 };
 growth_rate_dataset[3] = {
     label: 'Predicted',
-    data: model['cz_a']['rate']['avg'],
+    data: model['cz_a']['growth_rate']['avg'],
     spanGaps: true,
     borderWidth: 2,
     borderColor: '#' + pal_8[0],
@@ -259,7 +259,7 @@ growth_rate_dataset[3] = {
 };
 growth_rate_dataset[4] = {
     label: 'Predicted - optimistic',
-    data: model['cz_b']['rate']['avg'],
+    data: model['cz_b']['growth_rate']['avg'],
     spanGaps: true,
     borderWidth: 2,
     borderColor: '#' + pal_8[2],
@@ -270,7 +270,7 @@ growth_rate_dataset[4] = {
 };
 growth_rate_dataset[5] = {
     label: 'Predicted - avg7',
-    data: model['cz_c']['rate']['avg'],
+    data: model['cz_c']['growth_rate']['avg'],
     spanGaps: true,
     borderWidth: 2,
     borderColor: '#' + pal_8[5],
@@ -287,7 +287,7 @@ for (i=0; i<JITTER_COUNT; i++) {
     }
     cz_a = {
         label: label,
-        data: model['cz_a']['rate'][i],
+        data: model['cz_a']['growth_rate'][i],
         spanGaps: true,
         borderWidth: 1,
         borderDash: [5, 5],
@@ -305,7 +305,7 @@ for (i=0; i<JITTER_COUNT; i++) {
     }
     cz_b =  {
         label: label,
-        data: model['cz_b']['rate'][i],
+        data: model['cz_b']['growth_rate'][i],
         spanGaps: true,
         borderWidth: 1,
         borderDash: [5, 5],
@@ -323,7 +323,7 @@ for (i=0; i<JITTER_COUNT; i++) {
     }
     cz_c =  {
         label: label,
-        data: model['cz_c']['rate'][i],
+        data: model['cz_c']['growth_rate'][i],
         spanGaps: true,
         borderWidth: 1,
         borderDash: [5, 5],
