@@ -22,8 +22,7 @@
 
 <!--TODO:
 - make heading nicer on mobile
-- use SIER to predict longterm
-    - add population size, immune pool, dead pool, etc
+- add some kind of probabilistic infection to SIER (the less people are susceptible, the harder it is to infect someone)
 - verify math on rate functors, they are a bit shabby
 - simplify functor math
 - automate czech data retrieval
@@ -85,11 +84,13 @@
     current_values = {};
     days_elapsed = {};
     seed = {'growth_rate': {}, 'growth_rate_avg_7': {}, 'infected': {}};
+    population_size = {};
 
     // Get Czech data from https://onemocneni-aktualne.mzcr.cz/covid-19
-    current_values['cz'] = [3,3,5,5,8,19,26,32,38,63,94,116,141,189,298,383,464,572,774,904,1047,1165,1289,1497,1775,2062,2422,2689,2859,3002,3330,3604,3869];
-    current_values['cz_recovered'] = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,3,6,9,9,9,11,11,25,45,61,71];
-    current_values['cz_deaths'] = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,3,6,9,9,11,16,17,24,32,40,46];
+    current_values['cz'] = [3,3,5,5,8,19,26,32,38,63,94,116,141,189,298,383,464,572,774,904,1047,1165,1289,1497,1775,2062,2422,2689,2859,3002,3330,3604,3869,4194];
+    current_values['cz_recovered'] = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,3,6,9,9,9,11,11,25,45,61,71,74];
+    current_values['cz_deaths'] = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,3,6,9,9,11,16,17,24,32,40,46,56];
+    population_size['cz'] = 10693939; //https://en.wikipedia.org/wiki/Demographics_of_the_Czech_Republic
 
     // Get rest of the data from https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_confirmed_global.csv
     // The data are not exactly precise, when verifying against data like
@@ -155,6 +156,7 @@
         'healthy_new',
         'dead_new',
         rate_funcs,
+        population_size['cz'],
     );
     run_model( model1 );
 
@@ -179,6 +181,7 @@
         'healthy_new',
         'dead_new',
         rate_funcs,
+        population_size['cz'],
     );
     run_model( model2 );
 
@@ -203,6 +206,7 @@
         'healthy_new',
         'dead_new',
         rate_funcs,
+        population_size['cz'],
     );
     run_model( model3 );
 
@@ -216,26 +220,30 @@
     // We take as a basis the cz_a model from above, seed some additional values
     // and reduce jitter fourfold (too much noise)
     day = 42;
-    seed['growth_rate']['cz'][day] = 1.07;
-    seed['growth_rate']['cz'][day+1] = 1.08;
-    seed['growth_rate']['cz'][day+2] = 1.09;
-    seed['growth_rate']['cz'][day+3] = 1.10;
-    seed['growth_rate']['cz'][day+4] = 1.11;
-    seed['growth_rate']['cz'][day+5] = 1.12;
-    seed['growth_rate']['cz'][day+6] = 1.13;
-    seed['growth_rate']['cz'][day+7] = 1.14;
+    seed_tmp = [];
+    for (i=0; i<days_elapsed['cz']; i++) {
+        seed_tmp.push( seed['growth_rate']['cz'][i] );
+    }
+    seed_tmp[day] = 1.07;
+    seed_tmp[day+1] = 1.08;
+    seed_tmp[day+2] = 1.09;
+    seed_tmp[day+3] = 1.10;
+    seed_tmp[day+4] = 1.11;
+    seed_tmp[day+5] = 1.12;
+    seed_tmp[day+6] = 1.13;
+    seed_tmp[day+7] = 1.14;
     rate_funcs = [];
     rate_funcs.push( new rate_func(
         'old_log',                  // name
         0,                          // start
         123,                        // steps
         250,                        // speed (rate of slowdown)
-        -1,                          // scale
+        -1,                         // scale
     ));
     var cz_future_1 = new params(
         'cz_future_1',
         123,
-        seed['growth_rate']['cz'],
+        seed_tmp,
         1.02,                   // min possible growth rate
         seed['infected']['cz'],      // the confirmed cases so far
         JITTER_COUNT,           // jitter count
@@ -243,39 +251,56 @@
         'healthy_new',
         'dead_new',
         rate_funcs,
+        population_size['cz'],
     );
     run_model( cz_future_1 );
+
 
     // cz_future_2 model
     // Scenario:
     // Long-term modelling of Covid-19 in Czech republic
-    /*
-    rate_funcs = [];
-    rate_funcs.push( new rate_func(
-        'old_log',                  // name
-        0,                          // start
-        1000,                       // steps - just high enough here to last the whole time
-        250,                        // speed - formerly rate of slowdown
-        scale,                      // scale
-    ));
+    var cz_future_2_seed = {};
+    for (i=0; i<days_elapsed['cz']; i++) {
+        cz_future_2_seed[i] = seed['infected']['cz'][i]*10 ;
+    }
+        rate_funcs = [];
+        // make the thing die out end of June
+        rate_funcs.push( new rate_func(
+            'old_log',                  // name
+            0,                          // start
+            300,                       // steps - just high enough here to last the whole time
+            500,                        // speed - formerly rate of slowdown
+            -1,                         // scale
+        ));
+        rate_funcs.push( new rate_func(
+            'exp',                  // name
+            71,                          // start
+            210,                       // steps
+            4,                        // speed - formerly rate of slowdown
+            0.2,                          // scale
+        ));
+        rate_funcs.push( new rate_func(
+            'log',                  // name
+            281,                          // start
+            60,                       // steps - just high enough here to last the whole time
+            10,                        // speed - formerly rate of slowdown
+            -2,                         // scale
+        ));
     var cz_future_2 = new params(
         'cz_future_2',
-        360,
-        seed['rate']['cz'],
-        'log',
-        250,                    // rate of slowdown, smaller is faster
-        1.02,                   // min possible growth rate
-        seed['infected']['cz'],      // the confirmed cases so far
-        10,                     // jitter count
-        JITTER_AMOUNT/4,        // jitter amount
+        500,
+        seed['growth_rate']['cz'],
+        1.02,                       // min possible growth rate
+        cz_future_2_seed,     // the confirmed cases so far
+        50,                         // jitter count
+        JITTER_AMOUNT/10,            // jitter amount
         'healthy_new',
         'dead_new',
         rate_funcs,
+        population_size['cz'],
     );
     run_model( cz_future_2 );
-    */
-
-
+    //console.log( model['cz_future_2'] );
 
     // Korean models & data
     // compute growth rate for kr_confirmed & use the data in the compare_growth chart
@@ -308,6 +333,7 @@
         'healthy_new',
         'dead_new',
         rate_funcs,
+        population_size['cz'], //changeme - foobar
     );
     // Run the model for korea
     run_model( model_kr2 );
@@ -338,6 +364,7 @@
         'healthy_new',
         'dead_new',
         rate_funcs,
+        population_size['cz'], //changeme - foobar
     );
     run_model( model_kr2a );
 
@@ -379,17 +406,15 @@
         </div>
         <br class="clear"/>
     </div>
-    <!--
     <div class="graph_container">
         <a id="cz_future_2"></a>
         <div class="graph_filler">&nbsp;</div>
         <div class="canvas_container">
-            <canvas id="cz_growth_rate_future_2" class="graph"></canvas>
+            <canvas id="canvas_cz_future_long" class="graph"></canvas>
             <a class="link" href="https://co.witch19.space#cz_future_2">link</a>
         </div>
         <br class="clear"/>
     </div>
-    -->
     <div class="graph_container">
         <a id="compare"></a>
         <div class="graph_filler">&nbsp;</div>
@@ -452,8 +477,8 @@
 <!-- GRAPH CZ FUTURE -->
 <script src="graph_cz_future.js?v=<?php echo filemtime($cwd . 'graph_cz_future.js'); ?>"></script>
 
-<!-- GRAPH CZ FUTURE
-<script src="graph_cz_future_2.js?v=<?php echo filemtime($cwd . 'graph_cz_future_2.js'); ?>"></script>-->
+<!-- GRAPH CZ FUTURE -->
+<script src="graph_cz_future_2.js?v=<?php echo filemtime($cwd . 'graph_cz_future_2.js'); ?>"></script>
 
 <!-- GRAPH compare (CZ / JP / KR / SG)  & compare_100-->
 <script src="graph_compare.js?v=<?php echo filemtime($cwd . 'graph_compare.js'); ?>"></script>

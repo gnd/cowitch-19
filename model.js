@@ -336,14 +336,20 @@ function run_model(params) {
         for (var i=0; i < params.model_duration; i++) {
             var infected, infected_daily, recovered_daily, deaths_daily, total;
 
-            // New
+            // Numbers of infected from the model seed
             if (i in params.infected_seed) {
                 infected = params.infected_seed[i];
                 model[params.name]['infected'][jitter].push( infected );
             } else {
                 // new infected are yesterday's total * yesterdays growth rate
-                infected = model[params.name]['growth_rate'][jitter][i-1] * model[params.name]['total'][jitter][i-1];
-                model[params.name]['infected'][jitter].push( infected );
+                // but only if we didnt reach the susceptible limit
+                if (model[params.name]['susceptible'][jitter][i-1] > 0) {
+                    infected = model[params.name]['growth_rate'][jitter][i-1] * model[params.name]['total'][jitter][i-1];
+                    model[params.name]['infected'][jitter].push( infected );
+                } else {
+                    infected = model[params.name]['total'][jitter][i-1];
+                    model[params.name]['infected'][jitter].push( infected );
+                }
             }
 
             if (i > 0) {
@@ -384,9 +390,19 @@ function run_model(params) {
                 total = infected - recovered_daily - deaths_daily;
                 model[params.name]['total'][jitter].push( total );
 
+                // Susceptible = Susceptible[n-1] - infected - recovered - deaths
+                susceptible = model[params.name]['susceptible'][jitter][i-1] - infected_daily - recovered_daily - deaths_daily;
+                if (susceptible > 0) {
+                    model[params.name]['susceptible'][jitter].push( susceptible );
+                } else {
+                    model[params.name]['susceptible'][jitter].push( 0 );
+                }
+
                 // Log to console
-                rate = model[params.name]['growth_rate'][jitter][i];
-                //console.log((i+1)+' rate: '+rate.toFixed(2)+' new: '+new_infected.toFixed(0)+' day: '+new_daily.toFixed(0)+' recovered_daily: '+recovered_daily.toFixed(0)+' total: '+total.toFixed(0) + ' died: '+died.toFixed(0))
+                //if (params.name == 'cz_future_2') {
+            //        console.log("i: "+i+" susc-1: "+ model[params.name]['susceptible'][jitter][i-1])
+                //    console.log((i+1)+' rate: '+new_rate.toFixed(2)+' infected: '+infected.toFixed(0)+' infected_daily: '+infected_daily.toFixed(0)+' recovered_daily: '+recovered_daily.toFixed(0)+' total: '+total.toFixed(0) + ' died: '+deaths.toFixed(0))
+                //}
             }
         }
     }
