@@ -21,6 +21,7 @@
 <meta property="og:image:secure_url" content="https://co.witch19.space/corona-chan-black.jpg" />
 
 <!--TODO:
+- fix cron serverside
 - make heading nicer on mobile
 - add some kind of probabilistic infection to SIER (the less people are susceptible, the harder it is to infect someone)
 - verify math on rate functors, they are a bit shabby
