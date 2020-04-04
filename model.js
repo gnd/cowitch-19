@@ -235,18 +235,22 @@ function get_average_jitter(params) {
     model[params.name]['growth_rate']['avg'] = [];
     model[params.name]['recovered']['avg'] = [];
     model[params.name]['total']['avg'] = [];
+    model[params.name]['deaths']['avg'] = [];
     for (i=0; i<params.model_duration; i++) {
         rate = 0;
         total = 0;
+        deaths = 0;
         recovered = 0;
         for (j=0; j<params.jitter_count; j++) {
             rate += model[params.name]['growth_rate'][j][i];
             recovered += model[params.name]['recovered'][j][i];
             total += model[params.name]['total'][j][i];
+            deaths += model[params.name]['deaths'][j][i];
         }
         model[params.name]['growth_rate']['avg'].push( rate / params.jitter_count );
         model[params.name]['recovered']['avg'].push( recovered / params.jitter_count );
         model[params.name]['total']['avg'].push( total / params.jitter_count );
+        model[params.name]['deaths']['avg'].push( deaths / params.jitter_count );
     }
 }
 
