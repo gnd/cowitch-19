@@ -97,7 +97,7 @@ dataset.push( {
 } );*/
 dataset.push( {
     label: 'Dead - Projected',
-    data: model['cz_future_2']['deaths'][avg],
+    data: model['cz_future_2']['deaths']['avg'],
     yAxisID: 'population',
     spanGaps: true,
     borderWidth: 2,
