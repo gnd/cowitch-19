@@ -92,6 +92,18 @@ function dead_new(arr) {
     return sum;
 }
 
+// See above
+// 2 % mortality
+function dead_newnew(arr) {
+    sum = 0;
+    sum += 0.004 * arr[0]; // day 11
+    sum += 0.004 * arr[1];
+    sum += 0.004 * arr[2];
+    sum += 0.004 * arr[3];
+    sum += 0.004 * arr[4]; // day 7
+    return sum;
+}
+
 // Get maximum value for array
 function get_max(arr) {
     max = 0;
@@ -342,6 +354,9 @@ function run_model(params) {
 
             // Numbers of infected from the model seed
             if (i in params.infected_seed) {
+                if (params.name == 'cz_c') {
+                    console.log('Adding to infected from seed: '+params.infected_seed[i]);
+                }
                 infected = params.infected_seed[i];
                 model[params.name]['infected'][jitter].push( infected );
             } else {
@@ -385,6 +400,15 @@ function run_model(params) {
                         }
                     }
                     deaths_daily = dead_new(daily_slice);
+                }
+                if (params.dead_func == 'dead_newnew') {
+                    daily_slice = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
+                    for (var j=11; j>6; j--) { // Create and fill the daily array slice starting at current day - 20 and ending at current day - 15
+                        if (i-j > 0) {
+                            daily_slice[11-j] = model[params.name]['infected_daily'][jitter][i-j];
+                        }
+                    }
+                    deaths_daily = dead_newnew(daily_slice);
                 }
                 deaths += deaths_daily;
                 model[params.name]['deaths_daily'][jitter].push( deaths_daily );
