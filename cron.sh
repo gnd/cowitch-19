@@ -6,4 +6,5 @@ wget https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid
 wget https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_recovered_global.csv -O data/recovered.csv
 
 # now turn it into JS arrays
-./process_csv.py
+DIR=`dirname "$0"`
+$DIR/process_csv.py
