@@ -132,7 +132,7 @@ window.korea_test= new Chart(compare, {
             yAxes: [{
                 ticks: {
                     min: 0,
-                    suggestedMax: 100,
+                    suggestedMax: 500,
                 }
             }]
         },

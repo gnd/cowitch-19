@@ -81,7 +81,7 @@ function healthy_new(arr) {
 }
 
 // See above
-// 1.35 % mortality
+// Scaled to 1%
 function dead_new(arr) {
     sum = 0;
     sum += 0.0027 * arr[0]; // day 11
@@ -89,18 +89,6 @@ function dead_new(arr) {
     sum += 0.0027 * arr[2];
     sum += 0.0027 * arr[3];
     sum += 0.0027 * arr[4]; // day 7
-    return sum;
-}
-
-// See above
-// 2 % mortality
-function dead_newnew(arr) {
-    sum = 0;
-    sum += 0.004 * arr[0]; // day 11
-    sum += 0.004 * arr[1];
-    sum += 0.004 * arr[2];
-    sum += 0.004 * arr[3];
-    sum += 0.004 * arr[4]; // day 7
     return sum;
 }
 
@@ -309,7 +297,7 @@ function rate_func(name, start, steps, speed, scale) {
 }
 
 // Sort of struct emulation in js - model prameters
-function params(name, model_duration, growth_rate_seed, growth_rate_min, infected_seed, jitter_count, jitter_amount, health_func, dead_func, rate_funcs, population_size) {
+function params(name, model_duration, growth_rate_seed, growth_rate_min, infected_seed, jitter_count, jitter_amount, health_func, dead_func, cfr, rate_funcs, population_size) {
     this.name = name;
     this.model_duration = model_duration;
     this.irs = growth_rate_seed;
@@ -319,6 +307,7 @@ function params(name, model_duration, growth_rate_seed, growth_rate_min, infecte
     this.jitter_amount = jitter_amount;
     this.health_func = health_func;
     this.dead_func = dead_func;
+    this.cfr = cfr;
     this.rate_funcs = rate_funcs;
     this.population_size = population_size;
 }
@@ -416,18 +405,18 @@ function run_model(params) {
                         }
                     }
                     recovered_daily = healthy_new(daily_slice);
-                    // account for death rate as healthy funcs are expenting 100% recovered
-                    if (params.dead_func == 'linton') {
-                        recovered_daily *= (1-0.05);
-                    }
-                    if (params.dead_func == 'dead_newnew') {
-                        recovered_daily *= (1-0.02);
-                    }
-                    if (params.dead_func == 'dead_new') {
-                        recovered_daily *= (1-0.0135);
-                    }
                 }
-                recovered += recovered_daily;
+                if (params.health_func == 'cz_latest') {
+                    daily_slice = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
+                    for (var j=40; j>16; j--) { // Create and fill the daily array slice starting at current day - 34 and ending at current day - 11
+                        if (i-j > 0) {
+                            daily_slice[40-j] = model[params.name]['infected_daily'][jitter][i-j];
+                        }
+                    }
+                    recovered_daily = healthy_new(daily_slice);
+                }
+                // recovered daily is normalized to 100%, we need scale it down to 1-CFR
+                recovered += recovered_daily * (1-params.cfr);
                 model[params.name]['recovered_daily'][jitter].push( recovered_daily );
                 model[params.name]['recovered'][jitter].push( recovered );
 
@@ -441,15 +430,6 @@ function run_model(params) {
                     }
                     deaths_daily = dead_new(daily_slice);
                 }
-                if (params.dead_func == 'dead_newnew') {
-                    daily_slice = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
-                    for (var j=11; j>6; j--) { // Create and fill the daily array slice starting at current day - 20 and ending at current day - 15
-                        if (i-j > 0) {
-                            daily_slice[11-j] = model[params.name]['infected_daily'][jitter][i-j];
-                        }
-                    }
-                    deaths_daily = dead_newnew(daily_slice);
-                }
                 if (params.dead_func == 'linton') {
                     // Create and fill the daily array slice starting at current day - 27 and ending at current day - 6
                     daily_slice = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
@@ -458,9 +438,9 @@ function run_model(params) {
                             daily_slice[27-j] = model[params.name]['infected_daily'][jitter][i-j];
                         }
                     }
-                    deaths_daily = dead_linton(daily_slice) * 5; // FIXME this is the current czech CFR, add as a model parameter
+                    deaths_daily = dead_linton(daily_slice);
                 }
-                deaths += deaths_daily;
+                deaths += deaths_daily * params.cfr * 100;
                 model[params.name]['deaths_daily'][jitter].push( deaths_daily );
                 model[params.name]['deaths'][jitter].push( deaths );
 

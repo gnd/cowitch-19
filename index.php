@@ -21,9 +21,8 @@
 <meta property="og:image:secure_url" content="https://co.witch19.space/corona-chan-black.jpg" />
 
 <!--TODO:
-- add CFR as a model parameter
-- needs tighter fit on czech recovered & deaths.
 - make heading nicer on mobile
+- check for Korean CFR & tune Korean health func
 - add some kind of probabilistic infection to SIER (the less people are susceptible, the harder it is to infect someone)
 - verify math on rate functors, they are a bit shabby
 - simplify functor math
@@ -157,8 +156,9 @@
         seed['infected']['cz'],      // the confirmed cases so far
         JITTER_COUNT,           // jitter count
         JITTER_AMOUNT,          // jitter amount
-        'healthy_new',
-        'linton',
+        'cz_latest',            // recovered distribution
+        'linton',               // deaths distribution
+        0.05,                      // case fatality rate (CFR)
         rate_funcs,
         population_size['cz'],
     );
@@ -182,8 +182,9 @@
         seed['infected']['cz'],       // the confirmed cases so far
         JITTER_COUNT,            // jitter count
         JITTER_AMOUNT/2,         // jitter amount
-        'healthy_new',
-        'dead_new',
+        'cz_latest',            // recovered distribution
+        'linton',               // deaths distribution
+        0.05,                      // case fatality rate (CFR)
         rate_funcs,
         population_size['cz'],
     );
@@ -207,8 +208,9 @@
         seed['infected']['cz'],      // the confirmed cases so far
         JITTER_COUNT,           // jitter count
         JITTER_AMOUNT/2,        // jitter amount
-        'healthy_new',
-        'dead_new',
+        'cz_latest',            // recovered distribution
+        'linton',               // deaths distribution
+        0.05,                      // case fatality rate (CFR)
         rate_funcs,
         population_size['cz'],
     );
@@ -252,8 +254,9 @@
         seed['infected']['cz'],     // the confirmed cases so far
         JITTER_COUNT,               // jitter count
         JITTER_AMOUNT/4,            // jitter amount
-        'healthy_new',
-        'dead_new',
+        'cz_latest',            // recovered distribution
+        'linton',               // deaths distribution
+        0.05,                      // case fatality rate (CFR)
         rate_funcs,
         population_size['cz'],
     );
@@ -298,8 +301,9 @@
         cz_future_2_seed,     // the confirmed cases so far
         50,                         // jitter count
         JITTER_AMOUNT/10,            // jitter amount
-        'healthy_new',
-        'dead_new',
+        'cz_latest',            // recovered distribution
+        'linton',               // deaths distribution
+        0.05,                      // case fatality rate (CFR)
         rate_funcs,
         population_size['cz'],
     );
@@ -331,8 +335,9 @@
         JITTER_AMOUNT/2,        // jitter amount
         'healthy_new',
         'dead_new',
+        0.0135,                      // FIXME
         rate_funcs,
-        population_size['cz'], //changeme - foobar
+        population_size['cz'], // FIXME - foobar
     );
     // Run the model for korea
     run_model( model_kr2 );
@@ -362,8 +367,9 @@
         JITTER_AMOUNT*4,        // jitter amount
         'healthy_new',
         'dead_new',
+        0.0135,                 // FIXME
         rate_funcs,
-        population_size['cz'], //changeme - foobar
+        population_size['cz'],  // FIXME - foobar
     );
     run_model( model_kr2a );
 
