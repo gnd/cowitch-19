@@ -66,7 +66,7 @@ function healthy_new(arr) {
     sum += 0.01 * arr[10];
     sum += 0.02 * arr[11];
     sum += 0.07 * arr[12];
-    sum += 0.1665 * arr[13]; // 0.18 - 0.0135
+    sum += 0.18 * arr[13];
     sum += 0.17 * arr[14];
     sum += 0.11 * arr[15];
     sum += 0.09 * arr[16];
@@ -101,6 +101,38 @@ function dead_newnew(arr) {
     sum += 0.004 * arr[2];
     sum += 0.004 * arr[3];
     sum += 0.004 * arr[4]; // day 7
+    return sum;
+}
+
+
+// Lognormal distribution according to
+// Linton et al - Incubation Period and Other Epidemiological Characteristics of 2019 Novel Coronavirus Infections with Right Truncation: A Statistical Analysis of Publicly Available Case Data
+// DOI 10.3390/jcm9020538
+// Scaled to 1%
+function dead_linton(arr) {
+    sum = 0;
+    sum += 0.0025 * 0.01895735 * arr[0]; // day 27
+    sum += 0.0025 * 0.01895735 * arr[1];
+    sum += 0.0025 * 0.01895735 * arr[2];
+    sum += 0.005 * 0.01895735 * arr[3];
+    sum += 0.0075 * 0.01895735 * arr[4];
+    sum += 0.01 * 0.01895735 * arr[5];
+    sum += 0.0125 * 0.01895735 * arr[6];
+    sum += 0.015 * 0.01895735 * arr[7];
+    sum += 0.02 * 0.01895735 * arr[8];
+    sum += 0.025 * 0.01895735 * arr[9];
+    sum += 0.03 * 0.01895735 * arr[10];
+    sum += 0.035 * 0.01895735 * arr[11];
+    sum += 0.04 * 0.01895735 * arr[12];
+    sum += 0.045 * 0.01895735 * arr[13];
+    sum += 0.0475 * 0.01895735 * arr[14];
+    sum += 0.05 * 0.01895735 * arr[15];
+    sum += 0.05 * 0.01895735 * arr[16];
+    sum += 0.0475 * 0.01895735 * arr[17];
+    sum += 0.04 * 0.01895735 * arr[18];
+    sum += 0.025 * 0.01895735 * arr[19];
+    sum += 0.01 * 0.01895735 * arr[20];
+    sum += 0.005 * 0.01895735 * arr[21]; // day 6
     return sum;
 }
 
@@ -384,6 +416,16 @@ function run_model(params) {
                         }
                     }
                     recovered_daily = healthy_new(daily_slice);
+                    // account for death rate as healthy funcs are expenting 100% recovered
+                    if (params.dead_func == 'linton') {
+                        recovered_daily *= (1-0.05);
+                    }
+                    if (params.dead_func == 'dead_newnew') {
+                        recovered_daily *= (1-0.02);
+                    }
+                    if (params.dead_func == 'dead_new') {
+                        recovered_daily *= (1-0.0135);
+                    }
                 }
                 recovered += recovered_daily;
                 model[params.name]['recovered_daily'][jitter].push( recovered_daily );
@@ -407,6 +449,16 @@ function run_model(params) {
                         }
                     }
                     deaths_daily = dead_newnew(daily_slice);
+                }
+                if (params.dead_func == 'linton') {
+                    // Create and fill the daily array slice starting at current day - 27 and ending at current day - 6
+                    daily_slice = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
+                    for (var j=27; j>5; j--) {
+                        if (i-j > 0) {
+                            daily_slice[27-j] = model[params.name]['infected_daily'][jitter][i-j];
+                        }
+                    }
+                    deaths_daily = dead_linton(daily_slice) * 5; // FIXME this is the current czech CFR, add as a model parameter
                 }
                 deaths += deaths_daily;
                 model[params.name]['deaths_daily'][jitter].push( deaths_daily );

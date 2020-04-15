@@ -21,18 +21,17 @@
 <meta property="og:image:secure_url" content="https://co.witch19.space/corona-chan-black.jpg" />
 
 <!--TODO:
-- fix cron serverside
+- add CFR as a model parameter
+- needs tighter fit on czech recovered & deaths.
 - make heading nicer on mobile
 - add some kind of probabilistic infection to SIER (the less people are susceptible, the harder it is to infect someone)
 - verify math on rate functors, they are a bit shabby
 - simplify functor math
 - automate czech data retrieval
-- needs tighter fit on czech recovered & deaths.
 - add tables to graphs
 - add descriptions to graphs
 - add interface to change params from web
 - how to correctly estimate slow-down rate ?
-- add a way to access older states (eg. state from 22.3, etc)
 - implement a graph estimating real infected numbers https://www.scmp.com/news/china/society/article/3076323/third-coronavirus-cases-may-be-silent-carriers-classified
     - use also https://www.cssz.cz/web/cz/nemocenska-statistika#section_5
 -->
@@ -159,7 +158,7 @@
         JITTER_COUNT,           // jitter count
         JITTER_AMOUNT,          // jitter amount
         'healthy_new',
-        'dead_newnew',
+        'linton',
         rate_funcs,
         population_size['cz'],
     );
