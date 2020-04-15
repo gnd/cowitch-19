@@ -263,6 +263,24 @@ function prepare_100(values, name) {
     }
 }
 
+
+// Fills current_values[name_100] with current values above 100 cases
+// Used in compare_100 graph
+function prepare_1(values, name) {
+    new_name = name+'_1';
+    new_name_conf = name+'_1_confirmed';
+    values[new_name] = [];
+    values[new_name_conf] = [];
+
+    for (i=0; i<values[name].length; i++) {
+        if (values[name][i] > 1) {
+            values[new_name].push( values[name][i] );
+            values[new_name_conf].push( values[name+'_confirmed'][i] );
+        }
+    }
+}
+
+
 // Compute average if JITTER_COUNT > 1
 function get_average_jitter(params) {
     model[params.name]['growth_rate']['avg'] = [];

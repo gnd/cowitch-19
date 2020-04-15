@@ -3,7 +3,7 @@ var compare = document.getElementById("canvas_compare").getContext('2d');
 dataset = [];
 dataset.push( {
     label: 'Singapore',
-    data: current_values['sg'],
+    data: current_values['sg_1'],
     spanGaps: true,
     borderWidth: 3,
     borderColor: '#' + pal_8_sol[dataset.length],
@@ -14,7 +14,7 @@ dataset.push( {
 } );
 dataset.push( {
     label: 'Japan',
-    data: current_values['jp'],
+    data: current_values['jp_1'],
     spanGaps: true,
     borderWidth: 3,
     borderColor: '#' + pal_8_sol[dataset.length],
@@ -25,7 +25,7 @@ dataset.push( {
 } );
 dataset.push( {
     label: 'Korea',
-    data: current_values['kr'],
+    data: current_values['kr_1'],
     spanGaps: true,
     borderWidth: 3,
     borderColor: '#' + pal_8_sol[dataset.length],
@@ -36,7 +36,7 @@ dataset.push( {
 } );
 dataset.push( {
     label: 'Czechia',
-    data: current_values['cz'],
+    data: current_values['cz_1'],
     spanGaps: true,
     borderWidth: 3,
     borderColor: '#' + pal_8_sol[dataset.length],
@@ -47,7 +47,7 @@ dataset.push( {
 } );
 dataset.push( {
     label: 'Italy',
-    data: current_values['it'],
+    data: current_values['it_1'],
     spanGaps: true,
     borderWidth: 3,
     borderColor: '#' + pal_8_sol[dataset.length],
@@ -58,7 +58,7 @@ dataset.push( {
 } );
 dataset.push( {
     label: 'Slovakia',
-    data: current_values['sk'],
+    data: current_values['sk_1'],
     spanGaps: true,
     borderWidth: 3,
     borderColor: '#' + pal_8_sol[dataset.length],
@@ -69,7 +69,7 @@ dataset.push( {
 } );
 dataset.push( {
     label: 'Greece',
-    data: current_values['gr'],
+    data: current_values['gr_1'],
     spanGaps: true,
     borderWidth: 3,
     borderColor: '#' + pal_8_sol[dataset.length],

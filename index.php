@@ -127,6 +127,15 @@
     prepare_100(current_values, 'sk');
     prepare_100(current_values, 'gr');
 
+    // prepare values for compare_1
+    prepare_1(current_values, 'cz');
+    prepare_1(current_values, 'jp');
+    prepare_1(current_values, 'kr');
+    prepare_1(current_values, 'sg');
+    prepare_1(current_values, 'it');
+    prepare_1(current_values, 'sk');
+    prepare_1(current_values, 'gr');
+
     // prepare values for compare_growth_rates
     fill_initial(data, current_values, 'cz_100');
     fill_initial(data, current_values, 'jp_100');
@@ -135,6 +144,15 @@
     fill_initial(data, current_values, 'it_100');
     fill_initial(data, current_values, 'sk_100');
     fill_initial(data, current_values, 'gr_100');
+
+    // prepare values for compare_growth_rates
+    fill_initial(data, current_values, 'cz_1');
+    fill_initial(data, current_values, 'jp_1');
+    fill_initial(data, current_values, 'kr_1');
+    fill_initial(data, current_values, 'sg_1');
+    fill_initial(data, current_values, 'it_1');
+    fill_initial(data, current_values, 'sk_1');
+    fill_initial(data, current_values, 'gr_1');
 
     // Prepare the model
     model = {};
