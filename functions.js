@@ -87,6 +87,7 @@ function extract_data(csv, current, country, dest_name) {
     }
 }
 
+
 function detect_client() {
     const mq = window.matchMedia('screen and (min-width: 300px) and (max-width: 340px)');
     if (mq.matches) {

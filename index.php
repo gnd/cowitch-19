@@ -88,9 +88,13 @@
     population_size = {};
 
     // Get Czech data from https://onemocneni-aktualne.mzcr.cz/covid-19
-    current_values['cz'] = [3,3,5,5,8,19,26,32,38,63,94,116,141,189,298,383,464,572,774,904,1047,1165,1289,1497,1775,2062,2422,2689,2859,3002,3330,3604,3869,4194,4475,4591,4828,5033,5335,5589,5735,5905,5991,6059];
-    current_values['cz_recovered'] = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,3,6,9,9,9,11,11,25,45,61,71,74,78,96,127,181,243,309,370,422,467,527];
-    current_values['cz_deaths'] = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,3,6,9,9,11,16,17,24,32,40,46,56,62,72,80,91,104,113,123,132,139,147];
+    current_values['cz_confirmed'] = [3,3,5,5,8,19,26,32,38,63,94,116,141,189,298,383,464,572,774,904,1047,1165,1289,1497,1775,2062,2422,2689,2859,3002,3330,3604,3869,4194,4475,4591,4828,5033,5335,5589,5735,5905,5991,6059,6151];
+    current_values['cz_recovered'] = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,3,6,9,9,9,11,11,25,45,61,71,74,78,96,127,181,243,309,370,422,467,527,676];
+    current_values['cz_deaths'] = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,3,6,9,9,11,16,17,24,32,40,46,56,62,72,80,91,104,113,123,132,139,147,163];
+    current_values['cz'] = [];
+    for (var i=0; i<current_values['cz_confirmed'].length; i++) {
+        current_values['cz'].push( current_values['cz_confirmed'][i] - current_values['cz_recovered'][i] - current_values['cz_deaths'][i] );
+    }
     population_size['cz'] = 10693939; //https://en.wikipedia.org/wiki/Demographics_of_the_Czech_Republic
 
     // Get rest of the data from https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_confirmed_global.csv
@@ -99,6 +103,7 @@
     // Singapore: https://experience.arcgis.com/experience/7e30edc490a5441a874f9efe67bd8b89
     // Italy: http://www.salute.gov.it/nuovocoronavirus
     // The difference is usually around 1-2% which is ok given what kind of data we work with..
+    extract_data(global_data, current_values, 'Czechia', 'cz_global');
     extract_data(global_data, current_values, 'Korea South', 'kr');
     extract_data(global_data, current_values, 'Japan', 'jp');
     extract_data(global_data, current_values, 'Singapore', 'sg');
@@ -302,11 +307,6 @@
     );
     run_model( cz_future_2 );
     //console.log( model['cz_future_2'] );
-
-    // Korean models & data
-    // compute growth rate for kr_confirmed & use the data in the compare_growth chart
-    fill_initial(data, current_values, 'kr_confirmed');
-
 
     // Once more model korea
     rateslice = {};

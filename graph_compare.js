@@ -348,39 +348,6 @@ dataset.push( {
     tension: 0.2,
     fill: false
 } );
-dataset.push( {
-    label: 'KR Confirmed',
-    data: data['kr_confirmed']['growth_rate'].slice(29,64),
-    spanGaps: true,
-    borderWidth: 3,
-    borderColor: '#' + pal_18[dataset.length],
-    pointStyle: 'circle',
-    pointBorderColor:  '#' + pal_18[dataset.length],
-    tension: 0.2,
-    fill: false
-} );
-dataset.push( {
-    label: 'KR Confirmed Avg',
-    data: data['kr_confirmed']['growth_rate_avg'].slice(29,64),
-    spanGaps: true,
-    borderWidth: 2,
-    borderColor: '#' + pal_18[dataset.length],
-    pointStyle: 'circle',
-    pointBorderColor:  '#' + pal_18[dataset.length],
-    tension: 0.2,
-    fill: false
-} );
-dataset.push( {
-    label: 'KR Confirmed Avg 7',
-    data: data['kr_confirmed']['growth_rate_avg_7'].slice(29,64),
-    spanGaps: true,
-    borderWidth: 2,
-    borderColor: '#' + pal_18[dataset.length],
-    pointStyle: 'circle',
-    pointBorderColor:  '#' +pal_18[dataset.length],
-    tension: 0.2,
-    fill: false
-} );
 
 // The compare_growth_rates chart
 window.compare_growth_rates= new Chart(compare_100, {

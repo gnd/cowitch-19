@@ -43,7 +43,7 @@ var infected_chart_cz = document.getElementById("infected_cz").getContext('2d');
 
 // Create datasets for infected projections
 infected_dataset = [];
-infected_dataset[0] = {
+infected_dataset.push( {
     label: 'Confirmed',
     data: current_values['cz'],
     spanGaps: true,
@@ -53,8 +53,8 @@ infected_dataset[0] = {
     pointBorderColor:  '#' + pal_8[1],
     tension: 0,
     fill: false
-};
-infected_dataset[1] = {
+} );
+infected_dataset.push( {
     label: 'Predicted',
     data:  model['cz_a']['total']['avg'],
     spanGaps: true,
@@ -64,8 +64,8 @@ infected_dataset[1] = {
     pointBorderColor:  '#' + pal_8[0],
     tension: 0,
     fill: false
-};
-infected_dataset[2] = {
+} );
+infected_dataset.push( {
     label: 'Optimistic',
     data: model['cz_b']['total']['avg'],
     spanGaps: true,
@@ -75,8 +75,8 @@ infected_dataset[2] = {
     pointBorderColor:  '#' + pal_8[2],
     tension: 0,
     fill: false
-};
-infected_dataset[3] = {
+} );
+infected_dataset.push( {
     label: '7 Day Average',
     data: model['cz_c']['total']['avg'],
     spanGaps: true,
@@ -86,7 +86,7 @@ infected_dataset[3] = {
     pointBorderColor:  '#' + pal_8[5],
     tension: 0,
     fill: false
-};
+} );
 for (i=0; i<JITTER_COUNT; i++) {
     if (i>0) {
         label = 'Predicted' + '-' + i;

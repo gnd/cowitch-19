@@ -181,34 +181,32 @@ function old_log(day, steps, speed, scale) {
 //      seven day rolling average of growth_rate
 //
 //  These data are used to seed the model
-function fill_initial(arr, values, name) {
+function fill_initial(arr, values, name, hundred) {
     // prepare the arrays
     arr[name] = {}
-    arr[name]['infected'] = [];
-    arr[name]['infected_daily'] = [];
+    arr[name]['infected'] = []; // infected = confirmed - recovered - dead
+    arr[name]['confirmed'] = [];
     arr[name]['growth_rate'] = [];
     arr[name]['growth_rate_avg'] = [];
     arr[name]['growth_rate_avg_7'] = [];
 
     // seed the arr[name]ays
-    arr[name]['infected'] = values[name];
-    arr[name]['infected_daily'].push( arr[name]['infected'][0] );
+    arr[name]['infected'] = values[name];  // infected = confirmed - recovered - dead
+    arr[name]['confirmed'] = values[name+'_confirmed'];
     arr[name]['growth_rate'].push( 1 );
     arr[name]['growth_rate_avg'].push( 1 );
     arr[name]['growth_rate_avg_7'].push( 1 );
 
-    elapsed = arr[name]['infected'].length;
+    elapsed = arr[name]['confirmed'].length;
     for (var i=1; i < elapsed; i++) {
-        /// compute daily new cases
-        arr[name]['infected_daily'].push( arr[name]['infected'][i] - arr[name]['infected'][i-1] );
+        // compute daily growth rate - we use confirmed as oposed to infected so that the growth rate doesnt fall under 1, which is just how this model works
+        // we dont want to model the dissapearance of the epidemy, as that is a fundamentaly different process, we just model the spread, where the lowest spread between days is 1, when no one new got infected
+        arr[name]['growth_rate'].push( arr[name]['confirmed'][i] / arr[name]['confirmed'][i-1] );
 
-        /// compute daily growth rate
-        arr[name]['growth_rate'].push( arr[name]['infected'][i] / arr[name]['infected'][i-1] );
-
-        /// compute daily average growth rate
+        // compute daily average growth rate
         arr[name]['growth_rate_avg'].push( avg_growth_rate( arr[name]['growth_rate'].slice(0,i+1) ) );
 
-        /// compute rolling average growth rate for last 7 days
+        // compute rolling average growth rate for last 7 days
         slice_start = Math.min(i, 7);
         arr[name]['growth_rate_avg_7'].push( avg_growth_rate( arr[name]['growth_rate'].slice(i-slice_start,i+1) ) );
     }
@@ -233,11 +231,14 @@ function create_seeds(seed_arr, elapsed, name) {
 // Used in compare_100 graph
 function prepare_100(values, name) {
     new_name = name+'_100';
+    new_name_conf = name+'_100_confirmed';
     values[new_name] = [];
+    values[new_name_conf] = [];
 
     for (i=0; i<values[name].length; i++) {
         if (values[name][i] > 100) {
             values[new_name].push( values[name][i] );
+            values[new_name_conf].push( values[name+'_confirmed'][i] );
         }
     }
 }
@@ -354,9 +355,6 @@ function run_model(params) {
 
             // Numbers of infected from the model seed
             if (i in params.infected_seed) {
-                if (params.name == 'cz_c') {
-                    console.log('Adding to infected from seed: '+params.infected_seed[i]);
-                }
                 infected = params.infected_seed[i];
                 model[params.name]['infected'][jitter].push( infected );
             } else {
