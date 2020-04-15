@@ -124,6 +124,7 @@ window.korea_test= new Chart(compare, {
         aspectRatio: aspect_ratio,
         title: {
             display: true,
+            fontSize: fontsize,
             text: ["Testing prediction & reality in Czechia and S.Korea", "Relative by first day of occurence", "(click on the legend to show/hide data)"]
         },
         scales: {
@@ -138,6 +139,9 @@ window.korea_test= new Chart(compare, {
         },
         legend: {
             display: true,
+            labels: {
+                fontSize: fontsize,
+            },
         },
     }
 });
@@ -230,6 +234,7 @@ window.korea_pred = new Chart(korea_pred, {
         aspectRatio: aspect_ratio,
         title: {
             display: true,
+            fontSize: fontsize,
             text: ["Testing if able to predict the Korean development", "(click on the legend to show/hide data)"]
         },
         scales: {
@@ -249,6 +254,7 @@ window.korea_pred = new Chart(korea_pred, {
         legend: {
             display: true,
             labels: {
+                fontSize: fontsize,
                 // Show only first three labels
                 filter: function (legendItem, chartData) {
                     if (legendItem.datasetIndex < 3) {

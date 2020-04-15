@@ -142,6 +142,7 @@ window.cz_future_long = new Chart(cz_future_long, {
         aspectRatio: aspect_ratio,
         title: {
             display: true,
+            fontSize: fontsize,
             text: ["Scenario (first use of SIER, still in progress):", "After virtually stopping during the summer, COVID-19 returns to Czechia in autumn 2020", "All population numbers are inflated by a factor of 2 to account for 'hidden infected'", "(click on the legend to show/hide data)"]
         },
         scales: {
@@ -173,6 +174,7 @@ window.cz_future_long = new Chart(cz_future_long, {
             display: true,
             onClick: legendCallback,
             labels: {
+                fontSize: fontsize,
                 // Show only first three labels
                 filter: function (legendItem, chartData) {
                     if (legendItem.datasetIndex < 6) {

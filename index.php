@@ -76,6 +76,8 @@
 <script>
     aspect_ratio = 2; // Desktop graph aspect ratio
     aspect_ratio_mobile = 1.15; // Mobile graph aspect ratio
+    fontsize = 12;
+    fontsize_mobile = 24;
     moment.suppressDeprecationWarnings = true;
 
     // Create the data arrays using values
@@ -405,8 +407,9 @@
     <div class="top">
         <div class="header">
             <h1><span class="white">Cowitch-19 datamancy</span></h1>
-            <h3><span class="white">This model is based on an elaborate data witch-doctory using observed Covid-19 growth rate in Czech republic.</span></h3>
-            <span class="small_white">Initial data taken from: <a href=https://onemocneni-aktualne.mzcr.cz/covid-19>https://onemocneni-aktualne.mzcr.cz/covid-19</a>.<br/>
+            <h3><span class="medium_white">These models are based on elaborate (wink wink) data witch-doctory using observed Covid-19 growth rate in Czech republic and elsewhere.</span></h3>
+            <span class="small_white">Czech data taken from: <a href=https://onemocneni-aktualne.mzcr.cz/covid-19>https://onemocneni-aktualne.mzcr.cz/covid-19</a>.<br/>
+            <span class="small_white">Rest is from: <a href=https://github.com/CSSEGISandData/COVID-19>https://github.com/CSSEGISandData/COVID-19</a>.<br/><br/>
             Last change: <?php echo date("d/m/y H:i", $max); ?></span>
         </div>
     </div>

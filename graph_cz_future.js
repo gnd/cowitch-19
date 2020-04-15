@@ -88,6 +88,7 @@ window.cz_future_chart = new Chart(cz_future, {
         aspectRatio: aspect_ratio,
         title: {
             display: true,
+            fontSize: fontsize,
             text: ["Scenario: ", "Czech government decides to lift quarantine after Easter Monday 13.4.", "People start celebrating already on Friday 10.4 after the peak of the epidemy was announced, exhausted from the quarantine.", "During the following week infection rates slowly grow."]
         },
         scales: {
@@ -108,6 +109,7 @@ window.cz_future_chart = new Chart(cz_future, {
             display: true,
             onClick: legendCallback,
             labels: {
+                fontSize: fontsize,
                 // Show only first three labels
                 filter: function (legendItem, chartData) {
                     if (legendItem.datasetIndex < 3) {

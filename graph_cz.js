@@ -158,6 +158,7 @@ window.infected_chart = new Chart(infected_chart_cz, {
         aspectRatio: aspect_ratio,
         title: {
             display: true,
+            fontSize: fontsize,
             text: ["Confirmed and predicted cases of COVID-19 in Czech republic", "(click on the legend to show/hide data)"]
         },
         scales: {
@@ -179,14 +180,14 @@ window.infected_chart = new Chart(infected_chart_cz, {
             display: true,
             onClick: legendCallbackInfected,
             labels: {
+                fontSize: fontsize,
                 // Show only first three labels
                 filter: function (legendItem, chartData) {
                     if (legendItem.datasetIndex < 4) {
                         return (chartData.datasets[legendItem.datasetIndex].label)
                     }
-
                 },
-            }
+            },
         },
         annotation: {
             drawTime: 'afterDatasetsDraw',
@@ -350,6 +351,7 @@ window.growth_rate_chart = new Chart(growth_rate_chart_cz, {
         aspectRatio: aspect_ratio,
         title: {
             display: true,
+            fontSize: fontsize,
             text: ["Confirmed, average and predicted growth rate of COVID-19 in Czech republic", "(click on the legend to show/hide data)"]
         },
         scales: {
@@ -370,6 +372,7 @@ window.growth_rate_chart = new Chart(growth_rate_chart_cz, {
             display: true,
             onClick: legendCallbackGrowthRate,
             labels: {
+                fontSize: fontsize,
                 // Show only first three labels
                 filter: function (legendItem, chartData) {
                     if (legendItem.datasetIndex < 6) {
@@ -377,7 +380,7 @@ window.growth_rate_chart = new Chart(growth_rate_chart_cz, {
                     }
 
                 },
-            }
+            },
         },
         annotation: {
             drawTime: 'afterDatasetsDraw',

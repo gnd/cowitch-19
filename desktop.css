@@ -31,11 +31,7 @@ div.header {
     margin-left: 12.5%;
 }
 
-span.white {
-    background-color: white;
-}
-
-span.small_white {
+.white, .medium_white, .small_white {
     background-color: white;
 }
 

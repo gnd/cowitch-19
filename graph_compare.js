@@ -90,6 +90,7 @@ window.compare= new Chart(compare, {
         aspectRatio: aspect_ratio,
         title: {
             display: true,
+            fontSize: fontsize,
             text: ["Confirmed cases of COVID-19 in Singapore, Japan, Korea, Slovakia, Czechia, Italy, Greece", "Relative by first day of occurence", "(click on the legend to show/hide data)"]
         },
         scales: {
@@ -104,6 +105,9 @@ window.compare= new Chart(compare, {
         },
         legend: {
             display: true,
+            labels : {
+                fontSize: fontsize,
+            },
         },
     }
 });
@@ -203,6 +207,7 @@ window.compare_100= new Chart(compare_100, {
         aspectRatio: aspect_ratio,
         title: {
             display: true,
+            fontSize: fontsize,
             text: ["Confirmed cases of COVID-19 in Singapore, Japan, Korea, Slovakia, Czechia, Italy, Greece", "Relative by day of first 100 cases", "(click on the legend to show/hide data)"]
         },
         scales: {
@@ -217,6 +222,9 @@ window.compare_100= new Chart(compare_100, {
         },
         legend: {
             display: true,
+            labels: {
+                fontSize: fontsize,
+            },
         },
     }
 });
@@ -470,6 +478,7 @@ window.compare_growth_rates= new Chart(compare_100, {
         aspectRatio: aspect_ratio,
         title: {
             display: true,
+            fontSize: fontsize,
             text: ["Growth rates of COVID-19 in Japan, Czechia, Korea, Singapore, Italy, SLovakia", "Relative by day of first 100 cases", "(click on the legend to show/hide data)"]
         },
         scales: {
@@ -484,6 +493,9 @@ window.compare_growth_rates= new Chart(compare_100, {
         },
         legend: {
             display: true,
+            labels: {
+                fontSize: fontsize,
+            },
         },
     }
 });
