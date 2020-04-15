@@ -446,7 +446,11 @@ function run_model(params) {
 
                 // Total = New - recovered_daily - Died
                 total = infected - recovered_daily - deaths_daily;
-                model[params.name]['total'][jitter].push( total );
+                if (total > 0) {
+                    model[params.name]['total'][jitter].push( total );
+                } else {
+                    model[params.name]['total'][jitter].push( 0 );
+                }
 
                 // Susceptible = Susceptible[n-1] - infected - recovered - deaths
                 susceptible = model[params.name]['susceptible'][jitter][i-1] - infected_daily - recovered_daily - deaths_daily;

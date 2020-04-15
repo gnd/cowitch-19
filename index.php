@@ -274,42 +274,43 @@
     // Long-term modelling of Covid-19 in Czech republic
     var cz_future_2_seed = {};
     for (i=0; i<days_elapsed['cz']; i++) {
-        cz_future_2_seed[i] = seed['infected']['cz'][i]*10 ;
+        cz_future_2_seed[i] = seed['infected']['cz'][i]*2;
     }
-        rate_funcs = [];
-        // make the thing die out end of June
-        rate_funcs.push( new rate_func(
-            'old_log',                  // name
-            0,                          // start
-            300,                       // steps - just high enough here to last the whole time
-            500,                        // speed - formerly rate of slowdown
-            -1,                         // scale
-        ));
-        rate_funcs.push( new rate_func(
-            'exp',                  // name
-            71,                          // start
-            210,                       // steps
-            4,                        // speed - formerly rate of slowdown
-            0.2,                          // scale
-        ));
-        rate_funcs.push( new rate_func(
-            'log',                  // name
-            281,                          // start
-            60,                       // steps - just high enough here to last the whole time
-            10,                        // speed - formerly rate of slowdown
-            -2,                         // scale
-        ));
+    cz_future_2_seed[190] = 1; // Single sick person enters CZ on Sept 6th
+    rate_funcs = [];
+    // make the thing die out end of June
+    rate_funcs.push( new rate_func(
+        'old_log',                  // name
+        0,                          // start
+        300,                       // steps - just high enough here to last the whole time
+        500,                        // speed - formerly rate of slowdown
+        -1,                         // scale
+    ));
+    rate_funcs.push( new rate_func(
+        'exp',                  // name
+        71,                          // start
+        210,                       // steps
+        4,                        // speed - formerly rate of slowdown
+        0.2,                          // scale
+    ));
+    rate_funcs.push( new rate_func(
+        'log',                  // name
+        281,                          // start
+        60,                       // steps - just high enough here to last the whole time
+        10,                        // speed - formerly rate of slowdown
+        -2,                         // scale
+    ));
     var cz_future_2 = new params(
         'cz_future_2',
         500,
         seed['growth_rate']['cz'],
         1.02,                       // min possible growth rate
-        cz_future_2_seed,     // the confirmed cases so far
+        cz_future_2_seed,           // the confirmed cases so far
         50,                         // jitter count
-        JITTER_AMOUNT/10,            // jitter amount
-        'cz_latest',            // recovered distribution
-        'linton',               // deaths distribution
-        0.05,                      // case fatality rate (CFR)
+        JITTER_AMOUNT/10,           // jitter amount
+        'cz_latest',                // recovered distribution
+        'linton',                   // deaths distribution
+        0.05,                       // case fatality rate (CFR)
         rate_funcs,
         population_size['cz'],
     );

@@ -142,7 +142,7 @@ window.cz_future_long = new Chart(cz_future_long, {
         aspectRatio: aspect_ratio,
         title: {
             display: true,
-            text: ["Scenario (first use of SIER, still in progress):", "After virtually stopping during the summer, COVID-19 returns to Czechia in autumn 2020", "All population numbers are inflated by a factor of 10 to account for 'hidden infected'", "(click on the legend to show/hide data)"]
+            text: ["Scenario (first use of SIER, still in progress):", "After virtually stopping during the summer, COVID-19 returns to Czechia in autumn 2020", "All population numbers are inflated by a factor of 2 to account for 'hidden infected'", "(click on the legend to show/hide data)"]
         },
         scales: {
             xAxes: [{
@@ -163,7 +163,7 @@ window.cz_future_long = new Chart(cz_future_long, {
                     id: 'population',
                     position: 'right',
                     ticks: {
-                        min: 0,
+                        min: -1000,
                         sugestedMax: 1000,
                     }
                 },
@@ -207,6 +207,18 @@ window.cz_future_long = new Chart(cz_future_long, {
                 label: {
                     backgroundColor: "green",
                     content: "Quarantine end",
+                    enabled: true
+                },
+            }, {
+                type: 'line',
+                mode: 'vertical',
+                scaleID: 'x-axis-0',
+                value: 'Sep 1, 2020',
+                borderColor: 'green',
+                borderWidth: 2,
+                label: {
+                    backgroundColor: "green",
+                    content: "Borders opened for foreigners",
                     enabled: true
                 },
             }, {
