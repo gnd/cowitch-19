@@ -106,6 +106,8 @@
     extract_data(global_data, current_values, 'Japan', 'jp');
     extract_data(global_data, current_values, 'Singapore', 'sg');
     extract_data(global_data, current_values, 'Italy', 'it');
+    extract_data(global_data, current_values, 'Slovakia', 'sk');
+    extract_data(global_data, current_values, 'Greece', 'gr');
 
     // Fill initial stats for countries
     days_elapsed['cz'] = fill_initial(data, current_values, 'cz');
@@ -113,10 +115,8 @@
     days_elapsed['kr'] = fill_initial(data, current_values, 'kr');
     days_elapsed['sg'] = fill_initial(data, current_values, 'sg');
     days_elapsed['it'] = fill_initial(data, current_values, 'it');
-
-    // Create growth_rate seed and new cases seed for modelling
-    create_seeds(seed, days_elapsed, 'cz');
-    create_seeds(seed, days_elapsed, 'kr');
+    days_elapsed['sk'] = fill_initial(data, current_values, 'sk');
+    days_elapsed['gr'] = fill_initial(data, current_values, 'gr');
 
     // prepare values for compare_100
     prepare_100(current_values, 'cz');
@@ -124,6 +124,8 @@
     prepare_100(current_values, 'kr');
     prepare_100(current_values, 'sg');
     prepare_100(current_values, 'it');
+    prepare_100(current_values, 'sk');
+    prepare_100(current_values, 'gr');
 
     // prepare values for compare_growth_rates
     fill_initial(data, current_values, 'cz_100');
@@ -131,6 +133,8 @@
     fill_initial(data, current_values, 'kr_100');
     fill_initial(data, current_values, 'sg_100');
     fill_initial(data, current_values, 'it_100');
+    fill_initial(data, current_values, 'sk_100');
+    fill_initial(data, current_values, 'gr_100');
 
     // Prepare the model
     model = {};
@@ -140,6 +144,8 @@
     // What do we even model here ? Right, young padawan, nothing. This model has no claim to reality
     // The data we try to aproximate are imprecise, incomplete measurements, obtained with a dubious methodology and abysmal success rates.
     // Modelling Covid-19 is like trying to glimplse reality through a broken and distorted plastic mirror taken out from a trash heap..
+    // Create growth_rate seed and new cases seed for modelling
+    create_seeds(seed, days_elapsed, 'cz');
     rate_funcs = [];
     rate_funcs.push( new rate_func(
         'old_log',                  // name
@@ -310,9 +316,10 @@
     run_model( cz_future_2 );
     //console.log( model['cz_future_2'] );
 
-    // Once more model korea
+    // Model korea
     rateslice = {};
     newslice = {};
+    create_seeds(seed, days_elapsed, 'kr');
     for (i=0; i<38; i++) {
         rateslice[i] = seed['growth_rate']['kr'][i];
         newslice[i] = seed['infected']['kr'][i];

@@ -29,6 +29,9 @@ var pal_10 = palette('tol-rainbow', 10);
 // generate palette
 var pal_18 = palette('mpn65', 18);
 
+// generate palette
+var pal_21 = palette('mpn65', 21);
+
 // generate labels
 function gen_days(start_day, start_month, count) {
     var labels = [];

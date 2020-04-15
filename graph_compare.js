@@ -56,6 +56,28 @@ dataset.push( {
     tension: 0,
     fill: false
 } );
+dataset.push( {
+    label: 'Slovakia',
+    data: current_values['sk'],
+    spanGaps: true,
+    borderWidth: 3,
+    borderColor: '#' + pal_8_sol[dataset.length],
+    pointStyle: 'circle',
+    pointBorderColor:  '#' + pal_8_sol[dataset.length],
+    tension: 0,
+    fill: false
+} );
+dataset.push( {
+    label: 'Greece',
+    data: current_values['gr'],
+    spanGaps: true,
+    borderWidth: 3,
+    borderColor: '#' + pal_8_sol[dataset.length],
+    pointStyle: 'circle',
+    pointBorderColor:  '#' + pal_8_sol[dataset.length],
+    tension: 0,
+    fill: false
+} );
 
 // The infected chart
 window.compare= new Chart(compare, {
@@ -68,7 +90,7 @@ window.compare= new Chart(compare, {
         aspectRatio: aspect_ratio,
         title: {
             display: true,
-            text: ["Confirmed cases of COVID-19 in Japan, Czechia, Korea", "Relative by first day of occurence", "(click on the legend to show/hide data)"]
+            text: ["Confirmed cases of COVID-19 in Singapore, Japan, Korea, Slovakia, Czechia, Italy, Greece", "Relative by first day of occurence", "(click on the legend to show/hide data)"]
         },
         scales: {
             xAxes: [{
@@ -147,6 +169,28 @@ dataset.push( {
     tension: 0,
     fill: false
 } );
+dataset.push( {
+    label: 'Slovakia',
+    data: current_values['sk_100'],
+    spanGaps: true,
+    borderWidth: 3,
+    borderColor: '#' + pal_8_sol[dataset.length],
+    pointStyle: 'circle',
+    pointBorderColor:  '#' + pal_8_sol[dataset.length],
+    tension: 0,
+    fill: false
+} );
+dataset.push( {
+    label: 'Greece',
+    data: current_values['gr_100'],
+    spanGaps: true,
+    borderWidth: 3,
+    borderColor: '#' + pal_8_sol[dataset.length],
+    pointStyle: 'circle',
+    pointBorderColor:  '#' + pal_8_sol[dataset.length],
+    tension: 0,
+    fill: false
+} );
 
 // The compare_100 chart
 window.compare_100= new Chart(compare_100, {
@@ -159,7 +203,7 @@ window.compare_100= new Chart(compare_100, {
         aspectRatio: aspect_ratio,
         title: {
             display: true,
-            text: ["Confirmed cases of COVID-19 in Japan, Czechia, Korea, Singapore, Italy", "Relative by day of first 100 cases", "(click on the legend to show/hide data)"]
+            text: ["Confirmed cases of COVID-19 in Singapore, Japan, Korea, Slovakia, Czechia, Italy, Greece", "Relative by day of first 100 cases", "(click on the legend to show/hide data)"]
         },
         scales: {
             xAxes: [{
@@ -188,9 +232,9 @@ dataset.push( {
     data: data['cz_100']['growth_rate'],
     spanGaps: true,
     borderWidth: 3,
-    borderColor: '#' + pal_18[0],
+    borderColor: '#' + pal_21[0],
     pointStyle: 'circle',
-    pointBorderColor:  '#' + pal_18[dataset.length],
+    pointBorderColor:  '#' + pal_21[dataset.length],
     tension: 0.2,
     fill: false
 } );
@@ -199,9 +243,9 @@ dataset.push( {
     data: data['cz_100']['growth_rate_avg'],
     spanGaps: true,
     borderWidth: 2,
-    borderColor: '#' + pal_18[dataset.length],
+    borderColor: '#' + pal_21[dataset.length],
     pointStyle: 'circle',
-    pointBorderColor:  '#' + pal_18[dataset.length],
+    pointBorderColor:  '#' + pal_21[dataset.length],
     tension: 0.2,
     fill: false
 } );
@@ -210,9 +254,9 @@ dataset.push( {
     data: data['cz_100']['growth_rate_avg_7'],
     spanGaps: true,
     borderWidth: 2,
-    borderColor: '#' + pal_18[dataset.length],
+    borderColor: '#' + pal_21[dataset.length],
     pointStyle: 'circle',
-    pointBorderColor:  '#' + pal_18[dataset.length],
+    pointBorderColor:  '#' + pal_21[dataset.length],
     tension: 0.2,
     fill: false
 } );
@@ -221,9 +265,9 @@ dataset.push( {
     data: data['jp_100']['growth_rate'],
     spanGaps: true,
     borderWidth: 3,
-    borderColor: '#' + pal_18[dataset.length],
+    borderColor: '#' + pal_21[dataset.length],
     pointStyle: 'circle',
-    pointBorderColor:  '#' + pal_18[dataset.length],
+    pointBorderColor:  '#' + pal_21[dataset.length],
     tension: 0.2,
     fill: false
 } );
@@ -232,9 +276,9 @@ dataset.push( {
     data: data['jp_100']['growth_rate_avg'],
     spanGaps: true,
     borderWidth: 2,
-    borderColor: '#' + pal_18[dataset.length],
+    borderColor: '#' + pal_21[dataset.length],
     pointStyle: 'circle',
-    pointBorderColor:  '#' + pal_18[dataset.length],
+    pointBorderColor:  '#' + pal_21[dataset.length],
     tension: 0.2,
     fill: false
 } );
@@ -243,9 +287,9 @@ dataset.push( {
     data: data['jp_100']['growth_rate_avg_7'],
     spanGaps: true,
     borderWidth: 2,
-    borderColor: '#' + pal_18[dataset.length],
+    borderColor: '#' + pal_21[dataset.length],
     pointStyle: 'circle',
-    pointBorderColor:  '#' + pal_18[dataset.length],
+    pointBorderColor:  '#' + pal_21[dataset.length],
     tension: 0.2,
     fill: false
 } );
@@ -254,9 +298,9 @@ dataset.push( {
     data: data['sg_100']['growth_rate'],
     spanGaps: true,
     borderWidth: 3,
-    borderColor: '#' + pal_18[dataset.length],
+    borderColor: '#' + pal_21[dataset.length],
     pointStyle: 'circle',
-    pointBorderColor:  '#' + pal_18[dataset.length],
+    pointBorderColor:  '#' + pal_21[dataset.length],
     tension: 0.2,
     fill: false
 } );
@@ -265,9 +309,9 @@ dataset.push( {
     data: data['sg_100']['growth_rate_avg'],
     spanGaps: true,
     borderWidth: 2,
-    borderColor: '#' + pal_18[dataset.length],
+    borderColor: '#' + pal_21[dataset.length],
     pointStyle: 'circle',
-    pointBorderColor:  '#' + pal_18[dataset.length],
+    pointBorderColor:  '#' + pal_21[dataset.length],
     tension: 0.2,
     fill: false
 } );
@@ -276,9 +320,9 @@ dataset.push( {
     data: data['sg_100']['growth_rate_avg_7'],
     spanGaps: true,
     borderWidth: 2,
-    borderColor: '#' + pal_18[dataset.length],
+    borderColor: '#' + pal_21[dataset.length],
     pointStyle: 'circle',
-    pointBorderColor:  '#' + pal_18[dataset.length],
+    pointBorderColor:  '#' + pal_21[dataset.length],
     tension: 0.2,
     fill: false
 } );
@@ -287,9 +331,9 @@ dataset.push( {
     data: data['kr_100']['growth_rate'],
     spanGaps: true,
     borderWidth: 3,
-    borderColor: '#' + pal_18[dataset.length],
+    borderColor: '#' + pal_21[dataset.length],
     pointStyle: 'circle',
-    pointBorderColor:  '#' + pal_18[dataset.length],
+    pointBorderColor:  '#' + pal_21[dataset.length],
     tension: 0.2,
     fill: false
 } );
@@ -298,9 +342,9 @@ dataset.push( {
     data: data['kr_100']['growth_rate_avg'],
     spanGaps: true,
     borderWidth: 2,
-    borderColor: '#' + pal_18[dataset.length],
+    borderColor: '#' + pal_21[dataset.length],
     pointStyle: 'circle',
-    pointBorderColor:  '#' + pal_18[dataset.length],
+    pointBorderColor:  '#' + pal_21[dataset.length],
     tension: 0.2,
     fill: false
 } );
@@ -309,9 +353,9 @@ dataset.push( {
     data: data['kr_100']['growth_rate_avg_7'],
     spanGaps: true,
     borderWidth: 2,
-    borderColor: '#' + pal_18[dataset.length],
+    borderColor: '#' + pal_21[dataset.length],
     pointStyle: 'circle',
-    pointBorderColor:  '#' + pal_18[dataset.length],
+    pointBorderColor:  '#' + pal_21[dataset.length],
     tension: 0.2,
     fill: false
 } );
@@ -320,9 +364,9 @@ dataset.push( {
     data: data['it_100']['growth_rate'],
     spanGaps: true,
     borderWidth: 3,
-    borderColor: '#' + pal_18[dataset.length],
+    borderColor: '#' + pal_21[dataset.length],
     pointStyle: 'circle',
-    pointBorderColor:  '#' + pal_18[dataset.length],
+    pointBorderColor:  '#' + pal_21[dataset.length],
     tension: 0.2,
     fill: false
 } );
@@ -331,9 +375,9 @@ dataset.push( {
     data: data['it_100']['growth_rate_avg'],
     spanGaps: true,
     borderWidth: 2,
-    borderColor: '#' + pal_18[dataset.length],
+    borderColor: '#' + pal_21[dataset.length],
     pointStyle: 'circle',
-    pointBorderColor:  '#' + pal_18[dataset.length],
+    pointBorderColor:  '#' + pal_21[dataset.length],
     tension: 0.2,
     fill: false
 } );
@@ -342,9 +386,75 @@ dataset.push( {
     data: data['it_100']['growth_rate_avg_7'],
     spanGaps: true,
     borderWidth: 2,
-    borderColor: '#' + pal_18[dataset.length],
+    borderColor: '#' + pal_21[dataset.length],
     pointStyle: 'circle',
-    pointBorderColor:  '#' + pal_18[dataset.length],
+    pointBorderColor:  '#' + pal_21[dataset.length],
+    tension: 0.2,
+    fill: false
+} );
+dataset.push( {
+    label: 'SK',
+    data: data['sk_100']['growth_rate'],
+    spanGaps: true,
+    borderWidth: 3,
+    borderColor: '#' + pal_21[dataset.length],
+    pointStyle: 'circle',
+    pointBorderColor:  '#' + pal_21[dataset.length],
+    tension: 0.2,
+    fill: false
+} );
+dataset.push( {
+    label: 'SK Avg',
+    data: data['sk_100']['growth_rate_avg'],
+    spanGaps: true,
+    borderWidth: 2,
+    borderColor: '#' + pal_21[dataset.length],
+    pointStyle: 'circle',
+    pointBorderColor:  '#' + pal_21[dataset.length],
+    tension: 0.2,
+    fill: false
+} );
+dataset.push( {
+    label: 'SK Avg 7',
+    data: data['sk_100']['growth_rate_avg_7'],
+    spanGaps: true,
+    borderWidth: 2,
+    borderColor: '#' + pal_21[dataset.length],
+    pointStyle: 'circle',
+    pointBorderColor:  '#' + pal_21[dataset.length],
+    tension: 0.2,
+    fill: false
+} );
+dataset.push( {
+    label: 'GR',
+    data: data['gr_100']['growth_rate'],
+    spanGaps: true,
+    borderWidth: 3,
+    borderColor: '#' + pal_21[dataset.length],
+    pointStyle: 'circle',
+    pointBorderColor:  '#' + pal_21[dataset.length],
+    tension: 0.2,
+    fill: false
+} );
+dataset.push( {
+    label: 'GR Avg',
+    data: data['gr_100']['growth_rate_avg'],
+    spanGaps: true,
+    borderWidth: 2,
+    borderColor: '#' + pal_21[dataset.length],
+    pointStyle: 'circle',
+    pointBorderColor:  '#' + pal_21[dataset.length],
+    tension: 0.2,
+    fill: false
+} );
+dataset.push( {
+    label: 'GR Avg 7',
+    data: data['gr_100']['growth_rate_avg_7'],
+    spanGaps: true,
+    borderWidth: 2,
+    borderColor: '#' + pal_21[dataset.length],
+    pointStyle: 'circle',
+    pointBorderColor:  '#' + pal_21[dataset.length],
     tension: 0.2,
     fill: false
 } );
@@ -360,7 +470,7 @@ window.compare_growth_rates= new Chart(compare_100, {
         aspectRatio: aspect_ratio,
         title: {
             display: true,
-            text: ["Growth rates of COVID-19 in Japan, Czechia, Korea, Singapore, Italy", "Relative by day of first 100 cases", "(click on the legend to show/hide data)"]
+            text: ["Growth rates of COVID-19 in Japan, Czechia, Korea, Singapore, Italy, SLovakia", "Relative by day of first 100 cases", "(click on the legend to show/hide data)"]
         },
         scales: {
             xAxes: [{
