@@ -117,7 +117,7 @@ dataset.push( {
 window.korea_test= new Chart(compare, {
     type: 'line',
     data: {
-        labels: gen_days_relative(MAXDAYS),
+        labels: gen_days_relative(120),
         datasets: dataset,
     },
     options: {

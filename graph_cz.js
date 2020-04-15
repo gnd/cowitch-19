@@ -343,7 +343,7 @@ for (i=0; i<JITTER_COUNT; i++) {
 window.growth_rate_chart = new Chart(growth_rate_chart_cz, {
     type: 'line',
     data: {
-        labels: gen_days(0, 2, 60),
+        labels: gen_days(0, 2, 80),
         datasets: growth_rate_dataset,
     },
     options: {
@@ -361,7 +361,7 @@ window.growth_rate_chart = new Chart(growth_rate_chart_cz, {
             }],
             yAxes: [{
                 ticks: {
-                    min: 0,
+                    min: 1,
                     max: 2.5,
                 }
             }]

@@ -136,7 +136,6 @@
 
     // Prepare the model
     model = {};
-    MAXDAYS = 90;
     JITTER_COUNT = 50;
     JITTER_AMOUNT = 0.015;
 
@@ -225,19 +224,19 @@
     //
     // We take as a basis the cz_a model from above, seed some additional values
     // and reduce jitter fourfold (too much noise)
-    day = 42;
+    day = 42+5;     // it shows a week later
     seed_tmp = [];
     for (i=0; i<days_elapsed['cz']; i++) {
         seed_tmp.push( seed['growth_rate']['cz'][i] );
     }
-    seed_tmp[day] = 1.07;
-    seed_tmp[day+1] = 1.08;
-    seed_tmp[day+2] = 1.09;
-    seed_tmp[day+3] = 1.10;
-    seed_tmp[day+4] = 1.11;
-    seed_tmp[day+5] = 1.12;
-    seed_tmp[day+6] = 1.13;
-    seed_tmp[day+7] = 1.14;
+    seed_tmp[day] = 1.03;
+    seed_tmp[day+1] = 1.04;
+    seed_tmp[day+2] = 1.05;
+    seed_tmp[day+3] = 1.06;
+    seed_tmp[day+4] = 1.07;
+    seed_tmp[day+5] = 1.08;
+    seed_tmp[day+6] = 1.09;
+    seed_tmp[day+7] = 1.10;
     rate_funcs = [];
     rate_funcs.push( new rate_func(
         'old_log',                  // name
@@ -250,10 +249,10 @@
         'cz_future_1',
         123,
         seed_tmp,
-        1.02,                   // min possible growth rate
-        seed['infected']['cz'],      // the confirmed cases so far
-        JITTER_COUNT,           // jitter count
-        JITTER_AMOUNT/4,        // jitter amount
+        1.02,                       // min possible growth rate
+        seed['infected']['cz'],     // the confirmed cases so far
+        JITTER_COUNT,               // jitter count
+        JITTER_AMOUNT/4,            // jitter amount
         'healthy_new',
         'dead_new',
         rate_funcs,
