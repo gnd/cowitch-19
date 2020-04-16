@@ -161,13 +161,15 @@ function lin(x, steps, speed, scale) {
 
 // New rate control functions - log ramp
 function log(x, steps, speed, scale) {
-    x = (x)*speed;
+    var xp = (x-1)*speed;
+    var xc = (x)*speed;
     if (x > 0) {
-        return (Math.log(x+1) / Math.log(steps*speed+1) * scale) - (Math.log(x) / Math.log(steps*speed+1) * scale);
+        prev = Math.log(xp+1) / Math.log(steps*speed+1);
+        curr = Math.log(xc+1) / Math.log(steps*speed+1);
+        return (curr - prev) * scale;
     } else {
         return Math.log(x+1) / Math.log(steps*speed+1) * scale;
     }
-
 }
 
 // New rate control functions - exponential ramp
@@ -437,6 +439,15 @@ function run_model(params) {
                     for (var j=40; j>16; j--) { // Create and fill the daily array slice starting at current day - 34 and ending at current day - 11
                         if (i-j > 0) {
                             daily_slice[40-j] = model[params.name]['infected_daily'][jitter][i-j];
+                        }
+                    }
+                    recovered_daily = get_recovered_new(daily_slice, params.cfr);
+                }
+                if (params.health_func == 'kr_latest') {
+                    daily_slice = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
+                    for (var j=38; j>14; j--) { // Create and fill the daily array slice starting at current day - 34 and ending at current day - 11
+                        if (i-j > 0) {
+                            daily_slice[38-j] = model[params.name]['infected_daily'][jitter][i-j];
                         }
                     }
                     recovered_daily = get_recovered_new(daily_slice, params.cfr);
