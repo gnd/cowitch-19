@@ -21,13 +21,13 @@
 <meta property="og:image:secure_url" content="https://co.witch19.space/corona-chan-black.jpg" />
 
 <!--TODO:
-- check for Korean CFR & tune Korean health func
-- add some kind of probabilistic infection to SIER (the less people are susceptible, the harder it is to infect someone)
 - verify math on rate functors, they are a bit shabby
 - simplify functor math
+- parametrize the recvered function (days delay)
 - automate czech data retrieval
-- add tables to graphs
 - add descriptions to graphs
+- add tables to graphs
+- add some kind of probabilistic infection to SIER (the less people are susceptible, the harder it is to infect someone)
 - add interface to change params from web
 - how to correctly estimate slow-down rate ?
 -->
@@ -308,15 +308,15 @@
         'exp',                  // name
         71,                          // start
         192,                       // steps
-        4,                        // speed - formerly rate of slowdown
-        0.2,                          // scale
+        6.5,                        // speed - formerly rate of slowdown
+        0.4,                          // scale
     ));
     rate_funcs.push( new rate_func(
         'log',                  // name
-        263,                          // start
-        60,                       // steps
-        10,                        // speed - formerly rate of slowdown
-        -3,                         // scale
+        263,                     // start
+        40,                       // steps
+        1,                        // speed - formerly rate of slowdown
+        -0.4,                         // scale
     ));
     var cz_future_2 = new params(
         'cz_future_2',
@@ -356,13 +356,13 @@
         'model_kr2',
         150,
         rateslice,
-        1.027,                  // min possible growth rate
+        1.025,                  // min possible growth rate
         newslice,               // the confirmed cases so far
         JITTER_COUNT,           // jitter count
         JITTER_AMOUNT/2,        // jitter amount
-        'healthy_new',
-        'dead_new',
-        0.0135,                      // FIXME
+        'kr_latest',
+        'linton',
+        0.02,
         rate_funcs,
         population_size['cz'], // FIXME - foobar
     );
