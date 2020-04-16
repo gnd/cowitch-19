@@ -22,7 +22,7 @@
 //
 // For easier handling, we send in an array of daily infected people starting 34 days before,
 // and ending 11 days before the day we try to compute number of healed persons
-function healthy(arr) {
+function get_recovered(arr) {
     sum = 0;
     sum += 0.01 * arr[0]; // day 34
     sum += 0.01 * arr[1];
@@ -51,7 +51,8 @@ function healthy(arr) {
     return sum;
 }
 
-function healthy_new(arr) {
+// recovered is normalized to 100%, we need scale it down to 1-CFR
+function get_recovered_new(arr, cfr) {
     sum = 0;
     sum += 0.01 * arr[0]; // day 34
     sum += 0.01 * arr[1];
@@ -77,19 +78,19 @@ function healthy_new(arr) {
     sum += 0.02 * arr[21];
     sum += 0.02 * arr[22];
     sum += 0.01 * arr[23];  // day 11
-    return sum;
+    return sum * (1-cfr;)
 }
 
 // See above
 // Scaled to 1%
-function dead_new(arr) {
+function get_dead_new(arr, cfr) {
     sum = 0;
     sum += 0.0027 * arr[0]; // day 11
     sum += 0.0027 * arr[1];
     sum += 0.0027 * arr[2];
     sum += 0.0027 * arr[3];
     sum += 0.0027 * arr[4]; // day 7
-    return sum;
+    return sum * cfr * 100;
 }
 
 
@@ -97,7 +98,7 @@ function dead_new(arr) {
 // Linton et al - Incubation Period and Other Epidemiological Characteristics of 2019 Novel Coronavirus Infections with Right Truncation: A Statistical Analysis of Publicly Available Case Data
 // DOI 10.3390/jcm9020538
 // Scaled to 1%
-function dead_linton(arr) {
+function get_dead_linton(arr, cfr) {
     sum = 0;
     sum += 0.0025 * 0.01895735 * arr[0]; // day 27
     sum += 0.0025 * 0.01895735 * arr[1];
@@ -121,7 +122,7 @@ function dead_linton(arr) {
     sum += 0.025 * 0.01895735 * arr[19];
     sum += 0.01 * 0.01895735 * arr[20];
     sum += 0.005 * 0.01895735 * arr[21]; // day 6
-    return sum;
+    return sum * cfr * 100;
 }
 
 // Get maximum value for array
@@ -422,7 +423,7 @@ function run_model(params) {
                             daily_slice[36-j] = model[params.name]['infected_daily'][jitter][i-j];
                         }
                     }
-                    recovered_daily = healthy_new(daily_slice);
+                    recovered_daily = get_recovered_new(daily_slice, params.cfr);
                 }
                 if (params.health_func == 'cz_latest') {
                     daily_slice = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
@@ -431,10 +432,9 @@ function run_model(params) {
                             daily_slice[40-j] = model[params.name]['infected_daily'][jitter][i-j];
                         }
                     }
-                    recovered_daily = healthy_new(daily_slice);
+                    recovered_daily = get_recovered_new(daily_slice, params.cfr);
                 }
-                // recovered daily is normalized to 100%, we need scale it down to 1-CFR
-                recovered += recovered_daily * (1-params.cfr);
+                recovered += recovered_daily;
                 model[params.name]['recovered_daily'][jitter].push( recovered_daily );
                 model[params.name]['recovered'][jitter].push( recovered );
 
@@ -446,7 +446,7 @@ function run_model(params) {
                             daily_slice[11-j] = model[params.name]['infected_daily'][jitter][i-j];
                         }
                     }
-                    deaths_daily = dead_new(daily_slice);
+                    deaths_daily = get_dead_new(daily_slice, params.cfr);
                 }
                 if (params.dead_func == 'linton') {
                     // Create and fill the daily array slice starting at current day - 27 and ending at current day - 6
@@ -456,9 +456,9 @@ function run_model(params) {
                             daily_slice[27-j] = model[params.name]['infected_daily'][jitter][i-j];
                         }
                     }
-                    deaths_daily = dead_linton(daily_slice);
+                    deaths_daily = get_dead_linton(daily_slice, params.cfr);
                 }
-                deaths += deaths_daily * params.cfr * 100;
+                deaths += deaths_daily;
                 model[params.name]['deaths_daily'][jitter].push( deaths_daily );
                 model[params.name]['deaths'][jitter].push( deaths );
 
