@@ -78,7 +78,7 @@ function get_recovered_new(arr, cfr) {
     sum += 0.02 * arr[21];
     sum += 0.02 * arr[22];
     sum += 0.01 * arr[23];  // day 11
-    return sum * (1-cfr;)
+    return sum * (1-cfr);
 }
 
 // See above
