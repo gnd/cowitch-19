@@ -56,8 +56,22 @@ dataset.push( {
     fill: false
 } );
 dataset.push( {
-    label: 'Infected - Projected',
+    label: 'All Infected - Projected',
     data: model['cz_future_2']['total']['avg'],
+    yAxisID: 'population',
+    spanGaps: true,
+    borderWidth: 2,
+    radius: 0,
+    borderColor: '#' + pal_10[5],
+    pointStyle: 'circle',
+    borderDash: [5, 5],
+    pointBorderColor:  '#' + pal_10[5],
+    tension: 0.2,
+    fill: false
+} );
+dataset.push( {
+    label: 'Reported Infected - Projected',
+    data: model['cz_future_2']['total_reported']['avg'],
     yAxisID: 'population',
     spanGaps: true,
     borderWidth: 3,
@@ -164,8 +178,8 @@ window.cz_future_long = new Chart(cz_future_long, {
                     id: 'population',
                     position: 'right',
                     ticks: {
-                        min: -1000,
-                        sugestedMax: 1000,
+                        min: 0,
+                        Max: 5200000,
                     }
                 },
             ]
@@ -197,7 +211,8 @@ window.cz_future_long = new Chart(cz_future_long, {
                 label: {
                     backgroundColor: "red",
                     content: "Quarantine start",
-                    enabled: true
+                    enabled: true,
+                    position: "top",
                 },
             }, {
                 type: 'line',
@@ -209,31 +224,21 @@ window.cz_future_long = new Chart(cz_future_long, {
                 label: {
                     backgroundColor: "green",
                     content: "Quarantine end",
-                    enabled: true
+                    enabled: true,
+                    position: "top",
                 },
             }, {
                 type: 'line',
                 mode: 'vertical',
                 scaleID: 'x-axis-0',
-                value: 'Sep 1, 2020',
-                borderColor: 'green',
-                borderWidth: 2,
-                label: {
-                    backgroundColor: "green",
-                    content: "Borders opened for foreigners",
-                    enabled: true
-                },
-            }, {
-                type: 'line',
-                mode: 'vertical',
-                scaleID: 'x-axis-0',
-                value: 'Dec 1, 2020',
+                value: 'Nov 12, 2020',
                 borderColor: 'green',
                 borderWidth: 2,
                 label: {
                     backgroundColor: "red",
                     content: "Quarantine start II",
-                    enabled: true
+                    enabled: true,
+                    position: "top",
                 },
             }]
         },

@@ -287,21 +287,25 @@ function get_average_jitter(params) {
     model[params.name]['growth_rate']['avg'] = [];
     model[params.name]['recovered']['avg'] = [];
     model[params.name]['total']['avg'] = [];
+    model[params.name]['total_reported']['avg'] = [];
     model[params.name]['deaths']['avg'] = [];
     for (i=0; i<params.model_duration; i++) {
         rate = 0;
         total = 0;
+        total_reported = 0;
         deaths = 0;
         recovered = 0;
         for (j=0; j<params.jitter_count; j++) {
             rate += model[params.name]['growth_rate'][j][i];
             recovered += model[params.name]['recovered'][j][i];
             total += model[params.name]['total'][j][i];
+            total_reported += model[params.name]['total_reported'][j][i];
             deaths += model[params.name]['deaths'][j][i];
         }
         model[params.name]['growth_rate']['avg'].push( rate / params.jitter_count );
         model[params.name]['recovered']['avg'].push( recovered / params.jitter_count );
         model[params.name]['total']['avg'].push( total / params.jitter_count );
+        model[params.name]['total_reported']['avg'].push( total_reported / params.jitter_count );
         model[params.name]['deaths']['avg'].push( deaths / params.jitter_count );
     }
 }
@@ -316,7 +320,7 @@ function rate_func(name, start, steps, speed, scale) {
 }
 
 // Sort of struct emulation in js - model prameters
-function params(name, model_duration, growth_rate_seed, growth_rate_min, infected_seed, jitter_count, jitter_amount, health_func, dead_func, cfr, rate_funcs, population_size) {
+function params(name, model_duration, growth_rate_seed, growth_rate_min, infected_seed, jitter_count, jitter_amount, health_func, dead_func, cfr, rate_funcs, population_size, real_to_reported) {
     this.name = name;
     this.model_duration = model_duration;
     this.irs = growth_rate_seed;
@@ -329,6 +333,7 @@ function params(name, model_duration, growth_rate_seed, growth_rate_min, infecte
     this.cfr = cfr;
     this.rate_funcs = rate_funcs;
     this.population_size = population_size;
+    this.reported_ratio = real_to_reported;
 }
 
 function run_model(params) {
@@ -344,6 +349,7 @@ function run_model(params) {
     model[params.name]['deaths'] = {};
     model[params.name]['deaths_daily'] = {};
     model[params.name]['total'] = {};
+    model[params.name]['total_reported'] = {};
 
     for (jitter=0; jitter<params.jitter_count; jitter++) {
 
@@ -358,6 +364,7 @@ function run_model(params) {
         model[params.name]['deaths'][jitter] = [0];
         model[params.name]['deaths_daily'][jitter] = [0];
         model[params.name]['total'][jitter] = [0];
+        model[params.name]['total_reported'][jitter] = [0];
 
         // seed & compute growth rate
         for (var i=0; i < params.model_duration; i++) {
@@ -464,10 +471,13 @@ function run_model(params) {
 
                 // Total = New - recovered_daily - Died
                 total = infected - recovered_daily - deaths_daily;
+                var total_reported = total / params.reported_ratio;
                 if (total > 0) {
                     model[params.name]['total'][jitter].push( total );
+                    model[params.name]['total_reported'][jitter].push( total_reported );
                 } else {
                     model[params.name]['total'][jitter].push( 0 );
+                    model[params.name]['total_reported'][jitter].push( 0 );
                 }
 
                 // Susceptible = Susceptible[n-1] - infected - recovered - deaths

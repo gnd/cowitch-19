@@ -68,3 +68,34 @@ div.bottom_nav {
     background-color: rgba(255,255,255,0.85);
     float: left;
 }
+
+/*////////////////////////////////// Slider style //////////////////////////*/
+
+.slidecontainer {
+  width: 100%;
+}
+
+.slider {
+ // -webkit-appearance: none;
+  //appearance: none;
+  width: 100%;
+  height: 15px;
+  background: #ffffff;
+  outline: none;
+}
+
+.slider::-webkit-slider-thumb {
+  //-webkit-appearance: none;
+ // appearance: none;
+  width: 25px;
+  height: 15px;
+  background: #4CAF50;
+  cursor: pointer
+}
+
+.slider::-moz-range-thumb {
+  width: 25px;
+  height: 15px;
+  background: #4CAF50;
+  cursor: pointer;
+}

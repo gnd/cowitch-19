@@ -89,7 +89,7 @@ window.cz_future_chart = new Chart(cz_future, {
         title: {
             display: true,
             fontSize: fontsize,
-            text: ["Scenario: ", "Czech government decides to lift quarantine after Easter Monday 13.4.", "People start celebrating already on Friday 10.4 after the peak of the epidemy was announced, exhausted from the quarantine.", "During the following week infection rates slowly grow."]
+            text: ["Scenario (29.03.2020)", "Czech government decides to lift quarantine after Easter Monday 13.4.", "People start celebrating already on Friday 10.4 after the peak of the epidemy was announced, exhausted from the quarantine.", "During the following week infection rates slowly grow."]
         },
         scales: {
             xAxes: [{

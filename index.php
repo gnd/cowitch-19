@@ -21,8 +21,6 @@
 <meta property="og:image:secure_url" content="https://co.witch19.space/corona-chan-black.jpg" />
 
 <!--TODO:
-- implement a graph estimating real infected numbers https://www.scmp.com/news/china/society/article/3076323/third-coronavirus-cases-may-be-silent-carriers-classified
-    - use also https://www.cssz.cz/web/cz/nemocenska-statistika#section_5
 - check for Korean CFR & tune Korean health func
 - add some kind of probabilistic infection to SIER (the less people are susceptible, the harder it is to infect someone)
 - verify math on rate functors, they are a bit shabby
@@ -292,10 +290,11 @@
     // Scenario:
     // Long-term modelling of Covid-19 in Czech republic
     var cz_future_2_seed = {};
+    var reported_ratio = 1.75;
     for (i=0; i<days_elapsed['cz']; i++) {
-        cz_future_2_seed[i] = seed['infected']['cz'][i]*2;
+        cz_future_2_seed[i] = seed['infected']['cz'][i] * reported_ratio;
     }
-    cz_future_2_seed[190] = 1; // Single sick person enters CZ on Sept 6th
+    //cz_future_2_seed[190] = 1; // Single sick person enters CZ on Sept 6th
     rate_funcs = [];
     // make the thing die out end of June
     rate_funcs.push( new rate_func(
@@ -308,30 +307,31 @@
     rate_funcs.push( new rate_func(
         'exp',                  // name
         71,                          // start
-        210,                       // steps
+        192,                       // steps
         4,                        // speed - formerly rate of slowdown
         0.2,                          // scale
     ));
     rate_funcs.push( new rate_func(
         'log',                  // name
-        281,                          // start
-        60,                       // steps - just high enough here to last the whole time
+        263,                          // start
+        60,                       // steps
         10,                        // speed - formerly rate of slowdown
-        -2,                         // scale
+        -3,                         // scale
     ));
     var cz_future_2 = new params(
         'cz_future_2',
         500,
         seed['growth_rate']['cz'],
-        1.02,                       // min possible growth rate
+        1.01,                       // min possible growth rate
         cz_future_2_seed,           // the confirmed cases so far
         50,                         // jitter count
-        JITTER_AMOUNT/10,           // jitter amount
+        JITTER_AMOUNT/20,           // jitter amount
         'cz_latest',                // recovered distribution
         'linton',                   // deaths distribution
-        0.05,                       // case fatality rate (CFR)
+        0.05/reported_ratio,        // infection fatality rate (current best CFR / reported_ratio)
         rate_funcs,
         population_size['cz'],
+        reported_ratio,             // real-to-reported ratio.
     );
     run_model( cz_future_2 );
     //console.log( model['cz_future_2'] );
@@ -444,7 +444,11 @@
         <div class="graph_filler">&nbsp;</div>
         <div class="canvas_container">
             <canvas id="canvas_cz_future_long" class="graph"></canvas>
+            <div class="slidecontainer">
+      <input type="range" min="1" max="10000" value="50" class="slider" id="myRange">
+    </div>
             <a class="link" href="https://co.witch19.space#cz_future_2">link</a>
+
         </div>
         <br class="clear"/>
     </div>
@@ -503,6 +507,16 @@
 <script>
     // detect if mobile or desktop
     detect_client();
+
+    // slider
+    var slider = document.getElementById("myRange");
+
+    // Update the current slider value (each time you drag the slider handle)
+    slider.oninput = function() {
+        chart = window.cz_future_long;
+        chart.options.scales.yAxes[1].ticks.max= slider.value*1000;
+        chart.update(0);
+    }
 </script>
 <!-- GRAPH CZ -->
 <script src="graph_cz.js?v=<?php echo filemtime($cwd . 'graph_cz.js'); ?>"></script>
