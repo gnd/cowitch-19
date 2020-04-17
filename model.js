@@ -204,7 +204,7 @@ function old_log(day, steps, speed, scale) {
 //      seven day rolling average of growth_rate
 //
 //  These data are used to seed the model
-function fill_initial(arr, values, name, hundred) {
+function fill_initial(arr, values, name, offset = 0) {
     // prepare the arrays
     arr[name] = {}
     arr[name]['infected'] = []; // infected = confirmed - recovered - dead
@@ -214,8 +214,8 @@ function fill_initial(arr, values, name, hundred) {
     arr[name]['growth_rate_avg_7'] = [];
 
     // seed the arr[name]ays
-    arr[name]['infected'] = values[name];  // infected = confirmed - recovered - dead
-    arr[name]['confirmed'] = values[name+'_confirmed'];
+    arr[name]['infected'] = values[name].slice(offset);  // infected = confirmed - recovered - dead
+    arr[name]['confirmed'] = values[name+'_confirmed'].slice(offset);
     arr[name]['growth_rate'].push( 1 );
     arr[name]['growth_rate_avg'].push( 1 );
     arr[name]['growth_rate_avg_7'].push( 1 );
@@ -224,7 +224,11 @@ function fill_initial(arr, values, name, hundred) {
     for (var i=1; i < elapsed; i++) {
         // compute daily growth rate - we use confirmed as oposed to infected so that the growth rate doesnt fall under 1, which is just how this model works
         // we dont want to model the dissapearance of the epidemy, as that is a fundamentaly different process, we just model the spread, where the lowest spread between days is 1, when no one new got infected
-        arr[name]['growth_rate'].push( arr[name]['confirmed'][i] / arr[name]['confirmed'][i-1] );
+        if ( arr[name]['confirmed'][i-1] == 0 ) {
+            arr[name]['growth_rate'].push( 1 );
+        } else {
+            arr[name]['growth_rate'].push( arr[name]['confirmed'][i] / arr[name]['confirmed'][i-1] );
+        }
 
         // compute daily average growth rate
         arr[name]['growth_rate_avg'].push( avg_growth_rate( arr[name]['growth_rate'].slice(0,i+1) ) );
@@ -238,14 +242,14 @@ function fill_initial(arr, values, name, hundred) {
 }
 
 
-function create_seeds(seed_arr, elapsed, name) {
+function create_seeds(seed_arr, elapsed, name, offset = 0) {
     seed_arr['growth_rate'][name] = {};
     seed_arr['growth_rate_avg_7'][name] = {};
     seed_arr['infected'][name] = {};
     for (var i=0; i < elapsed[name]; i++) {
-        seed['growth_rate'][name][i] = data[name]['growth_rate'][i];
-        seed['growth_rate_avg_7'][name][i] = data[name]['growth_rate_avg_7'][i];
-        seed['infected'][name][i] = data[name]['infected'][i];
+        seed['growth_rate'][name][i-offset] = data[name]['growth_rate'][i];
+        seed['growth_rate_avg_7'][name][i-offset] = data[name]['growth_rate_avg_7'][i];
+        seed['infected'][name][i-offset] = data[name]['infected'][i];
     }
 }
 
