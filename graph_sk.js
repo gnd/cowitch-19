@@ -121,7 +121,7 @@ for (i=0; i<JITTER_COUNT; i++) {
 window.infected_chart_sk = new Chart(model_chart_sk, {
     type: 'line',
     data: {
-        labels: gen_days(0, 2, 123),
+        labels: gen_days(0, 2, model_days_sk),
         datasets: dataset,
     },
     options: {
@@ -129,7 +129,7 @@ window.infected_chart_sk = new Chart(model_chart_sk, {
         title: {
             display: true,
             fontSize: fontsize,
-            text: ["Confirmed and predicted cases of COVID-19 in Slovakia", "(click on the legend to show/hide data)"]
+            text: ["Scenario: 17.04.2020):", "Confirmed and predicted cases of COVID-19 in Slovakia", "Rate of growth continues to descend similarly as in Czechia,", "or it starts to climb slowly as in Japan, the similarities are eerie.", "(click on the legend to show/hide data)"]
         },
         scales: {
             xAxes: [{
@@ -267,7 +267,7 @@ for (i=0; i<JITTER_COUNT; i++) {
 window.growth_rate_chart_sk = new Chart(growth_rate_chart_sk, {
     type: 'line',
     data: {
-        labels: gen_days(0, 2, 80),
+        labels: gen_days(0, 2, 90),
         datasets: dataset,
     },
     options: {
@@ -275,7 +275,7 @@ window.growth_rate_chart_sk = new Chart(growth_rate_chart_sk, {
         title: {
             display: true,
             fontSize: fontsize,
-            text: ["Confirmed, average and predicted growth rate of COVID-19 in Slovakia", "(click on the legend to show/hide data)"]
+            text: ["Scenario: 17.04.2020):", "Confirmed and predicted rate of growth of COVID-19 in Slovakia", "Rate of growth continues to descend similarly as in Czechia,", "or it starts to climb slowly as in Japan, the similarities are eerie.", "(click on the legend to show/hide data)"]
         },
         scales: {
             xAxes: [{

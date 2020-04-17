@@ -344,7 +344,7 @@
     //console.log( model['cz_future_2'] );
 
     // Model Slovak development
-    console.log(data['sk']);
+    var model_days_sk = 155;
     // Create growth_rate seed and new cases seed for modelling
     create_seeds(seed, days_elapsed, 'sk');
     rate_funcs = [];
@@ -357,7 +357,7 @@
     ));
     var sk_model_1 = new params(
         'sk_avg7_normal',
-        123,
+        model_days_sk,
         seed['growth_rate_avg_7']['sk'],
         1.01,                       // min possible growth rate
         seed['infected']['sk'],      // the confirmed cases so far
@@ -385,12 +385,12 @@
         'log',                      // name
         66,                          // start
         90,                        // steps
-        0.1,                        // steepness
+        0.4,                        // steepness
         -0.13,                       // scale
     ));
     var sk_model_2 = new params(
         'sk_avg7_pesimist',
-        123,
+        model_days_sk,
         seed['growth_rate_avg_7']['sk'],
         1.01,                       // min possible growth rate
         seed['infected']['sk'],      // the confirmed cases so far
