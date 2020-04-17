@@ -516,10 +516,9 @@
         <div class="canvas_container">
             <canvas id="canvas_cz_future_long" class="graph"></canvas>
             <div class="slidecontainer">
-      <input type="range" min="1" max="10000" value="50" class="slider" id="myRange">
-    </div>
+                Zoom: <input type="range" min="1" max="10000" value="50" class="slider" id="myRange">
+            </div>
             <a class="link" href="https://co.witch19.space#cz_future_2">link</a>
-
         </div>
         <br class="clear"/>
     </div>

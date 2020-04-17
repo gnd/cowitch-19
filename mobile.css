@@ -86,3 +86,31 @@ div.bottom_nav {
     float: left;
     font-size: 3.5vw;
 }
+
+
+/*////////////////////////////////// Slider style //////////////////////////*/
+
+.slidecontainer {
+  width: 100%;
+}
+
+.slider {
+  width: 90%;
+  height: 15px;
+  background: #ffffff;
+  outline: none;
+}
+
+.slider::-webkit-slider-thumb {
+  width: 25px;
+  height: 15px;
+  background: #4CAF50;
+  cursor: pointer
+}
+
+.slider::-moz-range-thumb {
+  width: 25px;
+  height: 15px;
+  background: #4CAF50;
+  cursor: pointer;
+}

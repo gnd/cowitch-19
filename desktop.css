@@ -73,20 +73,19 @@ div.bottom_nav {
 
 .slidecontainer {
   width: 100%;
+  background-color: white;
+  margin-bottom: 0.5%;
 }
 
 .slider {
- // -webkit-appearance: none;
-  //appearance: none;
-  width: 100%;
+  float: right;
+  width: 95%;
   height: 15px;
   background: #ffffff;
   outline: none;
 }
 
 .slider::-webkit-slider-thumb {
-  //-webkit-appearance: none;
- // appearance: none;
   width: 25px;
   height: 15px;
   background: #4CAF50;
