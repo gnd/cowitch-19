@@ -54,6 +54,7 @@ infected_dataset.push( {
     tension: 0,
     fill: false
 } );
+/*
 infected_dataset.push( {
     label: 'Predicted',
     data:  model['cz_a']['total']['avg'],
@@ -65,6 +66,8 @@ infected_dataset.push( {
     tension: 0,
     fill: false
 } );
+*/
+/*
 infected_dataset.push( {
     label: 'Optimistic',
     data: model['cz_b']['total']['avg'],
@@ -76,8 +79,9 @@ infected_dataset.push( {
     tension: 0,
     fill: false
 } );
+*/
 infected_dataset.push( {
-    label: '7 Day Average',
+    label: 'Predicted (7-Day Average)',
     data: model['cz_c']['total']['avg'],
     spanGaps: true,
     borderWidth: 2,
@@ -88,6 +92,7 @@ infected_dataset.push( {
     fill: false
 } );
 for (i=0; i<JITTER_COUNT; i++) {
+    /*
     if (i>0) {
         label = 'Predicted' + '-' + i;
     } else {
@@ -106,6 +111,8 @@ for (i=0; i<JITTER_COUNT; i++) {
         tension: 0.2,
         fill: false
     };
+    */
+/*
     if (i>0) {
         label = 'Old' + '-' + i;
     } else {
@@ -124,10 +131,11 @@ for (i=0; i<JITTER_COUNT; i++) {
         tension: 0.2,
         fill: false
     };
+*/
     if (i>0) {
-        label = '7 Day Average' + '-' + i;
+        label = 'Predicted (7-Day Average)' + '-' + i;
     } else {
-        label = '7 Day Average';
+        label = 'Predicted (7-Day Average)';
     }
     cz_c = {
         label: label,
@@ -142,8 +150,8 @@ for (i=0; i<JITTER_COUNT; i++) {
         tension: 0.2,
         fill: false
     };
-    infected_dataset.push( cz_a );
-    infected_dataset.push( cz_b );
+    //infected_dataset.push( cz_a );
+    //infected_dataset.push( cz_b );
     infected_dataset.push( cz_c );
 }
 
@@ -183,7 +191,7 @@ window.infected_chart = new Chart(infected_chart_cz, {
                 fontSize: fontsize,
                 // Show only first three labels
                 filter: function (legendItem, chartData) {
-                    if (legendItem.datasetIndex < 4) {
+                    if (legendItem.datasetIndex < 2) {
                         return (chartData.datasets[legendItem.datasetIndex].label)
                     }
                 },
@@ -214,7 +222,7 @@ var growth_rate_chart_cz = document.getElementById("growth_rate_cz").getContext(
 
 // Create datasets for growth_rate
 growth_rate_dataset = [];
-growth_rate_dataset[0] = {
+growth_rate_dataset.push( {
     label: 'Observed',
     data: data['cz']['growth_rate'],
     spanGaps: true,
@@ -224,9 +232,9 @@ growth_rate_dataset[0] = {
     pointBorderColor:  '#' + pal_8[1],
     tension: 0.2,
     fill: false
-};
-growth_rate_dataset[1] = {
-    label: 'Observed average',
+} );
+growth_rate_dataset.push( {
+    label: 'Observed (Average)',
     data: data['cz']['growth_rate_avg'],
     spanGaps: true,
     borderWidth: 2,
@@ -235,9 +243,9 @@ growth_rate_dataset[1] = {
     pointBorderColor:  '#' + pal_8[3],
     tension: 0.2,
     fill: false
-};
-growth_rate_dataset[2] = {
-    label: 'Observed 7 day average',
+} );
+growth_rate_dataset.push( {
+    label: 'Observed (7-Day Average)',
     data: data['cz']['growth_rate_avg_7'],
     spanGaps: true,
     borderWidth: 2,
@@ -246,8 +254,9 @@ growth_rate_dataset[2] = {
     pointBorderColor:  '#' + pal_8[4],
     tension: 0.2,
     fill: false
-};
-growth_rate_dataset[3] = {
+} );
+/*
+growth_rate_dataset.push( {
     label: 'Predicted',
     data: model['cz_a']['growth_rate']['avg'],
     spanGaps: true,
@@ -257,8 +266,10 @@ growth_rate_dataset[3] = {
     pointBorderColor:  '#' + pal_8[0],
     tension: 0.2,
     fill: false
-};
-growth_rate_dataset[4] = {
+} );
+*/
+/*
+growth_rate_dataset.push( {
     label: 'Predicted - optimistic',
     data: model['cz_b']['growth_rate']['avg'],
     spanGaps: true,
@@ -268,9 +279,10 @@ growth_rate_dataset[4] = {
     pointBorderColor:  '#' + pal_8[2],
     tension: 0.2,
     fill: false
-};
-growth_rate_dataset[5] = {
-    label: 'Predicted - avg7',
+} );
+*/
+growth_rate_dataset.push( {
+    label: 'Predicted (7-Day Average)',
     data: model['cz_c']['growth_rate']['avg'],
     spanGaps: true,
     borderWidth: 2,
@@ -279,8 +291,9 @@ growth_rate_dataset[5] = {
     pointBorderColor:  '#' + pal_8[5],
     tension: 0.2,
     fill: false
-};
+});
 for (i=0; i<JITTER_COUNT; i++) {
+    /*
     if (i>0) {
         label = 'Predicted' + '-' + i;
     } else {
@@ -299,6 +312,8 @@ for (i=0; i<JITTER_COUNT; i++) {
         tension: 0.2,
         fill: false
     };
+    */
+    /*
     if (i>0) {
         label = 'Predicted - optimistic' + '-' + i;
     } else {
@@ -317,10 +332,11 @@ for (i=0; i<JITTER_COUNT; i++) {
         tension: 0.2,
         fill: false
     };
+    */
     if (i>0) {
-        label = 'Predicted - avg7' + '-' + i;
+        label = 'Predicted (7-Day Average)' + '-' + i;
     } else {
-        label = 'Predicted - avg7';
+        label = 'Predicted (7-Day Average)';
     }
     cz_c =  {
         label: label,
@@ -335,8 +351,8 @@ for (i=0; i<JITTER_COUNT; i++) {
         tension: 0.2,
         fill: false
     };
-    growth_rate_dataset.push( cz_a );
-    growth_rate_dataset.push( cz_b );
+    //growth_rate_dataset.push( cz_a );
+    //growth_rate_dataset.push( cz_b );
     growth_rate_dataset.push( cz_c );
 }
 
@@ -375,7 +391,7 @@ window.growth_rate_chart = new Chart(growth_rate_chart_cz, {
                 fontSize: fontsize,
                 // Show only first three labels
                 filter: function (legendItem, chartData) {
-                    if (legendItem.datasetIndex < 6) {
+                    if (legendItem.datasetIndex < 4) {
                         return (chartData.datasets[legendItem.datasetIndex].label)
                     }
 

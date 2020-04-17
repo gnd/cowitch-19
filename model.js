@@ -322,7 +322,7 @@ function rate_func(name, start, steps, speed, scale) {
 }
 
 // Sort of struct emulation in js - model prameters
-function params(name, model_duration, growth_rate_seed, growth_rate_min, infected_seed, jitter_count, jitter_amount, health_func, dead_func, cfr, rate_funcs, population_size, real_to_reported) {
+function params(name, model_duration, growth_rate_seed, growth_rate_min, infected_seed, jitter_count, jitter_amount, recovered_func, recovered_offset, dead_func, cfr, rate_funcs, population_size, real_to_reported) {
     this.name = name;
     this.model_duration = model_duration;
     this.irs = growth_rate_seed;
@@ -330,7 +330,8 @@ function params(name, model_duration, growth_rate_seed, growth_rate_min, infecte
     this.infected_seed = infected_seed;
     this.jitter_count = jitter_count;
     this.jitter_amount = jitter_amount;
-    this.health_func = health_func;
+    this.recovered_func = recovered_func;
+    this.recovered_offset = recovered_offset;
     this.dead_func = dead_func;
     this.cfr = cfr;
     this.rate_funcs = rate_funcs;
@@ -425,29 +426,12 @@ function run_model(params) {
                 model[params.name]['infected_cumulative'][jitter].push( model[params.name]['infected_cumulative'][jitter][i-1] + infected_daily );
 
                 // Recovered per day
-                if (params.health_func == 'healthy_new') {
+                if (params.recovered_func == 'recovered_new') {
                     daily_slice = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
-                    for (var j=36; j>12; j--) { // Create and fill the daily array slice starting at current day - 34 and ending at current day - 11
+                    var start = params.recovered_offset - 24;
+                    for (var j=params.recovered_offset; j>start; j--) { // Create and fill the daily array slice starting at current day - 34 and ending at current day - 11
                         if (i-j > 0) {
-                            daily_slice[36-j] = model[params.name]['infected_daily'][jitter][i-j];
-                        }
-                    }
-                    recovered_daily = get_recovered_new(daily_slice, params.cfr);
-                }
-                if (params.health_func == 'cz_latest') {
-                    daily_slice = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
-                    for (var j=40; j>16; j--) { // Create and fill the daily array slice starting at current day - 34 and ending at current day - 11
-                        if (i-j > 0) {
-                            daily_slice[40-j] = model[params.name]['infected_daily'][jitter][i-j];
-                        }
-                    }
-                    recovered_daily = get_recovered_new(daily_slice, params.cfr);
-                }
-                if (params.health_func == 'kr_latest') {
-                    daily_slice = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
-                    for (var j=38; j>14; j--) { // Create and fill the daily array slice starting at current day - 34 and ending at current day - 11
-                        if (i-j > 0) {
-                            daily_slice[38-j] = model[params.name]['infected_daily'][jitter][i-j];
+                            daily_slice[params.recovered_offset-j] = model[params.name]['infected_daily'][jitter][i-j];
                         }
                     }
                     recovered_daily = get_recovered_new(daily_slice, params.cfr);

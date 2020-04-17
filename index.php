@@ -21,8 +21,6 @@
 <meta property="og:image:secure_url" content="https://co.witch19.space/corona-chan-black.jpg" />
 
 <!--TODO:
-- parametrize the recovered function (days delay)
-- automate czech data retrieval
 - add descriptions to graphs
 - add tables to graphs
 - add some kind of probabilistic infection to SIER (the less people are susceptible, the harder it is to infect someone)
@@ -159,8 +157,11 @@
     // What do we even model here ? Right, young padawan, nothing. This model has no claim to reality
     // The data we try to aproximate are imprecise, incomplete measurements, obtained with a dubious methodology and abysmal success rates.
     // Modelling Covid-19 is like trying to glimplse reality through a broken and distorted plastic mirror taken out from a trash heap..
+
     // Create growth_rate seed and new cases seed for modelling
     create_seeds(seed, days_elapsed, 'cz');
+
+    /* no need for this now - 17.04.2020
     rate_funcs = [];
     rate_funcs.push( new rate_func(
         'old_log',                  // name
@@ -177,14 +178,17 @@
         seed['infected']['cz'],      // the confirmed cases so far
         JITTER_COUNT,           // jitter count
         JITTER_AMOUNT,          // jitter amount
-        'cz_latest',            // recovered distribution
+        'recovered_new',            // recovered distribution
+        40,                     //recovered offset
         'linton',               // deaths distribution
         0.05,                      // case fatality rate (CFR)
         rate_funcs,
         population_size['cz'],
     );
     run_model( model1 );
+    */
 
+    /* no need for this anymore - 14.04.2020
     // This is the so-called optimistic model, where we set the rate of slowdown to be pretty fast
     // This could be a representation of the strictest quarantine behavior which is not gonna happen
     rate_funcs = [];
@@ -203,13 +207,15 @@
         seed['infected']['cz'],       // the confirmed cases so far
         JITTER_COUNT,            // jitter count
         JITTER_AMOUNT/2,         // jitter amount
-        'cz_latest',            // recovered distribution
+        'recovered_new',            // recovered distribution
+        40,
         'linton',               // deaths distribution
         0.05,                      // case fatality rate (CFR)
         rate_funcs,
         population_size['cz'],
     );
     run_model( model2 );
+    */
 
     // This is a model following the 7-day rolling average of growth rate in Czech republic
     // The rate of slowdown was chosen so as to hit 1 around 22 days from 30.03 - to resemble the historic Korean 7day average
@@ -229,7 +235,8 @@
         seed['infected']['cz'],      // the confirmed cases so far
         JITTER_COUNT,           // jitter count
         JITTER_AMOUNT/2,        // jitter amount
-        'cz_latest',            // recovered distribution
+        'recovered_new',            // recovered distribution
+        40,
         'linton',               // deaths distribution
         0.05,                      // case fatality rate (CFR)
         rate_funcs,
@@ -275,7 +282,8 @@
         seed['infected']['cz'],     // the confirmed cases so far
         JITTER_COUNT,               // jitter count
         JITTER_AMOUNT/4,            // jitter amount
-        'cz_latest',            // recovered distribution
+        'recovered_new',            // recovered distribution
+        40,
         'linton',               // deaths distribution
         0.05,                      // case fatality rate (CFR)
         rate_funcs,
@@ -324,7 +332,8 @@
         cz_future_2_seed,           // the confirmed cases so far
         50,                         // jitter count
         JITTER_AMOUNT/20,           // jitter amount
-        'cz_latest',                // recovered distribution
+        'recovered_new',                // recovered distribution
+        40,
         'linton',                   // deaths distribution
         0.05/reported_ratio,        // infection fatality rate (current best CFR / reported_ratio)
         rate_funcs,
@@ -358,7 +367,8 @@
         newslice,               // the confirmed cases so far
         JITTER_COUNT,           // jitter count
         JITTER_AMOUNT/2,        // jitter amount
-        'kr_latest',
+        'recovered_new',
+        38,
         'linton',
         0.02,
         rate_funcs,
@@ -390,7 +400,8 @@
         newslice,               // the confirmed cases so far
         JITTER_COUNT,           // jitter count
         JITTER_AMOUNT*4,        // jitter amount
-        'healthy_new',
+        'recovered_new',
+        36,
         'dead_new',
         0.0135,                 // FIXME
         rate_funcs,
