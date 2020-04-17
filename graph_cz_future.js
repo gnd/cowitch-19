@@ -16,7 +16,7 @@ dataset.push( {
 } );
 dataset.push( {
     label: 'Predicted',
-    data:  model['cz_a']['total']['avg'],
+    data:  model['cz_c']['total']['avg'],
     spanGaps: true,
     borderWidth: 2,
     borderColor: '#' + pal_8[0],
@@ -44,7 +44,7 @@ for (i=0; i<JITTER_COUNT; i++) {
     }
     cz_a = {
         label: label,
-        data: model['cz_a']['total'][i],
+        data: model['cz_c']['total'][i],
         spanGaps: true,
         borderWidth: 1,
         borderDash: [5, 5],

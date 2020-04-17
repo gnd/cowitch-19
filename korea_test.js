@@ -36,7 +36,7 @@ dataset.push( {
 } );
 dataset.push( {
     label: 'Czechia recovered - prediction',
-    data: model['cz_a']['recovered'][0],
+    data: model['cz_c']['recovered'][0],
     spanGaps: true,
     borderWidth: 3,
     borderColor: '#' + pal_10[dataset.length],

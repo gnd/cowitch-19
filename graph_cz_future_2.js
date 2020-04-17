@@ -157,7 +157,7 @@ window.cz_future_long = new Chart(cz_future_long, {
         title: {
             display: true,
             fontSize: fontsize,
-            text: ["Scenario (first use of SIER, still in progress):", "After virtually stopping during the summer, COVID-19 returns to Czechia in autumn 2020", "All population numbers are inflated by a factor of 2 to account for 'hidden infected'", "(click on the legend to show/hide data)"]
+            text: ["Scenario (first use of SIR, still in progress):", "After virtually stopping during the summer, COVID-19 returns to Czechia in autumn 2020", "All population numbers are inflated by a factor of 2 to account for 'hidden infected'", "(click on the legend to show/hide data)"]
         },
         scales: {
             xAxes: [{
