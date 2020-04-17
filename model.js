@@ -176,7 +176,7 @@ function log(x, steps, speed, scale) {
 function exp(x, steps, speed, scale) {
     if (x > 0) {
         // f[x] - f[x-1]
-        return ( Math.pow(x,speed) / Math.pow(steps,speed) - Math.pow(x-1,speed) / Math.pow(steps,speed) ) * scale;
+        return ( Math.pow(x,speed) - Math.pow(x-1,speed) ) / Math.pow(steps,speed) * scale;
     } else {
         return Math.pow(x,speed) / Math.pow(steps,speed) * scale;
     }

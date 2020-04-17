@@ -21,9 +21,7 @@
 <meta property="og:image:secure_url" content="https://co.witch19.space/corona-chan-black.jpg" />
 
 <!--TODO:
-- verify math on rate functors, they are a bit shabby
-- simplify functor math
-- parametrize the recvered function (days delay)
+- parametrize the recovered function (days delay)
 - automate czech data retrieval
 - add descriptions to graphs
 - add tables to graphs
@@ -85,9 +83,9 @@
     population_size = {};
 
     // Get Czech data from https://onemocneni-aktualne.mzcr.cz/covid-19
-    current_values['cz_confirmed'] = [3,3,5,5,8,19,26,32,38,63,94,116,141,189,298,383,464,572,774,904,1047,1165,1289,1497,1775,2062,2422,2689,2859,3002,3330,3604,3869,4194,4475,4591,4828,5033,5335,5589,5735,5905,5991,6059,6151,6303];
-    current_values['cz_recovered'] = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,3,6,9,9,9,11,11,25,45,61,71,74,78,96,127,181,243,309,370,422,467,527,676,831];
-    current_values['cz_deaths'] = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,3,6,9,9,11,16,17,24,32,40,46,56,62,72,80,91,104,113,123,132,139,147,163,166];
+    current_values['cz_confirmed'] = [3,3,5,5,8,19,26,32,38,63,94,116,141,189,298,383,464,572,774,904,1047,1165,1289,1497,1775,2062,2422,2689,2859,3002,3330,3604,3869,4194,4475,4591,4828,5033,5335,5589,5735,5905,5991,6059,6151,6303,6437];
+    current_values['cz_recovered'] = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,3,6,9,9,9,11,11,25,45,61,71,74,78,96,127,181,243,309,370,422,467,527,676,831,979];
+    current_values['cz_deaths'] = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,3,6,9,9,11,16,17,24,32,40,46,56,62,72,80,91,104,113,123,132,139,147,163,166,170];
     current_values['cz'] = [];
     for (var i=0; i<current_values['cz_confirmed'].length; i++) {
         current_values['cz'].push( current_values['cz_confirmed'][i] - current_values['cz_recovered'][i] - current_values['cz_deaths'][i] );
