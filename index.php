@@ -110,7 +110,7 @@
     days_elapsed['kr'] = fill_initial(data, current_values, 'kr');
     days_elapsed['sg'] = fill_initial(data, current_values, 'sg');
     days_elapsed['it'] = fill_initial(data, current_values, 'it');
-    days_elapsed['sk'] = fill_initial(data, current_values, 'sk');
+    days_elapsed['sk'] = fill_initial(data, current_values, 'sk', 39); // We start from 1st of March, not from 22nd of January
     days_elapsed['gr'] = fill_initial(data, current_values, 'gr');
 
     // prepare values for compare_100
@@ -343,6 +343,68 @@
     run_model( cz_future_2 );
     //console.log( model['cz_future_2'] );
 
+    // Model Slovak development
+    console.log(data['sk']);
+    // Create growth_rate seed and new cases seed for modelling
+    create_seeds(seed, days_elapsed, 'sk');
+    rate_funcs = [];
+    rate_funcs.push( new rate_func(
+        'log',                      // name
+        0,                          // start
+        300,                        // steps
+        800,                        // speed (rate of slowdown)
+        -1.2,                       // scale
+    ));
+    var sk_model_1 = new params(
+        'sk_avg7_normal',
+        123,
+        seed['growth_rate_avg_7']['sk'],
+        1.01,                       // min possible growth rate
+        seed['infected']['sk'],      // the confirmed cases so far
+        JITTER_COUNT,           // jitter count
+        JITTER_AMOUNT/8,        // jitter amount
+        'recovered_new',            // recovered distribution
+        40,                       // recovered offset - FIXME
+        'linton',               // deaths distribution
+        0.05,                      // case fatality rate (CFR) FIXME
+        rate_funcs,
+        population_size['cz'],
+    );
+    run_model( sk_model_1 );
+
+    // A more sinister Slovak model, mimicking Japan
+    rate_funcs = [];
+    rate_funcs.push( new rate_func(
+        'exp',                      // name
+        47,                          // start
+        20,                        // steps
+        2,                        // steepness
+        0.08,                          // scale
+    ));
+    rate_funcs.push( new rate_func(
+        'log',                      // name
+        66,                          // start
+        90,                        // steps
+        0.1,                        // steepness
+        -0.13,                       // scale
+    ));
+    var sk_model_2 = new params(
+        'sk_avg7_pesimist',
+        123,
+        seed['growth_rate_avg_7']['sk'],
+        1.01,                       // min possible growth rate
+        seed['infected']['sk'],      // the confirmed cases so far
+        JITTER_COUNT,           // jitter count
+        JITTER_AMOUNT/8,        // jitter amount
+        'recovered_new',            // recovered distribution
+        40,                       // recovered offset - FIXME
+        'linton',               // deaths distribution
+        0.05,                      // case fatality rate (CFR) FIXME
+        rate_funcs,
+        population_size['cz'],
+    );
+    run_model( sk_model_2 );
+
     // Model korea
     rateslice = {};
     newslice = {};
@@ -462,6 +524,24 @@
         <br class="clear"/>
     </div>
     <div class="graph_container">
+        <a id="sk"></a>
+        <div class="graph_filler">&nbsp;</div>
+        <div class="canvas_container">
+            <canvas id="model_sk" class="graph"></canvas>
+            <a class="link" href="https://co.witch19.space#sk">link</a>
+        </div>
+        <br class="clear"/>
+    </div>
+    <div class="graph_container">
+        <a id="sk_growth"></a>
+        <div class="graph_filler">&nbsp;</div>
+        <div class="canvas_container">
+            <canvas id="growth_rate_sk" class="graph"></canvas>
+            <a class="link" href="#sk_growth">link</a>
+        </div>
+        <br class="clear"/>
+    </div>
+    <div class="graph_container">
         <a id="compare"></a>
         <div class="graph_filler">&nbsp;</div>
         <div class="canvas_container">
@@ -535,6 +615,9 @@
 
 <!-- GRAPH CZ FUTURE -->
 <script src="graph_cz_future_2.js?v=<?php echo filemtime($cwd . 'graph_cz_future_2.js'); ?>"></script>
+
+<!-- GRAPH SK -->
+<script src="graph_sk.js?v=<?php echo filemtime($cwd . 'graph_sk.js'); ?>"></script>
 
 <!-- GRAPH compare (CZ / JP / KR / SG)  & compare_100-->
 <script src="graph_compare.js?v=<?php echo filemtime($cwd . 'graph_compare.js'); ?>"></script>
