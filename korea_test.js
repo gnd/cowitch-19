@@ -102,7 +102,7 @@ dataset.push( {
 } );
 dataset.push( {
     label: 'CZ deaths - prediction',
-    data: model['cz_a']['deaths'][0],
+    data: model['cz_c']['deaths'][0],
     spanGaps: true,
     borderWidth: 3,
     borderColor: '#' + pal_10[dataset.length],
