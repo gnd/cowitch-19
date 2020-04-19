@@ -81,9 +81,9 @@
     population_size = {};
 
     // Get Czech data from https://onemocneni-aktualne.mzcr.cz/covid-19
-    current_values['cz_confirmed'] = [3,3,5,5,8,19,26,32,38,63,94,116,141,189,298,383,464,572,774,904,1047,1165,1289,1497,1775,2062,2422,2689,2859,3002,3330,3604,3869,4194,4475,4591,4828,5033,5335,5589,5735,5905,5991,6059,6151,6303,6437,6553];
-    current_values['cz_recovered'] = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,3,6,9,9,9,11,11,25,45,61,71,74,78,96,127,181,243,309,370,422,467,527,676,831,979,1183];
-    current_values['cz_deaths'] = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,3,6,9,9,11,16,17,24,32,40,46,56,62,72,80,91,104,113,123,132,139,147,163,166,170,176];
+    current_values['cz_confirmed'] = [3,3,5,5,8,19,26,32,38,63,94,116,141,189,298,383,464,572,774,904,1047,1165,1289,1497,1775,2062,2422,2689,2859,3002,3330,3604,3869,4194,4475,4591,4828,5033,5335,5589,5735,5905,5991,6059,6151,6303,6437,6553,6657];
+    current_values['cz_recovered'] = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,3,6,9,9,9,11,11,25,45,61,71,74,78,96,127,181,243,309,370,422,467,527,676,831,979,1183,1235];
+    current_values['cz_deaths'] = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,3,6,9,9,11,16,17,24,32,40,46,56,62,72,80,91,104,113,123,132,139,147,163,166,170,176,181];
     current_values['cz'] = [];
     for (var i=0; i<current_values['cz_confirmed'].length; i++) {
         current_values['cz'].push( current_values['cz_confirmed'][i] - current_values['cz_recovered'][i] - current_values['cz_deaths'][i] );
@@ -103,7 +103,7 @@
     extract_data(global_data, current_values, 'Italy', 'it');
     extract_data(global_data, current_values, 'Slovakia', 'sk');
     extract_data(global_data, current_values, 'Greece', 'gr');
-
+    extract_data(global_data, current_values, 'Hungary', 'hu');
     // Fill initial stats for countries
     days_elapsed['cz'] = fill_initial(data, current_values, 'cz');
     days_elapsed['jp'] = fill_initial(data, current_values, 'jp');
@@ -112,6 +112,7 @@
     days_elapsed['it'] = fill_initial(data, current_values, 'it');
     days_elapsed['sk'] = fill_initial(data, current_values, 'sk', 39); // We start from 1st of March, not from 22nd of January
     days_elapsed['gr'] = fill_initial(data, current_values, 'gr');
+    days_elapsed['gr'] = fill_initial(data, current_values, 'hu');
 
     // prepare values for compare_100
     prepare_100(current_values, 'cz');
@@ -121,6 +122,7 @@
     prepare_100(current_values, 'it');
     prepare_100(current_values, 'sk');
     prepare_100(current_values, 'gr');
+    prepare_100(current_values, 'hu');
 
     // prepare values for compare_1
     prepare_1(current_values, 'cz');
@@ -130,6 +132,7 @@
     prepare_1(current_values, 'it');
     prepare_1(current_values, 'sk');
     prepare_1(current_values, 'gr');
+    prepare_1(current_values, 'hu');
 
     // prepare values for compare_growth_rates
     fill_initial(data, current_values, 'cz_100');
@@ -139,6 +142,8 @@
     fill_initial(data, current_values, 'it_100');
     fill_initial(data, current_values, 'sk_100');
     fill_initial(data, current_values, 'gr_100');
+    fill_initial(data, current_values, 'hu_100');
+
 
     // prepare values for compare_growth_rates
     fill_initial(data, current_values, 'cz_1');
@@ -148,6 +153,7 @@
     fill_initial(data, current_values, 'it_1');
     fill_initial(data, current_values, 'sk_1');
     fill_initial(data, current_values, 'gr_1');
+    fill_initial(data, current_values, 'hu_1');
 
     // Prepare the model
     model = {};

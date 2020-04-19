@@ -78,6 +78,17 @@ dataset.push( {
     tension: 0,
     fill: false
 } );
+dataset.push( {
+    label: 'Hungary',
+    data: current_values['hu_1'],
+    spanGaps: true,
+    borderWidth: 3,
+    borderColor: '#' + pal_8_sol[dataset.length],
+    pointStyle: 'circle',
+    pointBorderColor:  '#' + pal_8_sol[dataset.length],
+    tension: 0,
+    fill: false
+} );
 
 // The infected chart
 window.compare= new Chart(compare, {
@@ -195,6 +206,18 @@ dataset.push( {
     tension: 0,
     fill: false
 } );
+dataset.push( {
+    label: 'Hungary',
+    data: current_values['hu_100'],
+    spanGaps: true,
+    borderWidth: 3,
+    borderColor: '#' + pal_8_sol[dataset.length],
+    pointStyle: 'circle',
+    pointBorderColor:  '#' + pal_8_sol[dataset.length],
+    tension: 0,
+    fill: false
+} );
+
 
 // The compare_100 chart
 window.compare_100= new Chart(compare_100, {
@@ -466,7 +489,39 @@ dataset.push( {
     tension: 0.2,
     fill: false
 } );
-
+dataset.push( {
+    label: 'HU',
+    data: data['hu_100']['growth_rate'],
+    spanGaps: true,
+    borderWidth: 3,
+    borderColor: '#' + pal_21[dataset.length],
+    pointStyle: 'circle',
+    pointBorderColor:  '#' + pal_21[dataset.length],
+    tension: 0.2,
+    fill: false
+} );
+dataset.push( {
+    label: 'HU Avg',
+    data: data['hu_100']['growth_rate_avg'],
+    spanGaps: true,
+    borderWidth: 2,
+    borderColor: '#' + pal_21[dataset.length],
+    pointStyle: 'circle',
+    pointBorderColor:  '#' + pal_21[dataset.length],
+    tension: 0.2,
+    fill: false
+} );
+dataset.push( {
+    label: 'HU Avg 7',
+    data: data['hu_100']['growth_rate_avg_7'],
+    spanGaps: true,
+    borderWidth: 2,
+    borderColor: '#' + pal_21[dataset.length],
+    pointStyle: 'circle',
+    pointBorderColor:  '#' + pal_21[dataset.length],
+    tension: 0.2,
+    fill: false
+} );
 // The compare_growth_rates chart
 window.compare_growth_rates= new Chart(compare_100, {
     type: 'line',
@@ -479,7 +534,7 @@ window.compare_growth_rates= new Chart(compare_100, {
         title: {
             display: true,
             fontSize: fontsize,
-            text: ["Growth rates of COVID-19 in Japan, Czechia, Korea, Singapore, Italy, SLovakia", "Relative by day of first 100 cases", "(click on the legend to show/hide data)"]
+            text: ["Growth rates of COVID-19 in Japan, Czechia, Korea, Singapore, Italy, Slovakia, Hungary", "Relative by day of first 100 cases", "(click on the legend to show/hide data)"]
         },
         scales: {
             xAxes: [{
