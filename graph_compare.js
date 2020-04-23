@@ -526,7 +526,7 @@ dataset.push( {
 window.compare_growth_rates= new Chart(compare_100, {
     type: 'line',
     data: {
-        labels: gen_days_relative(60),
+        labels: gen_days_relative(90),
         datasets: dataset,
     },
     options: {
