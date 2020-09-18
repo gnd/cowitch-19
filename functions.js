@@ -90,6 +90,40 @@ function extract_data(csv, current, country, dest_name) {
     }
 }
 
+// Extract data from Czech CSV arrays
+function extract_data_cz(csv, current, dest_name) {
+    var now = moment(new Date());
+    var start = moment("2020-3-1");
+    var duration = moment.duration(now.diff(start));
+    var days = duration.asDays()
+
+    // prepare arrays
+    current[dest_name] = [];
+    current[dest_name + '_confirmed'] = [];
+    current[dest_name + '_recovered'] = [];
+    current[dest_name + '_deaths'] = [];
+    current[dest_name + '_tests'] = [];
+
+    for (i=0; i<days-1; i++) {
+        column = moment(new Date(2020, 2, 0 + i)).format('MM/DD/YY');    // data starting from 3/1/20
+
+        // extract confirmed
+        current[dest_name + '_confirmed'].push( csv['confirmed'][column] );
+
+        // extract recovered
+        current[dest_name + '_recovered'].push( csv['recovered'][column] );
+
+        // extract deaths
+        current[dest_name + '_deaths'].push( csv['deaths'][column] );
+
+        // extract tests
+        current[dest_name + '_tests'].push( csv['tests'][column] );
+
+        // push into dest_name array
+        current[dest_name].push( current[dest_name + '_confirmed'][i] - current[dest_name + '_recovered'][i] - current[dest_name + '_deaths'][i] );
+    }
+}
+
 
 function detect_client() {
     const mq = window.matchMedia('screen and (min-width: 300px) and (max-width: 340px)');

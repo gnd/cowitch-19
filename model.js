@@ -156,7 +156,7 @@ function avg_growth_rate(data) {
 // New rate control functions - linear ramp
 function lin(x, steps, speed, scale) {
     // return (x / steps * scale) - ((x-1) / steps * scale); this can be simplified to:
-    return 1 / steps * scale
+    return 1 / steps * scale;
 }
 
 // New rate control functions - log ramp
@@ -176,7 +176,7 @@ function log(x, steps, speed, scale) {
 function exp(x, steps, speed, scale) {
     if (x > 0) {
         // f[x] - f[x-1]
-        return ( Math.pow(x,speed) - Math.pow(x-1,speed) ) / Math.pow(steps,speed) * scale;
+        return ( Math.pow(x,speed) - Math.pow(x-1,speed) ) / Math.pow(steps, speed) * scale;
     } else {
         return Math.pow(x,speed) / Math.pow(steps,speed) * scale;
     }
@@ -221,13 +221,31 @@ function fill_initial(arr, values, name, offset = 0) {
     arr[name]['growth_rate_avg_7'].push( 1 );
 
     elapsed = arr[name]['confirmed'].length;
+    console.log(name + " len: " + elapsed);
     for (var i=1; i < elapsed; i++) {
-        // compute daily growth rate - we use confirmed as oposed to infected so that the growth rate doesnt fall under 1, which is just how this model works
+        // compute daily growth rate - we use confirmed as opposed to infected so that the growth rate doesnt fall under 1, which is just how this model works
         // we dont want to model the dissapearance of the epidemy, as that is a fundamentaly different process, we just model the spread, where the lowest spread between days is 1, when no one new got infected
+
+        // Note 18.9.2020
+        // This is the wrong approach because cumulative numbers get big over time, so currently the actuall growth rate is computed like this:
+        // Growth rate: 1.0762968018720749 ( 44154 / 41024)
+        // Which is wrong, because the day to day change was almost 3000, and growth rate should be ~1.16
+        /* Disabling old calculation
         if ( arr[name]['confirmed'][i-1] == 0 ) {
             arr[name]['growth_rate'].push( 1 );
         } else {
             arr[name]['growth_rate'].push( arr[name]['confirmed'][i] / arr[name]['confirmed'][i-1] );
+            var gr = arr[name]['confirmed'][i] / arr[name]['confirmed'][i-1];
+            console.log("Growth rate: " + gr + " ( " + arr[name]['confirmed'][i] + "/ " + arr[name]['confirmed'][i-1] + ")")
+        }
+        */
+
+        // Newly we take just the infected growth rate into account
+        if ( arr[name]['infected'][i-1] == 0 ) {
+            arr[name]['growth_rate'].push( 1 );
+        } else {
+            arr[name]['growth_rate'].push( arr[name]['infected'][i] / arr[name]['infected'][i-1] );
+            var gr = arr[name]['infected'][i] / arr[name]['infected'][i-1];
         }
 
         // compute daily average growth rate
@@ -378,9 +396,11 @@ function run_model(params) {
             // if we have provided a value, use it
             if (i in params.irs) {
                 model[params.name]['growth_rate'][jitter].push( params.irs[i] );
+                //console.log(model[params.name]['growth_rate'][jitter]);
             } else {
                 // otherwise determine next value from the previous one
                 if (i > 0) {
+                    var new_rate = 0;
                     // apply all valid ratefuncs to the current step
                     for (j=0; j<params.rate_funcs.length; j++) {
                         var rate_func = params.rate_funcs[j];
