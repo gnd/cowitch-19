@@ -4,13 +4,13 @@ function legendCallbackInfected(e, legendItem) {
     var ci = this.chart;
 
     // Confirmed cases
-    if (index < 1) {
-        meta = ci.getDatasetMeta(index);
+    if (index == 0) {
+        var meta = ci.getDatasetMeta(index);
         meta.hidden = meta.hidden === null ? !ci.data.datasets[index].hidden : null;
     } else { // predictions
-        for (i=0; i<=JITTER_COUNT; i++) {
-            var meta = ci.getDatasetMeta(index+i*3);
-            meta.hidden = meta.hidden === null ? !ci.data.datasets[index+i*2].hidden : null;
+        for (i=1; i<=JITTER_COUNT+1; i++) {
+            var meta = ci.getDatasetMeta(i);
+            meta.hidden = meta.hidden === null ? !ci.data.datasets[i].hidden : null;
         }
     }
 
@@ -29,8 +29,8 @@ function legendCallbackGrowthRate(e, legendItem) {
         meta.hidden = meta.hidden === null ? !ci.data.datasets[index].hidden : null;
     } else { // predictions
         for (i=0; i<=JITTER_COUNT; i++) {
-            var meta = ci.getDatasetMeta(index+i*3);
-            meta.hidden = meta.hidden === null ? !ci.data.datasets[index+i*2].hidden : null;
+            var meta = ci.getDatasetMeta(i+3);
+            meta.hidden = meta.hidden === null ? !ci.data.datasets[i+3].hidden : null;
         }
     }
 
@@ -67,11 +67,7 @@ infected_dataset.push( {
     fill: false
 } );
 for (i=0; i<JITTER_COUNT; i++) {
-    if (i>0) {
-        label = 'Predicted (7-Day Average)' + '-' + i;
-    } else {
-        label = 'Predicted (7-Day Average)';
-    }
+    label = 'Predicted (7-Day Average)-'+i;
     cz_c = {
         label: label,
         data: model['cz_c']['total'][i],
@@ -122,7 +118,7 @@ window.infected_chart = new Chart(infected_chart_cz, {
             onClick: legendCallbackInfected,
             labels: {
                 fontSize: fontsize,
-                // Show only first three labels
+                // Show only first two labels
                 filter: function (legendItem, chartData) {
                     if (legendItem.datasetIndex < 2) {
                         return (chartData.datasets[legendItem.datasetIndex].label)

@@ -45,7 +45,7 @@ var infected_chart_cz = document.getElementById("infected_cz").getContext('2d');
 infected_dataset = [];
 infected_dataset.push( {
     label: 'Confirmed',
-    data: current_values['cz'],
+    data: current_values['cz_old'],
     spanGaps: true,
     borderWidth: 3,
     borderColor: '#' + pal_8[1],
@@ -159,7 +159,7 @@ for (i=0; i<JITTER_COUNT; i++) {
 window.infected_chart = new Chart(infected_chart_cz, {
     type: 'line',
     data: {
-        labels: gen_days(0, 2, 123),
+        labels: gen_days(0, 2, 300),
         datasets: infected_dataset,
     },
     options: {
@@ -360,7 +360,7 @@ for (i=0; i<JITTER_COUNT; i++) {
 window.growth_rate_chart = new Chart(growth_rate_chart_cz, {
     type: 'line',
     data: {
-        labels: gen_days(0, 2, 80),
+        labels: gen_days(0, 2, 300),
         datasets: growth_rate_dataset,
     },
     options: {

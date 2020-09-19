@@ -60,6 +60,10 @@
 <script src="data/confirmed.js?v=<?php echo filemtime($cwd . 'data/confirmed.js'); ?>"></script>
 <script src="data/recovered.js?v=<?php echo filemtime($cwd . 'data/recovered.js'); ?>"></script>
 <script src="data/deaths.js?v=<?php echo filemtime($cwd . 'data/deaths.js'); ?>"></script>
+<script src="data/confirmed_cz.js?v=<?php echo filemtime($cwd . 'data/confirmed_cz.js'); ?>"></script>
+<script src="data/recovered_cz.js?v=<?php echo filemtime($cwd . 'data/recovered_cz.js'); ?>"></script>
+<script src="data/deaths_cz.js?v=<?php echo filemtime($cwd . 'data/deaths_cz.js'); ?>"></script>
+<script src="data/tests_cz.js?v=<?php echo filemtime($cwd . 'data/tests_cz.js'); ?>"></script>
 
 <?php
     // compute last change to the model(s)
@@ -84,14 +88,17 @@
     population_size = {};
 
     // Get Czech data from https://onemocneni-aktualne.mzcr.cz/covid-19
-    current_values['cz_confirmed'] = [3,3,5,5,8,19,26,32,38,63,94,116,141,189,298,383,464,572,774,904,1047,1165,1289,1497,1775,2062,2422,2689,2859,3002,3330,3604,3869,4194,4475,4591,4828,5033,5335,5589,5735,5905,5991,6059,6151,6303,6437,6553,6657,6787,6914,7041,7136,7188,7273,7352,7404,7486,7563,7581,7689,7750,7755,7781,7841,7899,7979,8077,8089,8095,8123,8198];
-    current_values['cz_recovered'] = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,3,6,9,9,9,11,11,25,45,61,71,74,78,96,127,181,243,309,370,422,467,527,676,831,979,1183,1235,1311,1597,1753,2002,2186,2389,2471,2555,2942,3096,3120,3314,3446,3471,3592,3816,4017,4214,4446,4446,4448,4482,4865];
-    current_values['cz_deaths'] = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,3,6,9,9,11,16,17,24,32,40,46,56,62,72,80,91,104,113,123,132,139,147,163,166,170,176,181,188,196,201,210,213,215,219,221,225,227,227,231,245,245,249,252,258,263,274,276,276,280,282];
-    current_values['cz'] = [];
-    for (var i=0; i<current_values['cz_confirmed'].length; i++) {
-        current_values['cz'].push( current_values['cz_confirmed'][i] - current_values['cz_recovered'][i] - current_values['cz_deaths'][i] );
+    current_values['cz_confirmed_old'] = [3,3,5,5,8,19,26,32,38,63,94,116,141,189,298,383,464,572,774,904,1047,1165,1289,1497,1775,2062,2422,2689,2859,3002,3330,3604,3869,4194,4475,4591,4828,5033,5335,5589,5735,5905,5991,6059,6151,6303,6437,6553,6657,6787,6914,7041,7136,7188,7273,7352,7404,7486,7563,7581,7689,7750,7755,7781,7841,7899,7979,8077,8089,8095,8123,8198];
+    current_values['cz_recovered_old'] = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,3,6,9,9,9,11,11,25,45,61,71,74,78,96,127,181,243,309,370,422,467,527,676,831,979,1183,1235,1311,1597,1753,2002,2186,2389,2471,2555,2942,3096,3120,3314,3446,3471,3592,3816,4017,4214,4446,4446,4448,4482,4865];
+    current_values['cz_deaths_old'] = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,3,6,9,9,11,16,17,24,32,40,46,56,62,72,80,91,104,113,123,132,139,147,163,166,170,176,181,188,196,201,210,213,215,219,221,225,227,227,231,245,245,249,252,258,263,274,276,276,280,282];
+    current_values['cz_old'] = [];
+    for (var i=0; i<current_values['cz_confirmed_old'].length; i++) {
+        current_values['cz_old'].push( current_values['cz_confirmed_old'][i] - current_values['cz_recovered_old'][i] - current_values['cz_deaths_old'][i] );
     }
     population_size['cz'] = 10693939; //https://en.wikipedia.org/wiki/Demographics_of_the_Czech_Republic
+
+    // Get Czech data from the API https://onemocneni-aktualne.mzcr.cz/covid-19
+    extract_data_cz(czech_data, current_values, 'cz');
 
     // Get rest of the data from https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_confirmed_global.csv
     // The data are not exactly precise, when verifying against data like
@@ -99,7 +106,6 @@
     // Singapore: https://experience.arcgis.com/experience/7e30edc490a5441a874f9efe67bd8b89
     // Italy: http://www.salute.gov.it/nuovocoronavirus
     // The difference is usually around 1-2% which is ok given what kind of data we work with..
-    extract_data(global_data, current_values, 'Czechia', 'cz_global');
     extract_data(global_data, current_values, 'Korea South', 'kr');
     extract_data(global_data, current_values, 'Japan', 'jp');
     extract_data(global_data, current_values, 'Singapore', 'sg');
@@ -107,8 +113,9 @@
     extract_data(global_data, current_values, 'Slovakia', 'sk');
     extract_data(global_data, current_values, 'Greece', 'gr');
     extract_data(global_data, current_values, 'Hungary', 'hu');
-    
+
     // Fill initial stats for countries
+    //days_elapsed['cz_old'] = fill_initial(data, current_values, 'cz_old');
     days_elapsed['cz'] = fill_initial(data, current_values, 'cz');
     days_elapsed['jp'] = fill_initial(data, current_values, 'jp');
     days_elapsed['kr'] = fill_initial(data, current_values, 'kr');
@@ -433,7 +440,7 @@
     ));
     var model_kr2 = new params(
         'model_kr2',
-        150,
+        300,
         rateslice,
         1.025,                  // min possible growth rate
         newslice,               // the confirmed cases so far
@@ -466,7 +473,7 @@
     ));
     var model_kr2a = new params(
         'model_kr2a',
-        150,
+        300,
         rateslice,
         1.027,                  // min possible growth rate
         newslice,               // the confirmed cases so far

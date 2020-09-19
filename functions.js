@@ -105,7 +105,7 @@ function extract_data_cz(csv, current, dest_name) {
     current[dest_name + '_tests'] = [];
 
     for (i=0; i<days-1; i++) {
-        column = moment(new Date(2020, 2, 0 + i)).format('MM/DD/YY');    // data starting from 3/1/20
+        column = moment(new Date(2020, 2, 0 + i)).format('M/D/YY');    // data starting from 3/1/20
 
         // extract confirmed
         current[dest_name + '_confirmed'].push( csv['confirmed'][column] );

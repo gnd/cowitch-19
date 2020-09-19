@@ -15,7 +15,7 @@ def process_csv(name):
         # 2020-01-27,0,0,0,20
         arr = line.split(',')
         datum_arr = arr[0].split("-")
-        datum = "%s/%s/%s" % (datum_arr[1], datum_arr[2], datum_arr[0][2:])
+        datum = "%s/%s/%s" % (datum_arr[1].lstrip("0"), datum_arr[2].lstrip("0"), datum_arr[0][2:])
         # create entries like '1/22/20': 0,
         confirmed += "'%s': %s, " % (datum, arr[1])
         recovered += "'%s': %s, " % (datum, arr[2])
