@@ -100,36 +100,70 @@
     // This is a model following the 7-day rolling average of growth rate in Czech republic
     // TODO define a suite of realistic rate functions for autumn
     rate_funcs = [];
+    var PREDICTION_DAY = 181;
+    var MASKS_IN_PUBLIC_TRANSPORT = 183; // day 183 is 1.9.2020
+    var MASKS_INSIDE = 200; // day 200 is 18.9.2020
+    var SECOND_LOCKDOWN = 214; // day 214 is 1.10.2020
     // rate of growth rises on its own
+    // rationale is R of corona estimated between 2 and 2.5
+    // Here we use 2.2 within 100 days, using a slightly exponential curve
+    // .. which is already quite mellow, and understateent, meaning the results should be pointing to a minimal spread
+    rate_funcs.push( new rate_func(
+        'exp',                      // name
+        PREDICTION_DAY,                        // start
+        100,                        // steps
+        1.4,                        // speed / steepness
+        1.2,                        // scale
+    ));
+    // slowdown due to restrictions: (1.9 masks in public transport)
+    // rationale is that a full use of masks everywhere would hinder cca 90% of transmissions
+    // which i lack any data for and TODO would be nice to find an article how masks reduce infection probability
+    // laymans computation was that if without masks A get 100% of B's particles, and vice versa
+    // with A and B masked they get only 10% of each others particles
+    // However this applies to public transport only, which makes up - again im fabulating - only 10% of social interactions in a day
+    // However these interactions are between strangers, so they accelerate spread, so lets say its 15%
+    // 15% of 1.2 is 0.18 = 0.2 = 1+0.2 = 1.2 (1 is baseline here)
+    // lol, what did you expect, this is just fortunetelling :)
     rate_funcs.push( new rate_func(
         'lin',                      // name
-        201,                        // start
-        100,                        // steps
-        3,                        // speed / steepness
-        0.2,                        // scale
+        MASKS_IN_PUBLIC_TRANSPORT,                        // start
+        150,                        // steps
+        1,                        // speed / steepness
+        1.2,                        // scale
     ));
-    // slowdown due to restrictions: (1.9 masks in ub transport, 18.9 masks mandatory everywhere inside)
+    // slowdown due to restrictions (masks inside curfew on bars
+    // same rationale as above
+    rate_funcs.push( new rate_func(
+        'lin',                      // name
+        MASKS_INSIDE,                        // start
+        150,                        // steps
+        1,                        // speed / steepness
+        0.3,                        // scale
+    ));
+    // panic measures and semi-complete lockdown in czechia starting from 1st of october
+    // rationale
     rate_funcs.push( new rate_func(
         'exp',                      // name
-        215,                        // start
-        100,                        // steps
-        1.5,                        // speed / steepness
-        -0.4,                        // scale
-    ));
-    // panic measures and semi-complete lockdown in czechia starting from 1st of october (show up 14 days later on 14th of october)
-    rate_funcs.push( new rate_func(
-        'exp',                      // name
-        229,                        // start
+        SECOND_LOCKDOWN,                        // start
         200,                        // steps
-        .7,                        // speed / steepness
+        .45,                        // speed / steepness
         -0.4,                        // scale
     ));
+    // here we use only first N days to be able to freeze predictions in time
+    var model_growthrate = {};
+    var model_seed = {};
+    for (i=0; i<=PREDICTION_DAY; i++) {
+        model_growthrate[i] = seed['growth_rate_avg_7']['cz'][i];
+        model_seed[i] = seed['infected']['cz'][i];
+    }
     var model_settings = new params(
         'cz_c',                     // model name
         300,                        // model duration
-        seed['growth_rate_avg_7']['cz'],
+        //seed['growth_rate_avg_7']['cz'],
+        model_growthrate,
         0.95,                       // min possible growth rate
-        seed['infected']['cz'],      // the confirmed cases so far
+        //seed['infected']['cz'],      // the confirmed cases so far
+        model_seed,
         JITTER_COUNT,           // jitter count
         JITTER_AMOUNT/2,        // jitter amount
         'recovered_new',            // recovered distribution
