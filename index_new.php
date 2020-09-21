@@ -57,9 +57,12 @@
 
 <?php
     // compute last change to the model(s)
-    $max = filemtime($cwd . 'index.php');
-    $max = max($max, filemtime($cwd . 'graph.js'));
-    $max = max($max, filemtime($cwd . 'model.js'));
+    $max_code = filemtime($cwd . 'index.php');
+    $max_code = max($max_code, filemtime($cwd . 'graph.js'));
+    $max_code = max($max_code, filemtime($cwd . 'model.js'));
+    // compute last change to the data
+    $max_data = filemtime($cwd . 'data/deaths.js');
+    $max_data = max($max_data, filemtime($cwd . 'data/deaths_cz.js');
 ?>
 
 <!-- SEED AND PREPARE MODELS AND GRAPHS -->
@@ -282,7 +285,7 @@
             <h3><span class="medium_white">These models are based on elaborate (wink wink) data witch-doctory using observed Covid-19 growth rate in Czech republic and elsewhere.</span></h3>
             <span class="small_white">Czech data taken from: <a href=https://onemocneni-aktualne.mzcr.cz/covid-19>https://onemocneni-aktualne.mzcr.cz/covid-19</a>.<br/>
             <span class="small_white">Rest is from: <a href=https://github.com/CSSEGISandData/COVID-19>https://github.com/CSSEGISandData/COVID-19</a>.<br/><br/>
-            Last change: <?php echo date("d/m/y H:i", $max); ?></span>
+            Last change: <?php echo date("d/m/y H:i", $max_code); ?> (code), <?php echo date("d/m/y H:i", $max_data); ?> (data)</span>
         </div>
     </div>
     <div class="graph_container">
