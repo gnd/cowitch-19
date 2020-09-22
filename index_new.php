@@ -62,7 +62,7 @@
     $max_code = max($max_code, filemtime($cwd . 'model.js'));
     // compute last change to the data
     $max_data = filemtime($cwd . 'data/deaths.js');
-    $max_data = max($max_data, filemtime($cwd . 'data/deaths_cz.js');
+    $max_data = max($max_data, filemtime($cwd . 'data/deaths_cz.js'));
 ?>
 
 <!-- SEED AND PREPARE MODELS AND GRAPHS -->
