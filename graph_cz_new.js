@@ -256,7 +256,7 @@ window.growth_rate_chart = new Chart(growth_rate_chart_cz, {
             yAxes: [{
                 ticks: {
                     min: 0.8,
-                    max: 2.5,
+                    max: 1.6,
                 }
             }]
         },
