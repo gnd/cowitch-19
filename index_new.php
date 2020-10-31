@@ -178,103 +178,55 @@
     );
     run_model( model_settings );
 
-    // cz_future_1 model
-    // Scenario:
-    // Czech government decides to lift quarantine after Easter Monday 13.4
-    // People already start celebrating on Friday 10.4 after the peak of the epidemy was announced
-    // During the whole week infection rates slowly grow
-    //
-    // We take as a basis the cz_a model from above, seed some additional values
-    // and reduce jitter fourfold (too much noise)
-    day = 42+5;     // it shows a week later
-    seed_tmp = [];
-    for (i=0; i<42; i++) {
-        seed_tmp.push( seed['growth_rate']['cz'][i] );
-    }
-    seed_tmp[day] = 1.03;
-    seed_tmp[day+1] = 1.04;
-    seed_tmp[day+2] = 1.05;
-    seed_tmp[day+3] = 1.06;
-    seed_tmp[day+4] = 1.07;
-    seed_tmp[day+5] = 1.08;
-    seed_tmp[day+6] = 1.09;
-    seed_tmp[day+7] = 1.10;
+
+    // 31.10.2020
+    // This is a model following the 7-day rolling average of growth rate in Czech republic
     rate_funcs = [];
+    var PREDICTION_DAY = 205; // Day 214 is 1.10.2020
+    var SECOND_LOCKDOWN = 236; // day 214 is 1.11.2020
+    // rate of growth rises on its own
+    // rationale is R of corona estimated between 2 and 2.5
+    // Here we use 2.2 within 100 days, using a slightly exponential curve
+    // .. which is already quite mellow, and understateent, meaning the results should be pointing to a minimal spread
     rate_funcs.push( new rate_func(
-        'old_log',                  // name
-        0,                          // start
-        123,                        // steps
-        250,                        // speed (rate of slowdown)
-        -1,                         // scale
+        'exp',                      // name
+        PREDICTION_DAY,             // start
+        100,                        // steps
+        0.4,                        // speed / steepness
+        0.02,                        // scale
     ));
-    var cz_future_1 = new params(
-        'cz_future_1',
-        123,
-        seed_tmp,
-        1.02,                       // min possible growth rate
-        seed['infected']['cz'],     // the confirmed cases so far
-        JITTER_COUNT,               // jitter count
-        JITTER_AMOUNT/4,            // jitter amount
+    rate_funcs.push( new rate_func(
+        'exp',                      // name
+        SECOND_LOCKDOWN,             // start
+        150,                        // steps
+        1,                        // speed / steepness
+        -0.3,                        // scale
+    ));
+    // here we use only first N days to be able to freeze predictions in time
+    var model_growthrate = {};
+    var model_seed = {};
+    for (i=0; i<=PREDICTION_DAY; i++) {
+        model_growthrate[i] = seed['growth_rate_avg_7']['cz'][i];
+        model_seed[i] = seed['infected']['cz'][i];
+    }
+    var model_settings_31_10 = new params(
+        'cz_31-10',                     // model name
+        330,                        // model duration
+        //seed['growth_rate_avg_7']['cz'],
+        model_growthrate,
+        0.95,                       // min possible growth rate
+        //seed['infected']['cz'],      // the confirmed cases so far
+        model_seed,
+        JITTER_COUNT,           // jitter count
+        JITTER_AMOUNT/2,        // jitter amount
         'recovered_new',            // recovered distribution
-        40,
+        40,                         // recovered offset - when to start looking into the past for current recoveries
         'linton',               // deaths distribution
         0.05,                      // case fatality rate (CFR)
         rate_funcs,
         population_size['cz'],
     );
-    //run_model( cz_future_1 );
-
-
-    // cz_future_2 model
-    // Scenario:
-    // Long-term modelling of Covid-19 in Czech republic
-    var cz_future_2_seed = {};
-    var reported_ratio = 1.75;
-    for (i=0; i<days_elapsed['cz']; i++) {
-        cz_future_2_seed[i] = seed['infected']['cz'][i] * reported_ratio;
-    }
-    //cz_future_2_seed[190] = 1; // Single sick person enters CZ on Sept 6th
-    rate_funcs = [];
-    // make the thing die out end of June
-    rate_funcs.push( new rate_func(
-        'old_log',                  // name
-        0,                          // start
-        300,                       // steps - just high enough here to last the whole time
-        500,                        // speed - formerly rate of slowdown
-        -1,                         // scale
-    ));
-    rate_funcs.push( new rate_func(
-        'exp',                  // name
-        71,                          // start
-        192,                       // steps
-        6.5,                        // speed - formerly rate of slowdown
-        0.4,                          // scale
-    ));
-    rate_funcs.push( new rate_func(
-        'log',                  // name
-        263,                     // start
-        40,                       // steps
-        1,                        // speed - formerly rate of slowdown
-        -0.4,                         // scale
-    ));
-    var cz_future_2 = new params(
-        'cz_future_2',
-        500,
-        seed['growth_rate']['cz'],
-        1.01,                       // min possible growth rate
-        cz_future_2_seed,           // the confirmed cases so far
-        50,                         // jitter count
-        JITTER_AMOUNT/20,           // jitter amount
-        'recovered_new',                // recovered distribution
-        40,
-        'linton',                   // deaths distribution
-        0.05/reported_ratio,        // infection fatality rate (current best CFR / reported_ratio)
-        rate_funcs,
-        population_size['cz'],
-        reported_ratio,             // real-to-reported ratio.
-    );
-    //run_model( cz_future_2 );
-    //console.log( model['cz_future_2'] );
+    run_model( model_settings_31_10 );
 
 </script>
 </head>
@@ -289,11 +241,20 @@
         </div>
     </div>
     <div class="graph_container">
-        <a id="cz"></a>
+        <a id="cz_pred_20-09"></a>
         <div class="graph_filler">&nbsp;</div>
         <div class="canvas_container">
     		<canvas id="infected_cz" class="graph"></canvas>
-            <a class="link" href="https://co.witch19.space#cz">link</a>
+            <a class="link" href="#cz_pred_20-09">link</a>
+    	</div>
+        <br class="clear"/>
+    </div>
+    <div class="graph_container">
+        <a id="cz_pred_31-10"></a>
+        <div class="graph_filler">&nbsp;</div>
+        <div class="canvas_container">
+    		<canvas id="infected_cz_31-10" class="graph"></canvas>
+            <a class="link" href="#cz_pred_31-10">link</a>
     	</div>
         <br class="clear"/>
     </div>
@@ -306,27 +267,7 @@
         </div>
         <br class="clear"/>
     </div>
-    <div class="graph_container">
-        <a id="cz_future_1"></a>
-        <div class="graph_filler">&nbsp;</div>
-        <div class="canvas_container">
-            <canvas id="cz_future" class="graph"></canvas>
-            <a class="link" href="https://co.witch19.space#cz_future_1">link</a>
-        </div>
-        <br class="clear"/>
-    </div>
-    <div class="graph_container">
-        <a id="cz_future_2"></a>
-        <div class="graph_filler">&nbsp;</div>
-        <div class="canvas_container">
-            <canvas id="canvas_cz_future_long" class="graph"></canvas>
-            <div class="slidecontainer">
-                Zoom: <input type="range" min="1" max="10000" value="50" class="slider" id="myRange">
-            </div>
-            <a class="link" href="https://co.witch19.space#cz_future_2">link</a>
-        </div>
-        <br class="clear"/>
-    </div>
+
     <div class="bottom_container">
         <div class="bottom_nav">
             Do you want to know your future ? Ask at fortune 💔 witch19.space
@@ -352,9 +293,7 @@
 <script src="graph_cz_new.js?v=<?php echo filemtime($cwd . 'graph_cz_new.js'); ?>"></script>
 
 <!-- GRAPH CZ FUTURE -->
-<script src="graph_cz_future_new.js?v=<?php echo filemtime($cwd . 'graph_cz_future_new.js'); ?>"></script>
+<script src="graph_cz_31-10.js?v=<?php echo filemtime($cwd . 'graph_cz_31-10.js'); ?>"></script>
 
-<!-- GRAPH CZ FUTURE -->
-<script src="graph_cz_future_2_new.js?v=<?php echo filemtime($cwd . 'graph_cz_future_2_new.js'); ?>"></script>
 
 </html>

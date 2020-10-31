@@ -24,13 +24,13 @@ function legendCallbackGrowthRate(e, legendItem) {
     var ci = this.chart;
 
     // Observed, Average and rolling average growth rate
-    if (index < 3) {
+    if (index < 4) {
         meta = ci.getDatasetMeta(index);
         meta.hidden = meta.hidden === null ? !ci.data.datasets[index].hidden : null;
     } else { // predictions
         for (i=0; i<=JITTER_COUNT; i++) {
-            var meta = ci.getDatasetMeta(i+3);
-            meta.hidden = meta.hidden === null ? !ci.data.datasets[i+3].hidden : null;
+            var meta = ci.getDatasetMeta(i+5);
+            meta.hidden = meta.hidden === null ? !ci.data.datasets[i+5].hidden : null;
         }
     }
 
@@ -199,8 +199,10 @@ growth_rate_dataset.push( {
     tension: 0.2,
     fill: false
 } );
+
+// Predicted 20.09.2020
 growth_rate_dataset.push( {
-    label: 'Predicted (7-Day Average)',
+    label: 'Predicted 20.09',
     data: model['cz_c']['growth_rate']['avg'],
     spanGaps: true,
     borderWidth: 2,
@@ -210,11 +212,25 @@ growth_rate_dataset.push( {
     tension: 0.2,
     fill: false
 });
+// Predicted 31.10.2020
+growth_rate_dataset.push( {
+    label: 'Predicted 31.10',
+    data: model['cz_31-10']['growth_rate']['avg'],
+    spanGaps: true,
+    borderWidth: 2,
+    borderColor: '#' + pal_8[0],
+    pointStyle: 'circle',
+    pointBorderColor:  '#' + pal_8[0],
+    tension: 0.2,
+    fill: false
+});
+
+// Jitters for 20.09 and 31.10
 for (i=0; i<JITTER_COUNT; i++) {
     if (i>0) {
-        label = 'Predicted (7-Day Average)' + '-' + i;
+        label = 'Predicted 20.09' + '-' + i;
     } else {
-        label = 'Predicted (7-Day Average)';
+        label = 'Predicted 20.09';
     }
     cz_c =  {
         label: label,
@@ -231,6 +247,28 @@ for (i=0; i<JITTER_COUNT; i++) {
     };
     growth_rate_dataset.push( cz_c );
 }
+for (i=0; i<JITTER_COUNT; i++) {
+    if (i>0) {
+        label = 'Predicted 31.10' + '-' + i;
+    } else {
+        label = 'Predicted 31.10';
+    }
+    cz_31_10 =  {
+        label: label,
+        data: model['cz_31-10']['growth_rate'][i],
+        spanGaps: true,
+        borderWidth: 1,
+        borderDash: [5, 5],
+        borderColor: hexToRGBA('#' + pal_8[0], 0.2),
+        pointStyle: 'circle',
+        radius: 0,
+        pointBorderColor: '#' + pal_8[0],
+        tension: 0.2,
+        fill: false
+    };
+    growth_rate_dataset.push( cz_31_10 );
+}
+
 
 // The growth rate chart
 window.growth_rate_chart = new Chart(growth_rate_chart_cz, {
@@ -267,7 +305,7 @@ window.growth_rate_chart = new Chart(growth_rate_chart_cz, {
                 fontSize: fontsize,
                 // Show only first three labels
                 filter: function (legendItem, chartData) {
-                    if (legendItem.datasetIndex < 4) {
+                    if (legendItem.datasetIndex < 5) {
                         return (chartData.datasets[legendItem.datasetIndex].label)
                     }
 
