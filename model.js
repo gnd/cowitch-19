@@ -182,6 +182,14 @@ function exp(x, steps, speed, scale) {
     }
 }
 
+function sig(x, steps, speed, scale) {
+    // we need to move the function so that (1/(1+Math.pow(steep, -x))) < 1/1000
+    x += Math.log10(Math.abs(scale)/1000) / Math.log10(speed);
+    nextval = (1 / (1 + Math.pow(speed, -x+1)));
+    currval = (1 / (1 + Math.pow(speed, -x)));
+    return (currval-nextval) * scale;
+}
+
 // old func for compatibility
 function old_log(day, steps, speed, scale) {
     return Math.log10(day) / speed * scale;

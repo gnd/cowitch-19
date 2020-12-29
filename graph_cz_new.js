@@ -88,7 +88,7 @@ for (i=0; i<JITTER_COUNT; i++) {
 window.infected_chart = new Chart(infected_chart_cz, {
     type: 'line',
     data: {
-        labels: gen_days(0, 2, 300),
+        labels: gen_days(0, 2, 390),
         datasets: infected_dataset,
     },
     options: {
@@ -224,8 +224,20 @@ growth_rate_dataset.push( {
     tension: 0.2,
     fill: false
 });
+// Predicted 31.10.2020
+growth_rate_dataset.push( {
+    label: 'Predicted 27.12',
+    data: model['cz_27-12']['growth_rate']['avg'],
+    spanGaps: true,
+    borderWidth: 2,
+    borderColor: '#' + pal_8[6],
+    pointStyle: 'circle',
+    pointBorderColor:  '#' + pal_8[6],
+    tension: 0.2,
+    fill: false
+});
 
-// Jitters for 20.09 and 31.10
+// Jitters for 20.09 and 31.10 ans 27.12
 for (i=0; i<JITTER_COUNT; i++) {
     if (i>0) {
         label = 'Predicted 20.09' + '-' + i;
@@ -268,13 +280,34 @@ for (i=0; i<JITTER_COUNT; i++) {
     };
     growth_rate_dataset.push( cz_31_10 );
 }
+for (i=0; i<JITTER_COUNT; i++) {
+    if (i>0) {
+        label = 'Predicted 27.12' + '-' + i;
+    } else {
+        label = 'Predicted 27.12';
+    }
+    cz_27_12 =  {
+        label: label,
+        data: model['cz_27-12']['growth_rate'][i],
+        spanGaps: true,
+        borderWidth: 1,
+        borderDash: [5, 5],
+        borderColor: hexToRGBA('#' + pal_8[6], 0.2),
+        pointStyle: 'circle',
+        radius: 0,
+        pointBorderColor: '#' + pal_8[6],
+        tension: 0.2,
+        fill: false
+    };
+    growth_rate_dataset.push( cz_27_12 );
+}
 
 
 // The growth rate chart
 window.growth_rate_chart = new Chart(growth_rate_chart_cz, {
     type: 'line',
     data: {
-        labels: gen_days(0, 2, 300),
+        labels: gen_days(0, 2, 390),
         datasets: growth_rate_dataset,
     },
     options: {
@@ -303,9 +336,9 @@ window.growth_rate_chart = new Chart(growth_rate_chart_cz, {
             onClick: legendCallbackGrowthRate,
             labels: {
                 fontSize: fontsize,
-                // Show only first three labels
+                // Show only first N labels
                 filter: function (legendItem, chartData) {
-                    if (legendItem.datasetIndex < 5) {
+                    if (legendItem.datasetIndex < 6) {
                         return (chartData.datasets[legendItem.datasetIndex].label)
                     }
 
@@ -333,12 +366,25 @@ window.growth_rate_chart = new Chart(growth_rate_chart_cz, {
                     type: 'line',
                     mode: 'vertical',
                     scaleID: 'x-axis-0',
-                    value: 'Oct 1, 2020',
+                    value: 'Oct 22, 2020',
                     borderColor: 'green',
                     borderWidth: 2,
                     label: {
                         backgroundColor: "red",
-                        content: "Second lockdown: 1.10.2020",
+                        content: "Second lockdown: (FIXME)",
+                        enabled: true
+                    },
+                },
+                {
+                    type: 'line',
+                    mode: 'vertical',
+                    scaleID: 'x-axis-0',
+                    value: 'Dec 10, 2020',
+                    borderColor: 'green',
+                    borderWidth: 2,
+                    label: {
+                        backgroundColor: "red",
+                        content: "Third lockdown: (FIXME)",
                         enabled: true
                     },
                 },

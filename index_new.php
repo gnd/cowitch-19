@@ -161,7 +161,7 @@
     }
     var model_settings = new params(
         'cz_c',                     // model name
-        300,                        // model duration
+        390,                        // model duration
         //seed['growth_rate_avg_7']['cz'],
         model_growthrate,
         0.95,                       // min possible growth rate
@@ -211,7 +211,7 @@
     }
     var model_settings_31_10 = new params(
         'cz_31-10',                     // model name
-        330,                        // model duration
+        390,                        // model duration
         //seed['growth_rate_avg_7']['cz'],
         model_growthrate,
         0.95,                       // min possible growth rate
@@ -227,6 +227,52 @@
         population_size['cz'],
     );
     run_model( model_settings_31_10 );
+    
+    
+    // 27.12.2020
+    // This is a model following the 7-day rolling average of growth rate in Czech republic
+    rate_funcs = [];
+    var PREDICTION_DAY = 302; // Day 301 is 27.12.2020
+    // rationale is duplicate the decline of the rate after the peak following the second lockdown
+    rate_funcs.push( new rate_func(
+        'exp',                      // name
+        PREDICTION_DAY,             // start
+        150,                        // steps
+        0.5,                        // speed / steepness
+        -0.3,                        // scale
+    ));
+    rate_funcs.push( new rate_func(
+        'sig',                      // name
+        PREDICTION_DAY+10,             // start
+        200,                        // steps
+        .9,                        // speed / steepness
+        0.1,                        // scale
+    ));
+    // here we use only first N days to be able to freeze predictions in time
+    var model_growthrate = {};
+    var model_seed = {};
+    for (i=0; i<=PREDICTION_DAY; i++) {
+        model_growthrate[i] = seed['growth_rate_avg_7']['cz'][i];
+        model_seed[i] = seed['infected']['cz'][i];
+    }
+    var model_settings_27_12 = new params(
+        'cz_27-12',                     // model name
+        390,                        // model duration
+        //seed['growth_rate_avg_7']['cz'],
+        model_growthrate,
+        0.95,                       // min possible growth rate
+        //seed['infected']['cz'],      // the confirmed cases so far
+        model_seed,
+        JITTER_COUNT,           // jitter count
+        JITTER_AMOUNT/2,        // jitter amount
+        'recovered_new',            // recovered distribution
+        40,                         // recovered offset - when to start looking into the past for current recoveries
+        'linton',               // deaths distribution
+        0.05,                      // case fatality rate (CFR)
+        rate_funcs,
+        population_size['cz'],
+    );
+    run_model( model_settings_27_12 );
 
 </script>
 </head>
@@ -256,6 +302,15 @@
     		<canvas id="infected_cz_31-10" class="graph"></canvas>
             <a class="link" href="#cz_pred_31-10">link</a>
     	</div>
+        <br class="clear"/>
+    </div>
+    <div class="graph_container">
+        <a id="cz_pred_27-12"></a>
+        <div class="graph_filler">&nbsp;</div>
+        <div class="canvas_container">
+            <canvas id="infected_cz_27-12" class="graph"></canvas>
+            <a class="link" href="#cz_pred_27-12">link</a>
+        </div>
         <br class="clear"/>
     </div>
     <div class="graph_container">
@@ -295,5 +350,7 @@
 <!-- GRAPH CZ FUTURE -->
 <script src="graph_cz_31-10.js?v=<?php echo filemtime($cwd . 'graph_cz_31-10.js'); ?>"></script>
 
+<!-- GRAPH CZ FUTURE -->
+<script src="graph_cz_27-12.js?v=<?php echo filemtime($cwd . 'graph_cz_27-12.js'); ?>"></script>
 
 </html>

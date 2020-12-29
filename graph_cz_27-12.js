@@ -39,7 +39,7 @@ function legendCallbackGrowthRate(e, legendItem) {
 }
 
 // the infected graph
-var infected_chart_cz_31_10 = document.getElementById("infected_cz_31-10").getContext('2d');
+var infected_chart_cz_27_12 = document.getElementById("infected_cz_27-12").getContext('2d');
 
 // Create datasets for infected projections
 infected_dataset = [];
@@ -56,36 +56,36 @@ infected_dataset.push( {
     fill: false
 } );
 infected_dataset.push( {
-    label: 'Predicted 31.10',
-    data: model['cz_31-10']['total']['avg'],
+    label: 'Predicted 27.12',
+    data: model['cz_27-12']['total']['avg'],
     spanGaps: true,
     borderWidth: 2,
-    borderColor: '#' + pal_8[0],
+    borderColor: '#' + pal_8[6],
     pointStyle: 'circle',
-    pointBorderColor:  '#' + pal_8[0],
+    pointBorderColor:  '#' + pal_8[6],
     tension: 0,
     fill: false
 } );
 for (i=0; i<JITTER_COUNT; i++) {
-    label = 'Predicted 31.10'+i;
-    cz_31_10 = {
+    label = 'Predicted 27.12'+i;
+    cz_27_12 = {
         label: label,
-        data: model['cz_31-10']['total'][i],
+        data: model['cz_27-12']['total'][i],
         spanGaps: true,
         borderWidth: 1,
         borderDash: [5, 5],
-        borderColor: hexToRGBA('#' + pal_8[0], 0.4),
+        borderColor: hexToRGBA('#' + pal_8[6], 0.4),
         pointStyle: 'circle',
         radius: 0,
-        pointBorderColor:  '#' + pal_8[0],
+        pointBorderColor:  '#' + pal_8[6],
         tension: 0.2,
         fill: false
     };
-    infected_dataset.push( cz_31_10 );
+    infected_dataset.push( cz_27_12 );
 }
 
 // The infected chart
-window.infected_chart = new Chart(infected_chart_cz_31_10, {
+window.infected_chart = new Chart(infected_chart_cz_27_12, {
     type: 'line',
     data: {
         labels: gen_days(0, 2, 390),
@@ -108,7 +108,7 @@ window.infected_chart = new Chart(infected_chart_cz_31_10, {
             yAxes: [{
                 ticks: {
                     min: 0,
-                    max: 1000000,
+                    max: 200000,
                 }
             }]
         },
@@ -152,7 +152,20 @@ window.infected_chart = new Chart(infected_chart_cz_31_10, {
                     borderWidth: 2,
                     label: {
                         backgroundColor: "red",
-                        content: "Second lockdown: CHANGEME",
+                        content: "Second lockdown (FIXME)",
+                        enabled: true
+                    },
+                },
+                {
+                    type: 'line',
+                    mode: 'vertical',
+                    scaleID: 'x-axis-0',
+                    value: 'Dec 10, 2020',
+                    borderColor: 'green',
+                    borderWidth: 2,
+                    label: {
+                        backgroundColor: "red",
+                        content: "Third lockdown: (FIXME)",
                         enabled: true
                     },
                 },
