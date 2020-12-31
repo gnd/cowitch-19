@@ -232,22 +232,22 @@
     // 27.12.2020
     // This is a model following the 7-day rolling average of growth rate in Czech republic
     rate_funcs = [];
-    var PREDICTION_DAY = 302; // Day 301 is 27.12.2020
-    // rationale is duplicate the decline of the rate after the peak following the second lockdown
+    var PREDICTION_DAY = 304; // Day 304 is 30.12.2020
+    rate_funcs.push( new rate_func(
+        'log',                      // name
+        PREDICTION_DAY,             // start
+        14,                        // steps
+        .1,                        // speed / steepness
+        0.03,                        // scale
+    ));
     rate_funcs.push( new rate_func(
         'exp',                      // name
-        PREDICTION_DAY,             // start
-        150,                        // steps
-        0.5,                        // speed / steepness
-        -0.3,                        // scale
+        PREDICTION_DAY+7,             // start
+        30,                        // steps
+        1.2,                        // speed / steepness
+        -0.2,                        // scale
     ));
-    rate_funcs.push( new rate_func(
-        'sig',                      // name
-        PREDICTION_DAY+10,             // start
-        200,                        // steps
-        .9,                        // speed / steepness
-        0.1,                        // scale
-    ));
+    
     // here we use only first N days to be able to freeze predictions in time
     var model_growthrate = {};
     var model_seed = {};
@@ -287,24 +287,6 @@
         </div>
     </div>
     <div class="graph_container">
-        <a id="cz_pred_20-09"></a>
-        <div class="graph_filler">&nbsp;</div>
-        <div class="canvas_container">
-    		<canvas id="infected_cz" class="graph"></canvas>
-            <a class="link" href="#cz_pred_20-09">link</a>
-    	</div>
-        <br class="clear"/>
-    </div>
-    <div class="graph_container">
-        <a id="cz_pred_31-10"></a>
-        <div class="graph_filler">&nbsp;</div>
-        <div class="canvas_container">
-    		<canvas id="infected_cz_31-10" class="graph"></canvas>
-            <a class="link" href="#cz_pred_31-10">link</a>
-    	</div>
-        <br class="clear"/>
-    </div>
-    <div class="graph_container">
         <a id="cz_pred_27-12"></a>
         <div class="graph_filler">&nbsp;</div>
         <div class="canvas_container">
@@ -322,7 +304,24 @@
         </div>
         <br class="clear"/>
     </div>
-
+    <div class="graph_container">
+        <a id="cz_pred_31-10"></a>
+        <div class="graph_filler">&nbsp;</div>
+        <div class="canvas_container">
+    		<canvas id="infected_cz_31-10" class="graph"></canvas>
+            <a class="link" href="#cz_pred_31-10">link</a>
+    	</div>
+        <br class="clear"/>
+    </div>
+    <div class="graph_container">
+        <a id="cz_pred_20-09"></a>
+        <div class="graph_filler">&nbsp;</div>
+        <div class="canvas_container">
+            <canvas id="infected_cz" class="graph"></canvas>
+            <a class="link" href="#cz_pred_20-09">link</a>
+        </div>
+        <br class="clear"/>
+    </div>
     <div class="bottom_container">
         <div class="bottom_nav">
             Do you want to know your future ? Ask at fortune 💔 witch19.space
@@ -344,13 +343,17 @@
         chart.update(0);
     }
 </script>
-<!-- GRAPH CZ -->
-<script src="graph_cz_new.js?v=<?php echo filemtime($cwd . 'graph_cz_new.js'); ?>"></script>
+<!-- GRAPH CZ 27.12 -->
+<script src="graph_cz_27-12.js?v=<?php echo filemtime($cwd . 'graph_cz_27-12.js'); ?>"></script>
 
-<!-- GRAPH CZ FUTURE -->
+<!-- GRAPH CZ Growth Rate-->
+<script src="graph_cz_growth.js?v=<?php echo filemtime($cwd . 'graph_cz_growth.js'); ?>"></script>
+
+<!-- GRAPH CZ 31.10 -->
 <script src="graph_cz_31-10.js?v=<?php echo filemtime($cwd . 'graph_cz_31-10.js'); ?>"></script>
 
-<!-- GRAPH CZ FUTURE -->
-<script src="graph_cz_27-12.js?v=<?php echo filemtime($cwd . 'graph_cz_27-12.js'); ?>"></script>
+<!-- GRAPH CZ OLD -->
+<script src="graph_cz_20-09.js?v=<?php echo filemtime($cwd . 'graph_cz_20-09.js'); ?>"></script>
+
 
 </html>

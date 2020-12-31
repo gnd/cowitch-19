@@ -152,7 +152,7 @@ window.infected_chart = new Chart(infected_chart_cz_31_10, {
                     borderWidth: 2,
                     label: {
                         backgroundColor: "red",
-                        content: "Second lockdown: CHANGEME",
+                        content: "Second lockdown",
                         enabled: true
                     },
                 },

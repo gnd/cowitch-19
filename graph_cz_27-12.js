@@ -108,7 +108,7 @@ window.infected_chart = new Chart(infected_chart_cz_27_12, {
             yAxes: [{
                 ticks: {
                     min: 0,
-                    max: 200000,
+                    max: 250000,
                 }
             }]
         },
@@ -139,7 +139,7 @@ window.infected_chart = new Chart(infected_chart_cz_27_12, {
                     borderWidth: 2,
                     label: {
                         backgroundColor: "red",
-                        content: 'First lockdown',
+                        content: "First lockdown",
                         enabled: true
                     },
                 },
@@ -152,7 +152,7 @@ window.infected_chart = new Chart(infected_chart_cz_27_12, {
                     borderWidth: 2,
                     label: {
                         backgroundColor: "red",
-                        content: "Second lockdown (FIXME)",
+                        content: "Second lockdown",
                         enabled: true
                     },
                 },
@@ -160,12 +160,12 @@ window.infected_chart = new Chart(infected_chart_cz_27_12, {
                     type: 'line',
                     mode: 'vertical',
                     scaleID: 'x-axis-0',
-                    value: 'Dec 10, 2020',
+                    value: 'Dec 27, 2020',
                     borderColor: 'green',
                     borderWidth: 2,
                     label: {
                         backgroundColor: "red",
-                        content: "Third lockdown: (FIXME)",
+                        content: "Third lockdown",
                         enabled: true
                     },
                 },
