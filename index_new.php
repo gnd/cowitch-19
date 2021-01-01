@@ -54,6 +54,11 @@
 <script src="data/recovered_cz.js?v=<?php echo filemtime($cwd . 'data/recovered_cz.js'); ?>"></script>
 <script src="data/deaths_cz.js?v=<?php echo filemtime($cwd . 'data/deaths_cz.js'); ?>"></script>
 <script src="data/tests_cz.js?v=<?php echo filemtime($cwd . 'data/tests_cz.js'); ?>"></script>
+<script src="data/confirmed_sk.js?v=<?php echo filemtime($cwd . 'data/confirmed_sk.js'); ?>"></script>
+<script src="data/recovered_sk.js?v=<?php echo filemtime($cwd . 'data/recovered_sk.js'); ?>"></script>
+<script src="data/deaths_sk.js?v=<?php echo filemtime($cwd . 'data/deaths_sk.js'); ?>"></script>
+<script src="data/tests_sk.js?v=<?php echo filemtime($cwd . 'data/tests_sk.js'); ?>"></script>
+
 
 <?php
     // compute last change to the model(s)
@@ -80,13 +85,19 @@
     seed = {'growth_rate': {}, 'growth_rate_avg_7': {}, 'infected': {}};
     population_size = {};
 
-    population_size['cz'] = 10693939; //https://en.wikipedia.org/wiki/Demographics_of_the_Czech_Republic
+    population_size['cz'] = 10693939; // https://en.wikipedia.org/wiki/Demographics_of_the_Czech_Republic
+    population_size['sk'] = 54640000; // https://en.wikipedia.org/wiki/Demographics_of_Slovakia
 
     // Get Czech data from https://onemocneni-aktualne.mzcr.cz/covid-19
     extract_data_cz(czech_data, current_values, 'cz');
 
+    // Get Slovak data from https://mapa.covid.chat/export/csv
+    extract_data_sk(slovak_data, current_values, 'sk');
+
     // Fill initial stats for countries
     days_elapsed['cz'] = fill_initial(data, current_values, 'cz');
+    days_elapsed['sk'] = fill_initial(data, current_values, 'sk');
+
 
     // Prepare the model
     model = {};
@@ -99,7 +110,8 @@
 
     // Create growth_rate seed and new cases seed for modelling
     create_seeds(seed, days_elapsed, 'cz');
-
+    create_seeds(seed, days_elapsed, 'sk');
+    
     // This is a model following the 7-day rolling average of growth rate in Czech republic
     // TODO define a suite of realistic rate functions for autumn
     rate_funcs = [];
@@ -175,6 +187,7 @@
         0.05,                      // case fatality rate (CFR)
         rate_funcs,
         population_size['cz'],
+        0                          // debugging
     );
     run_model( model_settings );
 
@@ -225,6 +238,7 @@
         0.05,                      // case fatality rate (CFR)
         rate_funcs,
         population_size['cz'],
+        0                          // debugging
     );
     run_model( model_settings_31_10 );
     
@@ -248,7 +262,7 @@
         -0.2,                        // scale
     ));
     
-    // here we use only first N days to be able to freeze predictions in time
+    // 27.12
     var model_growthrate = {};
     var model_seed = {};
     for (i=0; i<=PREDICTION_DAY; i++) {
@@ -271,8 +285,56 @@
         0.05,                      // case fatality rate (CFR)
         rate_funcs,
         population_size['cz'],
+        0                           // debugging
     );
     run_model( model_settings_27_12 );
+    
+    
+    // 1.1.2021
+    // This is a model following the 7-day rolling average of growth rate in Slovakia
+    rate_funcs = [];
+    var PREDICTION_DAY = 300; // Day 304 is 30.12.2020
+    rate_funcs.push( new rate_func(
+        'log',                      // name
+        PREDICTION_DAY,             // start
+        14,                        // steps
+        .1,                        // speed / steepness
+        0.06,                        // scale
+    ));
+    rate_funcs.push( new rate_func(
+        'exp',                      // name
+        PREDICTION_DAY+7,             // start
+        50,                        // steps
+        1.2,                        // speed / steepness
+        -0.2,                        // scale
+    ));
+    
+    // 1.1.2021
+    var model_growthrate = {};
+    var model_seed = {};
+    for (i=0; i<=PREDICTION_DAY; i++) {
+        model_growthrate[i] = seed['growth_rate_avg_7']['sk'][i];
+        model_seed[i] = seed['infected']['sk'][i];
+    }
+    var model_settings_1_1_sk = new params(
+        'sk_1-1',                     // model name
+        390,                        // model duration
+        //seed['growth_rate_avg_7']['cz'],
+        model_growthrate,
+        0.95,                       // min possible growth rate
+        //seed['infected']['cz'],      // the confirmed cases so far
+        model_seed,
+        JITTER_COUNT,           // jitter count
+        JITTER_AMOUNT/2,        // jitter amount
+        'recovered_new',            // recovered distribution
+        40,                         // recovered offset - when to start looking into the past for current recoveries
+        'linton',               // deaths distribution
+        0.05,                      // case fatality rate (CFR)
+        rate_funcs,
+        population_size['sk'],
+        0,                           // debugging
+    );
+    run_model( model_settings_1_1_sk );
 
 </script>
 </head>
@@ -280,7 +342,7 @@
     <div class="top">
         <div class="header">
             <h1><span class="white">Cowitch-19 datamancy</span></h1>
-            <h3><span class="medium_white">These models are based on elaborate (wink wink) data witch-doctory using observed Covid-19 growth rate in Czech republic and elsewhere.</span></h3>
+            <h3><span class="medium_white">These models are based on elaborate (wink wink) data witch-doctory using observed Covid-19 growth rate in the Czech republic and elsewhere.</span></h3>
             <span class="small_white">Czech data taken from: <a href=https://onemocneni-aktualne.mzcr.cz/covid-19>https://onemocneni-aktualne.mzcr.cz/covid-19</a>.<br/>
             <span class="small_white">Rest is from: <a href=https://github.com/CSSEGISandData/COVID-19>https://github.com/CSSEGISandData/COVID-19</a>.<br/><br/>
             Last change: <?php echo date("d/m/y H:i", $max_code); ?> (code), <?php echo date("d/m/y H:i", $max_data); ?> (data)</span>
@@ -301,6 +363,24 @@
         <div class="canvas_container">
             <canvas id="growth_rate_cz" class="graph"></canvas>
             <a class="link" href="#cz_growth">link</a>
+        </div>
+        <br class="clear"/>
+    </div>
+    <div class="graph_container">
+        <a id="sk_new"></a>
+        <div class="graph_filler">&nbsp;</div>
+        <div class="canvas_container">
+            <canvas id="infected_sk" class="graph"></canvas>
+            <a class="link" href="#sk_new">link</a>
+        </div>
+        <br class="clear"/>
+    </div>
+    <div class="graph_container">
+        <a id="sk_growth"></a>
+        <div class="graph_filler">&nbsp;</div>
+        <div class="canvas_container">
+            <canvas id="growth_rate_sk" class="graph"></canvas>
+            <a class="link" href="#sk_growth">link</a>
         </div>
         <br class="clear"/>
     </div>
@@ -348,6 +428,12 @@
 
 <!-- GRAPH CZ Growth Rate-->
 <script src="graph_cz_growth.js?v=<?php echo filemtime($cwd . 'graph_cz_growth.js'); ?>"></script>
+
+<!-- GRAPH SK -->
+<script src="graph_sk_new.js?v=<?php echo filemtime($cwd . 'graph_sk_new.js'); ?>"></script>
+
+<!-- GRAPH SK Growth Rate-->
+<script src="graph_sk_growth.js?v=<?php echo filemtime($cwd . 'graph_sk_growth.js'); ?>"></script>
 
 <!-- GRAPH CZ 31.10 -->
 <script src="graph_cz_31-10.js?v=<?php echo filemtime($cwd . 'graph_cz_31-10.js'); ?>"></script>

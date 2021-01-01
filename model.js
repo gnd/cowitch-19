@@ -352,7 +352,7 @@ function rate_func(name, start, steps, speed, scale) {
 }
 
 // Sort of struct emulation in js - model prameters
-function params(name, model_duration, growth_rate_seed, growth_rate_min, infected_seed, jitter_count, jitter_amount, recovered_func, recovered_offset, dead_func, cfr, rate_funcs, population_size, real_to_reported) {
+function params(name, model_duration, growth_rate_seed, growth_rate_min, infected_seed, jitter_count, jitter_amount, recovered_func, recovered_offset, dead_func, cfr, rate_funcs, population_size, real_to_reported, debug) {
     this.name = name;
     this.model_duration = model_duration;
     this.irs = growth_rate_seed;
@@ -367,6 +367,7 @@ function params(name, model_duration, growth_rate_seed, growth_rate_min, infecte
     this.rate_funcs = rate_funcs;
     this.population_size = population_size;
     this.reported_ratio = real_to_reported;
+    this.debug = debug;
 }
 
 function run_model(params) {
@@ -404,7 +405,6 @@ function run_model(params) {
             // if we have provided a value, use it
             if (i in params.irs) {
                 model[params.name]['growth_rate'][jitter].push( params.irs[i] );
-                //console.log(model[params.name]['growth_rate'][jitter]);
             } else {
                 // otherwise determine next value from the previous one
                 if (i > 0) {
@@ -421,7 +421,9 @@ function run_model(params) {
                         rnd = 1  + (Math.random()*params.jitter_amount*2) - (params.jitter_amount);
                         new_rate *= rnd;
                     }
-                    // check if new_rate over allowed min
+                    // just for logging purposes
+                    computed_new_rate = new_rate;
+                    // check if new_rate over allowed min 
                     new_rate = Math.max( new_rate, params.growth_rate_min );
                     // add rate into model
                     model[params.name]['growth_rate'][jitter].push( new_rate );
@@ -515,11 +517,11 @@ function run_model(params) {
                     model[params.name]['susceptible'][jitter].push( 0 );
                 }
 
-                // Log to console
-                //if (params.name == 'cz_future_2') {
-            //        console.log("i: "+i+" susc-1: "+ model[params.name]['susceptible'][jitter][i-1])
-                //    console.log((i+1)+' rate: '+new_rate.toFixed(2)+' infected: '+infected.toFixed(0)+' infected_daily: '+infected_daily.toFixed(0)+' recovered_daily: '+recovered_daily.toFixed(0)+' total: '+total.toFixed(0) + ' died: '+deaths.toFixed(0))
-                //}
+                // Log to console 
+                if (params.debug) {
+                    console.log("i: "+i+" susc-1: "+ model[params.name]['susceptible'][jitter][i-1])
+                    console.log((i+1)+' computed_new_rate: '+computed_new_rate.toFixed(2)+' rate: '+new_rate.toFixed(2)+' infected: '+infected.toFixed(0)+' infected_daily: '+infected_daily.toFixed(0)+' recovered_daily: '+recovered_daily.toFixed(0)+' total: '+total.toFixed(0) + ' died: '+deaths.toFixed(0))
+                }
             }
         }
     }
