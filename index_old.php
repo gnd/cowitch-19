@@ -123,7 +123,7 @@
     days_elapsed['it'] = fill_initial(data, current_values, 'it');
     days_elapsed['sk'] = fill_initial(data, current_values, 'sk', 39); // We start from 1st of March, not from 22nd of January
     days_elapsed['gr'] = fill_initial(data, current_values, 'gr');
-    days_elapsed['gr'] = fill_initial(data, current_values, 'hu');
+    days_elapsed['hu'] = fill_initial(data, current_values, 'hu');
 
     // prepare values for compare_100
     prepare_100(current_values, 'cz');

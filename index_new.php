@@ -50,6 +50,9 @@
 <script src="model.js?v=<?php echo filemtime($cwd . 'model.js'); ?>"></script>
 
 <!-- DATA -->
+<script src="data/confirmed.js?v=<?php echo filemtime($cwd . 'data/confirmed.js'); ?>"></script>
+<script src="data/recovered.js?v=<?php echo filemtime($cwd . 'data/recoveredz.js'); ?>"></script>
+<script src="data/deaths.js?v=<?php echo filemtime($cwd . 'data/deaths.js'); ?>"></script>
 <script src="data/confirmed_cz.js?v=<?php echo filemtime($cwd . 'data/confirmed_cz.js'); ?>"></script>
 <script src="data/recovered_cz.js?v=<?php echo filemtime($cwd . 'data/recovered_cz.js'); ?>"></script>
 <script src="data/deaths_cz.js?v=<?php echo filemtime($cwd . 'data/deaths_cz.js'); ?>"></script>
@@ -85,19 +88,88 @@
     seed = {'growth_rate': {}, 'growth_rate_avg_7': {}, 'infected': {}};
     population_size = {};
 
+    population_size['at'] =  8858775; // https://en.wikipedia.org/wiki/Demographics_of_Austria
+    population_size['be'] = 11550039; // https://en.wikipedia.org/wiki/Demographics_of_Belgium
+    population_size['bg'] =  6951482; // https://en.wikipedia.org/wiki/Demographics_of_Bulgaria
+    population_size['cr'] =  4067500; // https://en.wikipedia.org/wiki/Demographics_of_Croatia
     population_size['cz'] = 10693939; // https://en.wikipedia.org/wiki/Demographics_of_the_Czech_Republic
-    population_size['sk'] = 54640000; // https://en.wikipedia.org/wiki/Demographics_of_Slovakia
+    population_size['fr'] = 67153000; // https://en.wikipedia.org/wiki/Demographics_of_France
+    population_size['de'] = 83122889; // https://en.wikipedia.org/wiki/Demographics_of_Germany
+    population_size['gr'] = 10718565; // https://en.wikipedia.org/wiki/Demographics_of_Greece
+    population_size['hu'] =  9798000; // https://en.wikipedia.org/wiki/Demographics_of_Hungary
+    population_size['it'] = 60317116; // https://en.wikipedia.org/wiki/Demographics_of_Italy
+    population_size['nl'] = 17469635; // https://en.wikipedia.org/wiki/Demography_of_the_Netherlands
+    population_size['pl'] = 37846611; // https://en.wikipedia.org/wiki/Demographics_of_Poland
+    population_size['pt'] = 10295909; // https://en.wikipedia.org/wiki/Demographics_of_Portugal
+    population_size['ro'] = 19317384; // https://en.wikipedia.org/wiki/Demographics_of_Romania
+    population_size['sk'] =  5464000; // https://en.wikipedia.org/wiki/Demographics_of_Slovakia
+    population_size['sl'] =  2100126; // https://en.wikipedia.org/wiki/Demographics_of_Slovenia
+    population_size['sr'] =  6926705; // https://en.wikipedia.org/wiki/Demographics_of_Serbia
+    population_size['es'] = 47431256; // https://en.wikipedia.org/wiki/Demographics_of_Spain
+    population_size['ua'] = 41762138; // https://en.wikipedia.org/wiki/Demographics_of_Ukraine
 
-    // Get Czech data from https://onemocneni-aktualne.mzcr.cz/covid-19
-    extract_data_cz(czech_data, current_values, 'cz');
-
-    // Get Slovak data from https://mapa.covid.chat/export/csv
-    extract_data_sk(slovak_data, current_values, 'sk');
-
+    // Get global data from https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_confirmed_global.csv
+    extract_data(global_data, current_values, 'Austria', 'at');
+    extract_data(global_data, current_values, 'Belgium', 'be');
+    extract_data(global_data, current_values, 'Bulgaria', 'bg');
+    extract_data(global_data, current_values, 'Croatia', 'cr');
+    extract_data_cz(czech_data, current_values, 'cz'); // Get Czech data from https://onemocneni-aktualne.mzcr.cz/covid-19
+    extract_data(global_data, current_values, 'France', 'fr');
+    extract_data(global_data, current_values, 'Germany', 'de');
+    extract_data(global_data, current_values, 'Greece', 'gr');
+    extract_data(global_data, current_values, 'Hungary', 'hu');
+    extract_data(global_data, current_values, 'Italy', 'it');
+    extract_data(global_data, current_values, 'Netherlands', 'nl');
+    extract_data(global_data, current_values, 'Poland', 'pl');
+    extract_data(global_data, current_values, 'Portugal', 'pt');
+    extract_data(global_data, current_values, 'Romania', 'ro');
+    extract_data_sk(slovak_data, current_values, 'sk'); // Get Slovak data from https://mapa.covid.chat/export/csv
+    extract_data(global_data, current_values, 'Slovenia', 'sl');
+    extract_data(global_data, current_values, 'Serbia', 'sr');
+    extract_data(global_data, current_values, 'Spain', 'es');
+    extract_data(global_data, current_values, 'Ukraine', 'ua');
+    
     // Fill initial stats for countries
+    days_elapsed['at'] = fill_initial(data, current_values, 'at');
+    days_elapsed['be'] = fill_initial(data, current_values, 'be');
+    days_elapsed['bg'] = fill_initial(data, current_values, 'bg');
+    days_elapsed['cr'] = fill_initial(data, current_values, 'cr');
     days_elapsed['cz'] = fill_initial(data, current_values, 'cz');
+    days_elapsed['fr'] = fill_initial(data, current_values, 'fr');
+    days_elapsed['de'] = fill_initial(data, current_values, 'de');
+    days_elapsed['gr'] = fill_initial(data, current_values, 'gr');
+    days_elapsed['hu'] = fill_initial(data, current_values, 'hu');
+    days_elapsed['it'] = fill_initial(data, current_values, 'it');
+    days_elapsed['nl'] = fill_initial(data, current_values, 'nl');
+    days_elapsed['pl'] = fill_initial(data, current_values, 'pl');
+    days_elapsed['pt'] = fill_initial(data, current_values, 'pt');
+    days_elapsed['ro'] = fill_initial(data, current_values, 'ro');
     days_elapsed['sk'] = fill_initial(data, current_values, 'sk');
+    days_elapsed['sl'] = fill_initial(data, current_values, 'sl');
+    days_elapsed['sr'] = fill_initial(data, current_values, 'sr');
+    days_elapsed['es'] = fill_initial(data, current_values, 'es');
+    days_elapsed['ua'] = fill_initial(data, current_values, 'ua');
 
+    // prepare values for compare_100
+    prepare_100_relative(current_values, 'at', population_size['at']);
+    prepare_100_relative(current_values, 'be', population_size['be']);
+    prepare_100_relative(current_values, 'bg', population_size['bg']);
+    prepare_100_relative(current_values, 'cr', population_size['cr']);
+    prepare_100_relative(current_values, 'cz', population_size['cz']);
+    prepare_100_relative(current_values, 'fr', population_size['fr']);
+    prepare_100_relative(current_values, 'de', population_size['de']);
+    prepare_100_relative(current_values, 'gr', population_size['gr']);
+    prepare_100_relative(current_values, 'hu', population_size['hu']);
+    prepare_100_relative(current_values, 'it', population_size['it']);
+    prepare_100_relative(current_values, 'nl', population_size['nl']);
+    prepare_100_relative(current_values, 'pl', population_size['pl']);
+    prepare_100_relative(current_values, 'pt', population_size['pt']);
+    prepare_100_relative(current_values, 'ro', population_size['ro']);
+    prepare_100_relative(current_values, 'sk', population_size['sk']);
+    prepare_100_relative(current_values, 'sl', population_size['sl']);
+    prepare_100_relative(current_values, 'sr', population_size['sr']);
+    prepare_100_relative(current_values, 'es', population_size['es']);
+    prepare_100_relative(current_values, 'ua', population_size['ua']);
 
     // Prepare the model
     model = {};
@@ -385,6 +457,33 @@
         <br class="clear"/>
     </div>
     <div class="graph_container">
+        <a id="compare_100_sick"></a>
+        <div class="graph_filler">&nbsp;</div>
+        <div class="canvas_container">
+            <canvas id="canvas_compare_100_sick" class="graph"></canvas>
+            <a class="link" href="#compare_100_sick">link</a>
+        </div>
+        <br class="clear"/>
+    </div>
+    <div class="graph_container">
+        <a id="compare_100_confirmed"></a>
+        <div class="graph_filler">&nbsp;</div>
+        <div class="canvas_container">
+            <canvas id="canvas_compare_100_confirmed" class="graph"></canvas>
+            <a class="link" href="#compare_100_confirmed">link</a>
+        </div>
+        <br class="clear"/>
+    </div>
+    <div class="graph_container">
+        <a id="compare_100_confirmed_perc"></a>
+        <div class="graph_filler">&nbsp;</div>
+        <div class="canvas_container">
+            <canvas id="canvas_compare_100_confirmed_perc" class="graph"></canvas>
+            <a class="link" href="#compare_100_confirmed_perc">link</a>
+        </div>
+        <br class="clear"/>
+    </div>
+    <div class="graph_container">
         <a id="cz_pred_31-10"></a>
         <div class="graph_filler">&nbsp;</div>
         <div class="canvas_container">
@@ -412,16 +511,6 @@
 <script>
     // detect if mobile or desktop
     detect_client();
-
-    // slider
-    var slider = document.getElementById("myRange");
-
-    // Update the current slider value (each time you drag the slider handle)
-    slider.oninput = function() {
-        chart = window.cz_future_long;
-        chart.options.scales.yAxes[1].ticks.max= slider.value*1000;
-        chart.update(0);
-    }
 </script>
 <!-- GRAPH CZ 27.12 -->
 <script src="graph_cz_27-12.js?v=<?php echo filemtime($cwd . 'graph_cz_27-12.js'); ?>"></script>
@@ -434,6 +523,15 @@
 
 <!-- GRAPH SK Growth Rate-->
 <script src="graph_sk_growth.js?v=<?php echo filemtime($cwd . 'graph_sk_growth.js'); ?>"></script>
+
+<!-- GRAPH Compare Sick-->
+<script src="graph_compare_sick_eu.js?v=<?php echo filemtime($cwd . 'graph_compare_sick_eu.js'); ?>"></script>
+
+<!-- GRAPH Compare Confirmed-->
+<script src="graph_compare_confirmed_eu.js?v=<?php echo filemtime($cwd . 'graph_compare_confirmed_eu.js'); ?>"></script>
+
+<!-- GRAPH Compare Confirmed as percent -->
+<script src="graph_compare_confirmed_perc_eu.js?v=<?php echo filemtime($cwd . 'graph_compare_confirmed_perc_eu.js'); ?>"></script>
 
 <!-- GRAPH CZ 31.10 -->
 <script src="graph_cz_31-10.js?v=<?php echo filemtime($cwd . 'graph_cz_31-10.js'); ?>"></script>
