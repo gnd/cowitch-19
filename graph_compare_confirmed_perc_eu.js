@@ -213,7 +213,7 @@ window.compare= new Chart(compare_100_confirmed_perc, {
         title: {
             display: true,
             fontSize: fontsize,
-            text: ["Confirmed COVID-19 cases in Czechia, France, Germany, Greece, Hungary, Italy, Poland, Slovakia as a percentage of the population", "Relative by day of 100 cases reached", "(click on the legend to show/hide data)"]
+            text: ["Confirmed COVID-19 cases as a percentage of the population", "Relative by day of 100 cases reached", "(click on the legend to show/hide data)"]
         },
         scales: {
             xAxes: [{
