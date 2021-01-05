@@ -82,7 +82,7 @@ growth_rate_dataset.push( {
     tension: 0.2,
     fill: false
 });
-// Predicted 31.10.2020
+// Predicted 27.12.2020
 growth_rate_dataset.push( {
     label: 'Predicted 27.12',
     data: model['cz_27-12']['growth_rate']['avg'],
@@ -91,6 +91,18 @@ growth_rate_dataset.push( {
     borderColor: '#' + pal_8[6],
     pointStyle: 'circle',
     pointBorderColor:  '#' + pal_8[6],
+    tension: 0.2,
+    fill: false
+});
+// Predicted 05.01.2020
+growth_rate_dataset.push( {
+    label: 'Predicted 05.01',
+    data: model['cz_05-01']['growth_rate']['avg'],
+    spanGaps: true,
+    borderWidth: 2,
+    borderColor: '#' + pal_8[2],
+    pointStyle: 'circle',
+    pointBorderColor:  '#' + pal_8[2],
     tension: 0.2,
     fill: false
 });
@@ -158,6 +170,27 @@ for (i=0; i<JITTER_COUNT; i++) {
         fill: false
     };
     growth_rate_dataset.push( cz_27_12 );
+}
+for (i=0; i<JITTER_COUNT; i++) {
+    if (i>0) {
+        label = 'Predicted 05.01' + '-' + i;
+    } else {
+        label = 'Predicted 05.01';
+    }
+    cz_05_01 =  {
+        label: label,
+        data: model['cz_05-01']['growth_rate'][i],
+        spanGaps: true,
+        borderWidth: 1,
+        borderDash: [5, 5],
+        borderColor: hexToRGBA('#' + pal_8[2], 0.2),
+        pointStyle: 'circle',
+        radius: 0,
+        pointBorderColor: '#' + pal_8[2],
+        tension: 0.2,
+        fill: false
+    };
+    growth_rate_dataset.push( cz_05_01 );
 }
 
 // The growth rate chart

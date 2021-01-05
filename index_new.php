@@ -407,6 +407,52 @@
         0,                           // debugging
     );
     run_model( model_settings_1_1_sk );
+    
+    // 01.05.2021
+    // This is a model following the 7-day rolling average of growth rate in Czech republic
+    rate_funcs = [];
+    var PREDICTION_DAY = 310; // Day 310 is 05.01.2021
+    rate_funcs.push( new rate_func(
+        'log',                      // name
+        PREDICTION_DAY,             // start
+        4,                        // steps
+        .1,                        // speed / steepness
+        0.02,                        // scale
+    ));
+    rate_funcs.push( new rate_func(
+        'exp',                      // name
+        PREDICTION_DAY+3,             // start
+        45,                        // steps
+        1.2,                        // speed / steepness
+        -0.2,                        // scale
+    ));
+    
+    // 01.05
+    var model_growthrate = {};
+    var model_seed = {};
+    for (i=0; i<=PREDICTION_DAY; i++) {
+        model_growthrate[i] = seed['growth_rate_avg_7']['cz'][i];
+        model_seed[i] = seed['infected']['cz'][i];
+    }
+    var model_settings_05_01 = new params(
+        'cz_05-01',                     // model name
+        390,                        // model duration
+        //seed['growth_rate_avg_7']['cz'],
+        model_growthrate,
+        0.95,                       // min possible growth rate
+        //seed['infected']['cz'],      // the confirmed cases so far
+        model_seed,
+        JITTER_COUNT,           // jitter count
+        JITTER_AMOUNT/2,        // jitter amount
+        'recovered_new',            // recovered distribution
+        40,                         // recovered offset - when to start looking into the past for current recoveries
+        'linton',               // deaths distribution
+        0.05,                      // case fatality rate (CFR)
+        rate_funcs,
+        population_size['cz'],
+        0                           // debugging
+    );
+    run_model( model_settings_05_01 );
 
 </script>
 </head>
@@ -421,11 +467,11 @@
         </div>
     </div>
     <div class="graph_container">
-        <a id="cz_pred_27-12"></a>
+        <a id="cz_pred_05-01"></a>
         <div class="graph_filler">&nbsp;</div>
         <div class="canvas_container">
-            <canvas id="infected_cz_27-12" class="graph"></canvas>
-            <a class="link" href="#cz_pred_27-12">link</a>
+            <canvas id="infected_cz_05-01" class="graph"></canvas>
+            <a class="link" href="#cz_pred_05-01">link</a>
         </div>
         <br class="clear"/>
     </div>
@@ -484,6 +530,15 @@
         <br class="clear"/>
     </div>
     <div class="graph_container">
+        <a id="cz_pred_27-12"></a>
+        <div class="graph_filler">&nbsp;</div>
+        <div class="canvas_container">
+            <canvas id="infected_cz_27-12" class="graph"></canvas>
+            <a class="link" href="#cz_pred_27-12">link</a>
+        </div>
+        <br class="clear"/>
+    </div>
+    <div class="graph_container">
         <a id="cz_pred_31-10"></a>
         <div class="graph_filler">&nbsp;</div>
         <div class="canvas_container">
@@ -512,8 +567,8 @@
     // detect if mobile or desktop
     detect_client();
 </script>
-<!-- GRAPH CZ 27.12 -->
-<script src="graph_cz_27-12.js?v=<?php echo filemtime($cwd . 'graph_cz_27-12.js'); ?>"></script>
+<!-- GRAPH CZ 01.05 -->
+<script src="graph_cz_05-01.js?v=<?php echo filemtime($cwd . 'graph_cz_05-01.js'); ?>"></script>
 
 <!-- GRAPH CZ Growth Rate-->
 <script src="graph_cz_growth.js?v=<?php echo filemtime($cwd . 'graph_cz_growth.js'); ?>"></script>
@@ -532,6 +587,9 @@
 
 <!-- GRAPH Compare Confirmed as percent -->
 <script src="graph_compare_confirmed_perc_eu.js?v=<?php echo filemtime($cwd . 'graph_compare_confirmed_perc_eu.js'); ?>"></script>
+
+<!-- GRAPH CZ 27.12 -->
+<script src="graph_cz_27-12.js?v=<?php echo filemtime($cwd . 'graph_cz_27-12.js'); ?>"></script>
 
 <!-- GRAPH CZ 31.10 -->
 <script src="graph_cz_31-10.js?v=<?php echo filemtime($cwd . 'graph_cz_31-10.js'); ?>"></script>
