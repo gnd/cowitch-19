@@ -88,7 +88,7 @@ for (i=0; i<JITTER_COUNT; i++) {
 window.infected_chart = new Chart(infected_chart_cz_05_01, {
     type: 'line',
     data: {
-        labels: gen_days(0, 2, 390),
+        labels: gen_days(0, 2, 450),
         datasets: infected_dataset,
     },
     options: {
@@ -165,7 +165,7 @@ window.infected_chart = new Chart(infected_chart_cz_05_01, {
                     borderWidth: 2,
                     label: {
                         backgroundColor: "red",
-                        content: "Third lockdown",
+                        content: "3rd l.",
                         enabled: true
                     },
                 },

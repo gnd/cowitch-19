@@ -187,6 +187,7 @@
     // This is a model following the 7-day rolling average of growth rate in Czech republic
     // TODO define a suite of realistic rate functions for autumn
     rate_funcs = [];
+    post_funcs = [];
     var PREDICTION_DAY = 181;
     var MASKS_IN_PUBLIC_TRANSPORT = 183; // day 183 is 1.9.2020
     var MASKS_INSIDE = 200; // day 200 is 18.9.2020
@@ -258,6 +259,7 @@
         'linton',               // deaths distribution
         0.05,                      // case fatality rate (CFR)
         rate_funcs,
+        post_funcs,
         population_size['cz'],
         0                          // debugging
     );
@@ -309,6 +311,7 @@
         'linton',               // deaths distribution
         0.05,                      // case fatality rate (CFR)
         rate_funcs,
+        post_funcs,
         population_size['cz'],
         0                          // debugging
     );
@@ -356,6 +359,7 @@
         'linton',               // deaths distribution
         0.05,                      // case fatality rate (CFR)
         rate_funcs,
+        post_funcs,
         population_size['cz'],
         0                           // debugging
     );
@@ -403,13 +407,14 @@
         'linton',               // deaths distribution
         0.05,                      // case fatality rate (CFR)
         rate_funcs,
+        post_funcs,
         population_size['sk'],
         0,                           // debugging
     );
     run_model( model_settings_1_1_sk );
     
     // 01.05.2021
-    // This is a model following the 7-day rolling average of growth rate in Czech republic
+    // This is a model following the growth rate in Czech republic
     rate_funcs = [];
     var PREDICTION_DAY = 310; // Day 310 is 05.01.2021
     rate_funcs.push( new rate_func(
@@ -422,24 +427,47 @@
     rate_funcs.push( new rate_func(
         'exp',                      // name
         PREDICTION_DAY+3,             // start
-        45,                        // steps
+        30,                        // steps
         1.2,                        // speed / steepness
-        -0.2,                        // scale
+        -0.3,                        // scale
+    ));
+    // 4th Wave
+    rate_funcs.push( new rate_func(
+        'lin',                      // name
+        PREDICTION_DAY+20,             // start
+        100,                        // steps
+        1.2,                        // speed / steepness
+        0.45,                        // scale
+    ));
+    // 4th Lockdown
+    rate_funcs.push( new rate_func(
+        'exp',                      // name
+        PREDICTION_DAY+110,             // start
+        30,                        // steps
+        1.2,                        // speed / steepness
+        -0.3,                        // scale
+    ));
+    // Add some postprocessing
+    post_funcs = [];
+    post_funcs.push( new post_func(
+        'saw',      // this adds a weekly oscilation to the growth rate
+        0,          // dow 
+        0.3        // scale
     ));
     
     // 01.05
     var model_growthrate = {};
     var model_seed = {};
     for (i=0; i<=PREDICTION_DAY; i++) {
-        model_growthrate[i] = seed['growth_rate_avg_7']['cz'][i];
+        model_growthrate[i] = seed['growth_rate']['cz'][i];
         model_seed[i] = seed['infected']['cz'][i];
     }
     var model_settings_05_01 = new params(
         'cz_05-01',                     // model name
-        390,                        // model duration
+        450,                        // model duration
         //seed['growth_rate_avg_7']['cz'],
         model_growthrate,
-        0.95,                       // min possible growth rate
+        0.9,                       // min possible growth rate
         //seed['infected']['cz'],      // the confirmed cases so far
         model_seed,
         JITTER_COUNT,           // jitter count
@@ -449,6 +477,7 @@
         'linton',               // deaths distribution
         0.05,                      // case fatality rate (CFR)
         rate_funcs,
+        post_funcs,
         population_size['cz'],
         0                           // debugging
     );
