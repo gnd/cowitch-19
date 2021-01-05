@@ -190,6 +190,44 @@ function sig(x, steps, speed, scale) {
     return (currval-nextval) * scale;
 }
 
+// Rate control processing function that simulates weekly oscilation
+function saw(dow, scale, offset) {
+    var value = 0;
+        
+    switch (dow%7) {
+        case 0:
+            // Sunday's results published on Monday
+            value = scale * -0.3;
+        break;
+        case 1:
+            // Monday's results published on Tuesday
+            value = 0;
+        break;
+        case 2:
+            // Tuesday's results
+            value = scale * (0.25-(Math.random()/20));
+        break;
+        case 3:
+            // Wednesday's results
+            value = scale * (0.25+(Math.random()/20));
+        break;
+        case 4:
+            // Thursday's results
+            value = scale * (0.025-(Math.random()/20));
+        break;
+        case 5:
+            // Friday's results
+            value = scale * -0.1;
+        break;
+        case 6:
+            // Saturday's results published on Sunday
+            value = scale * -0.2;
+        break;
+    }
+    
+    return value;
+}
+
 // old func for compatibility
 function old_log(day, steps, speed, scale) {
     return Math.log10(day) / speed * scale;
@@ -372,8 +410,15 @@ function rate_func(name, start, steps, speed, scale) {
     this.scale = scale;
 }
 
+// Sort of struct emulation in js - postprocessing function parameters
+function post_func(name, param1, param2, param3) {
+    this.name = name;
+    this.param1 = param1;
+    this.param2 = param2;
+}
+
 // Sort of struct emulation in js - model prameters
-function params(name, model_duration, growth_rate_seed, growth_rate_min, infected_seed, jitter_count, jitter_amount, recovered_func, recovered_offset, dead_func, cfr, rate_funcs, population_size, real_to_reported, debug) {
+function params(name, model_duration, growth_rate_seed, growth_rate_min, infected_seed, jitter_count, jitter_amount, recovered_func, recovered_offset, dead_func, cfr, rate_funcs, post_funcs = false, population_size, real_to_reported, debug) {
     this.name = name;
     this.model_duration = model_duration;
     this.irs = growth_rate_seed;
@@ -386,6 +431,7 @@ function params(name, model_duration, growth_rate_seed, growth_rate_min, infecte
     this.dead_func = dead_func;
     this.cfr = cfr;
     this.rate_funcs = rate_funcs;
+    this.post_funcs = post_funcs;
     this.population_size = population_size;
     this.reported_ratio = real_to_reported;
     this.debug = debug;
@@ -436,6 +482,11 @@ function run_model(params) {
                         if ((rate_func.start <= i) && (i < (rate_func.start + rate_func.steps))) {
                             new_rate = model[params.name]['growth_rate'][jitter][i-1] + window[rate_func.name]( i-rate_func.start, rate_func.steps, rate_func.speed, rate_func.scale );
                         }
+                    }
+                    // post-processing
+                    for (j=0; j<params.post_funcs.length; j++) {
+                        var post_func = params.post_funcs[j];
+                        new_rate += window[post_func.name]( i+post_func.param1, post_func.param2 );
                     }
                     // add some jitter
                     if (params.jitter_amount > 0) {
@@ -526,8 +577,9 @@ function run_model(params) {
                     model[params.name]['total'][jitter].push( total );
                     model[params.name]['total_reported'][jitter].push( total_reported );
                 } else {
-                    model[params.name]['total'][jitter].push( 0 );
-                    model[params.name]['total_reported'][jitter].push( 0 );
+                    // Lets have always some sick to keep the model going
+                    model[params.name]['total'][jitter].push( 10000 );
+                    model[params.name]['total_reported'][jitter].push( 10000 );
                 }
 
                 // Susceptible = Susceptible[n-1] - infected - recovered - deaths
