@@ -374,7 +374,7 @@ function prepare_1(values, name) {
 
 
 // Compute average if JITTER_COUNT > 1
-function get_average_jitter(params) {
+function get_average_jitter(params, debug) {
     model[params.name]['growth_rate']['avg'] = [];
     model[params.name]['recovered']['avg'] = [];
     model[params.name]['total']['avg'] = [];
@@ -386,18 +386,30 @@ function get_average_jitter(params) {
         total_reported = 0;
         deaths = 0;
         recovered = 0;
+        
+        if (debug) {
+            log = "Total[" + i + "]: ";
+        }
         for (j=0; j<params.jitter_count; j++) {
             rate += model[params.name]['growth_rate'][j][i];
             recovered += model[params.name]['recovered'][j][i];
             total += model[params.name]['total'][j][i];
             total_reported += model[params.name]['total_reported'][j][i];
             deaths += model[params.name]['deaths'][j][i];
+            
+            if (debug) {
+                log += model[params.name]['total'][j][i] + ", ";
+            }
         }
         model[params.name]['growth_rate']['avg'].push( rate / params.jitter_count );
         model[params.name]['recovered']['avg'].push( recovered / params.jitter_count );
         model[params.name]['total']['avg'].push( total / params.jitter_count );
         model[params.name]['total_reported']['avg'].push( total_reported / params.jitter_count );
         model[params.name]['deaths']['avg'].push( deaths / params.jitter_count );
+        
+        if (debug) {
+            console.log( log + "=== " + (total / params.jitter_count));
+        }
     }
 }
 
@@ -570,8 +582,12 @@ function run_model(params) {
                 model[params.name]['deaths_daily'][jitter].push( deaths_daily );
                 model[params.name]['deaths'][jitter].push( deaths );
 
-                // Total = New - recovered_daily - Died
-                total = infected - recovered_daily - deaths_daily;
+                // Total = New - recovered_daily - Died - but only when we are predicting
+                if (i in params.infected_seed) {
+                    total = infected;
+                } else {
+                    total = infected - recovered_daily - deaths_daily;
+                }
                 var total_reported = total / params.reported_ratio;
                 if (total > 0) {
                     model[params.name]['total'][jitter].push( total );
@@ -593,7 +609,7 @@ function run_model(params) {
                 // Log to console 
                 if (params.debug) {
                     console.log("i: "+i+" susc-1: "+ model[params.name]['susceptible'][jitter][i-1])
-                    console.log((i+1)+' computed_new_rate: '+computed_new_rate.toFixed(2)+' rate: '+new_rate.toFixed(2)+' infected: '+infected.toFixed(0)+' infected_daily: '+infected_daily.toFixed(0)+' recovered_daily: '+recovered_daily.toFixed(0)+' total: '+total.toFixed(0) + ' died: '+deaths.toFixed(0))
+                    console.log((i+1)+' computed_new_rate: '+computed_new_rate.toFixed(2)+' rate: '+new_rate.toFixed(2)+' infected: '+infected.toFixed(0)+' infected_daily: '+infected_daily.toFixed(0)+' recovered_daily: '+recovered_daily.toFixed(0)+' died: '+deaths.toFixed(0)+' died_daily: '+deaths_daily.toFixed(0)+' total: '+total.toFixed(0));
                 }
             }
         }
@@ -601,6 +617,6 @@ function run_model(params) {
 
     // Compute average
     if (params.jitter_count > 1) {
-        get_average_jitter(params);
+        get_average_jitter(params, params.debug);
     }
 }
