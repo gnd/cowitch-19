@@ -261,7 +261,8 @@
         rate_funcs,
         post_funcs,
         population_size['cz'],
-        0                          // debugging
+        1,                          // ratio of reported cases out of real cases (max 1)
+        0                           // debugging
     );
     run_model( model_settings );
 
@@ -313,7 +314,8 @@
         rate_funcs,
         post_funcs,
         population_size['cz'],
-        0                          // debugging
+        1,                          // ratio of reported cases out of real cases (max 1)
+        0                           // debugging
     );
     run_model( model_settings_31_10 );
     
@@ -361,6 +363,7 @@
         rate_funcs,
         post_funcs,
         population_size['cz'],
+        1,                          // ratio of reported cases out of real cases (max 1)
         0                           // debugging
     );
     run_model( model_settings_27_12 );
@@ -409,7 +412,8 @@
         rate_funcs,
         post_funcs,
         population_size['sk'],
-        0,                           // debugging
+        1,                          // ratio of reported cases out of real cases (max 1)
+        0                           // debugging
     );
     run_model( model_settings_1_1_sk );
     
@@ -479,6 +483,7 @@
         rate_funcs,
         post_funcs,
         population_size['cz'],
+        1,                          // ratio of reported cases out of real cases (max 1)
         0                           // debugging
     );
     run_model( model_settings_05_01 );
