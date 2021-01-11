@@ -426,19 +426,20 @@
         PREDICTION_DAY,             // start
         4,                        // steps
         .1,                        // speed / steepness
-        0.02,                        // scale
+        0.0001,                        // scale
     ));
     rate_funcs.push( new rate_func(
         'exp',                      // name
         PREDICTION_DAY+3,             // start
-        30,                        // steps
+        //30,                        // steps
+        45,
         1.2,                        // speed / steepness
         -0.3,                        // scale
     ));
     // 4th Wave
     rate_funcs.push( new rate_func(
         'lin',                      // name
-        PREDICTION_DAY+20,             // start
+        PREDICTION_DAY+35,             // start
         100,                        // steps
         1.2,                        // speed / steepness
         0.45,                        // scale
@@ -456,7 +457,7 @@
     post_funcs.push( new post_func(
         'saw',      // this adds a weekly oscilation to the growth rate
         0,          // dow 
-        0.3        // scale
+        0.20         // scale
     ));
     
     // 01.05
