@@ -417,8 +417,9 @@
     );
     run_model( model_settings_1_1_sk );
     
-    // 01.05.2021
+    // 05.01.2021
     // This is a model following the growth rate in Czech republic
+    // Updated 16/01 - following avg7 growth rate seems better in retrospect
     rate_funcs = [];
     var PREDICTION_DAY = 310; // Day 310 is 05.01.2021
     rate_funcs.push( new rate_func(
@@ -426,20 +427,19 @@
         PREDICTION_DAY,             // start
         4,                        // steps
         .1,                        // speed / steepness
-        0.0001,                        // scale
+        0.01,                        // scale
     ));
     rate_funcs.push( new rate_func(
         'exp',                      // name
         PREDICTION_DAY+3,             // start
-        //30,                        // steps
-        45,
-        1.2,                        // speed / steepness
-        -0.3,                        // scale
+        70,                         // steps
+        1.1,                        // speed / steepness
+        -0.25,                        // scale
     ));
     // 4th Wave
     rate_funcs.push( new rate_func(
         'lin',                      // name
-        PREDICTION_DAY+35,             // start
+        PREDICTION_DAY+60,             // start
         100,                        // steps
         1.2,                        // speed / steepness
         0.45,                        // scale
@@ -447,7 +447,7 @@
     // 4th Lockdown
     rate_funcs.push( new rate_func(
         'exp',                      // name
-        PREDICTION_DAY+110,             // start
+        PREDICTION_DAY+100,             // start
         30,                        // steps
         1.2,                        // speed / steepness
         -0.3,                        // scale
@@ -457,14 +457,14 @@
     post_funcs.push( new post_func(
         'saw',      // this adds a weekly oscilation to the growth rate
         0,          // dow 
-        0.20         // scale
+        0.2         // scale
     ));
     
-    // 01.05
+    // 05.01
     var model_growthrate = {};
     var model_seed = {};
     for (i=0; i<=PREDICTION_DAY; i++) {
-        model_growthrate[i] = seed['growth_rate']['cz'][i];
+        model_growthrate[i] = seed['growth_rate_avg_7']['cz'][i];
         model_seed[i] = seed['infected']['cz'][i];
     }
     var model_settings_05_01 = new params(
