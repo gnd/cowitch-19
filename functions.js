@@ -124,6 +124,24 @@ function extract_data_cz(csv, current, dest_name) {
     }
 }
 
+// Extract data from Czech CSV arrays - vaccinations
+function extract_vaccinated_cz(csv, current, dest_name) {
+    var now = moment(new Date());
+    var start = moment("2020-12-27");
+    var duration = moment.duration(now.diff(start));
+    var days = duration.asDays()
+
+    // prepare arrays
+    current[dest_name + '_vaccinated'] = [];
+    
+    for (i=0; i<days; i++) {
+        column = moment(new Date(2020, 11, 27 + i)).format('M/D/YY');    // data starting from 12/27/20
+
+        // extract tests
+        current[dest_name + '_vaccinated'].push( csv['vaccinated'][column] );
+    }
+}
+
 // Extract data from Slovak CSV arrays
 function extract_data_sk(csv, current, dest_name) {
     var now = moment(new Date());

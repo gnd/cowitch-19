@@ -57,6 +57,7 @@
 <script src="data/recovered_cz.js?v=<?php echo filemtime($cwd . 'data/recovered_cz.js'); ?>"></script>
 <script src="data/deaths_cz.js?v=<?php echo filemtime($cwd . 'data/deaths_cz.js'); ?>"></script>
 <script src="data/tests_cz.js?v=<?php echo filemtime($cwd . 'data/tests_cz.js'); ?>"></script>
+<script src="data/vaccinated_cz.js?v=<?php echo filemtime($cwd . 'data/vaccinated_cz.js'); ?>"></script>
 <script src="data/confirmed_sk.js?v=<?php echo filemtime($cwd . 'data/confirmed_sk.js'); ?>"></script>
 <script src="data/recovered_sk.js?v=<?php echo filemtime($cwd . 'data/recovered_sk.js'); ?>"></script>
 <script src="data/deaths_sk.js?v=<?php echo filemtime($cwd . 'data/deaths_sk.js'); ?>"></script>
@@ -114,6 +115,7 @@
     extract_data(global_data, current_values, 'Bulgaria', 'bg');
     extract_data(global_data, current_values, 'Croatia', 'cr');
     extract_data_cz(czech_data, current_values, 'cz'); // Get Czech data from https://onemocneni-aktualne.mzcr.cz/covid-19
+    extract_vaccinated_cz(czech_data, current_values, 'cz'); // Get Czech data from https://onemocneni-aktualne.mzcr.cz/covid-19
     extract_data(global_data, current_values, 'France', 'fr');
     extract_data(global_data, current_values, 'Germany', 'de');
     extract_data(global_data, current_values, 'Greece', 'gr');
@@ -520,6 +522,15 @@
         <br class="clear"/>
     </div>
     <div class="graph_container">
+        <a id="cz_vacc"></a>
+        <div class="graph_filler">&nbsp;</div>
+        <div class="canvas_container">
+            <canvas id="vaccinated_cz" class="graph"></canvas>
+            <a class="link" href="#cz_vacc">link</a>
+        </div>
+        <br class="clear"/>
+    </div>
+    <div class="graph_container">
         <a id="sk_new"></a>
         <div class="graph_filler">&nbsp;</div>
         <div class="canvas_container">
@@ -607,6 +618,9 @@
 
 <!-- GRAPH CZ Growth Rate-->
 <script src="graph_cz_growth.js?v=<?php echo filemtime($cwd . 'graph_cz_growth.js'); ?>"></script>
+
+<!-- GRAPH CZ Vaccinations-->
+<script src="graph_cz_vaccinated.js?v=<?php echo filemtime($cwd . 'graph_cz_vaccinated.js'); ?>"></script>
 
 <!-- GRAPH SK -->
 <script src="graph_sk_new.js?v=<?php echo filemtime($cwd . 'graph_sk_new.js'); ?>"></script>

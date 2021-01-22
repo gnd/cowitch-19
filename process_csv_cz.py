@@ -1,5 +1,7 @@
 #!/usr/bin/env python
 
+months = {"Jan": 1, "Feb": 2, "Mar": 3, "Apr": 4, "May": 5, "Jun": 6, "Jul": 7, "Aug": 8, "Sep": 9, "Oct": 10, "Nov": 11, "Dec": 12}
+
 def process_csv(name):
     f = file('data/%s' % name,'r')
     lines = f.readlines()
@@ -41,5 +43,29 @@ def process_csv(name):
     f.close()
 
 
+def process_vaccinated_csv(name):
+    f = file('data/%s' % name,'r')
+    lines = f.readlines()
+    f.close()
+
+    vaccinated = 0
+    vaccinated_string = ""
+    for line in lines[1:]:
+        # example of one row in data:
+        "Jan 16, 2021",3211
+        arr = line.split(',')
+        month_day_arr = arr[0].split()
+        datum = "%s/%s/%s" % (months[month_day_arr[0].lstrip('"')], month_day_arr[1], arr[1].strip()[2:4])
+        # we turn the data into cumulative
+        vaccinated += int(arr[2].strip())
+        # create entries like '1/22/20': 0,
+        vaccinated_string += "'%s': %d, " % (datum, vaccinated)
+    # Write the data into files - tests
+    f = file('data/vaccinated_cz.js', 'w')
+    f.write("czech_data['vaccinated'] = {%s};" % (vaccinated_string.strip(', ')))
+    f.close()
+
+
 # Run processing
 process_csv('nakazeni-vyleceni-umrti-testy.csv')
+process_vaccinated_csv('vaccinated_cz.csv')
