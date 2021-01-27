@@ -8,6 +8,7 @@ wget https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid
 wget https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_recovered_global.csv -O data/recovered.csv
 wget https://onemocneni-aktualne.mzcr.cz/api/v2/covid-19/nakazeni-vyleceni-umrti-testy.csv -O data/nakazeni-vyleceni-umrti-testy.csv
 wget https://share.uzis.cz/s/ZEAZtS4dWQXKWF4/download -O data/vaccinated_cz.csv
+wget https://onemocneni-aktualne.mzcr.cz/api/v2/covid-19/ockovani.csv -O data/vaccinated_cz_details.csv
 
 # download new slovak data
 wget https://mapa.covid.chat/export/csv -O data/slovakia.csv
