@@ -69,6 +69,11 @@ canvas.graph {
     margin-bottom: 0.5%;
 }
 
+canvas.graph_dark {
+    background-color: rgba(10,10,10,0.95);
+    margin-bottom: 0.5%;
+}
+
 br.clear {
     clear: both;
 }
