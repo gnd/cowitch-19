@@ -53,7 +53,6 @@
 <script src="data/recovered_cz.js?v=<?php echo filemtime($cwd . 'data/recovered_cz.js'); ?>"></script>
 <script src="data/deaths_cz.js?v=<?php echo filemtime($cwd . 'data/deaths_cz.js'); ?>"></script>
 <script src="data/tests_cz.js?v=<?php echo filemtime($cwd . 'data/tests_cz.js'); ?>"></script>
-<script src="data/vaccinated_cz.js?v=<?php echo filemtime($cwd . 'data/vaccinated_cz.js'); ?>"></script>
 <script src="data/vaccinated_cz_details.js?v=<?php echo filemtime($cwd . 'data/vaccinated_cz_details.js'); ?>"></script>
 <script src="data/confirmed_sk.js?v=<?php echo filemtime($cwd . 'data/confirmed_sk.js'); ?>"></script>
 <script src="data/recovered_sk.js?v=<?php echo filemtime($cwd . 'data/recovered_sk.js'); ?>"></script>
@@ -112,7 +111,6 @@
     extract_data(global_data, current_values, 'Bulgaria', 'bg');
     extract_data(global_data, current_values, 'Croatia', 'cr');
     extract_data_cz(czech_data, current_values, 'cz'); // Get Czech data from https://onemocneni-aktualne.mzcr.cz/covid-19
-    extract_vaccinated_cz(czech_data, current_values, 'cz'); // Get Czech data from https://onemocneni-aktualne.mzcr.cz/covid-19
     extract_vaccinated_cz_details(czech_data, current_values, 'cz'); // Get Czech data from https://onemocneni-aktualne.mzcr.cz/covid-19
     extract_data(global_data, current_values, 'France', 'fr');
     extract_data(global_data, current_values, 'Germany', 'de');
@@ -532,7 +530,7 @@
         <a id="cz_vacc"></a>
         <div class="graph_filler">&nbsp;</div>
         <div class="canvas_container">
-            <canvas id="vaccinated_cz" class="graph"></canvas>
+            <canvas id="vaccinated_cz" class="graph_dark"></canvas>
             <a class="link" href="#cz_vacc">link</a>
         </div>
         <br class="clear"/>
