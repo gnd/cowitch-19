@@ -267,7 +267,6 @@ function fill_initial(arr, values, name, offset = 0) {
     arr[name]['growth_rate_avg_7'].push( 1 );
 
     elapsed = arr[name]['confirmed'].length;
-    console.log(name + " len: " + elapsed);
     for (var i=1; i < elapsed; i++) {
         // compute daily growth rate - we use confirmed as opposed to infected so that the growth rate doesnt fall under 1, which is just how this model works
         // we dont want to model the dissapearance of the epidemy, as that is a fundamentaly different process, we just model the spread, where the lowest spread between days is 1, when no one new got infected

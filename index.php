@@ -31,43 +31,43 @@
 <script src="palette.js"></script>
 
 <!-- FUNCTIONS -->
-<script src="functions.js?v=<?php echo filemtime($cwd . 'functions.js'); ?>"></script>
+<script src="functions.js?v=<?php echo filemtime('functions.js'); ?>"></script>
 
 <!-- MOBILE & DESKTOP STYLES -->
-<link rel="stylesheet" media='screen and (min-width: 300px) and (max-width: 340px)' href="mobile.css?v=<?php echo filemtime($cwd . 'mobile.css'); ?>"/>
-<link rel="stylesheet" media='screen and (min-width: 341px) and (max-width: 365px)' href="mobile.css?v=<?php echo filemtime($cwd . 'mobile.css'); ?>"/>
-<link rel="stylesheet" media='screen and (min-width: 370px) and (max-width: 380px)' href="mobile.css?v=<?php echo filemtime($cwd . 'mobile.css'); ?>"/>
-<link rel="stylesheet" media='screen and (min-width: 400px) and (max-width: 1000px)' href="mobile.css?v=<?php echo filemtime($cwd . 'mobile.css'); ?>"/>
-<link rel="stylesheet" media='screen and (min-width: 1001px) and (max-width: 1300px)' href="desktop.css?v=<?php echo filemtime($cwd . 'desktop.css'); ?>"/>
-<link rel="stylesheet" media='screen and (min-width: 1301px) and (max-width: 1599px)' href="desktop.css?v=<?php echo filemtime($cwd . 'desktop.css'); ?>"/>
-<link rel="stylesheet" media='screen and (min-width: 1600px)' href="desktop.css?v=<?php echo filemtime($cwd . 'desktop.css'); ?>"/>
+<link rel="stylesheet" media='screen and (min-width: 300px) and (max-width: 340px)' href="mobile.css?v=<?php echo filemtime('mobile.css'); ?>"/>
+<link rel="stylesheet" media='screen and (min-width: 341px) and (max-width: 365px)' href="mobile.css?v=<?php echo filemtime('mobile.css'); ?>"/>
+<link rel="stylesheet" media='screen and (min-width: 370px) and (max-width: 380px)' href="mobile.css?v=<?php echo filemtime('mobile.css'); ?>"/>
+<link rel="stylesheet" media='screen and (min-width: 400px) and (max-width: 1000px)' href="mobile.css?v=<?php echo filemtime('mobile.css'); ?>"/>
+<link rel="stylesheet" media='screen and (min-width: 1001px) and (max-width: 1300px)' href="desktop.css?v=<?php echo filemtime('desktop.css'); ?>"/>
+<link rel="stylesheet" media='screen and (min-width: 1301px) and (max-width: 1599px)' href="desktop.css?v=<?php echo filemtime('desktop.css'); ?>"/>
+<link rel="stylesheet" media='screen and (min-width: 1600px)' href="desktop.css?v=<?php echo filemtime('desktop.css'); ?>"/>
 
 <!-- MODEL -->
-<script src="model.js?v=<?php echo filemtime($cwd . 'model.js'); ?>"></script>
+<script src="model.js?v=<?php echo filemtime('model.js'); ?>"></script>
 
 <!-- DATA -->
-<script src="data/confirmed.js?v=<?php echo filemtime($cwd . 'data/confirmed.js'); ?>"></script>
-<script src="data/recovered.js?v=<?php echo filemtime($cwd . 'data/recoveredz.js'); ?>"></script>
-<script src="data/deaths.js?v=<?php echo filemtime($cwd . 'data/deaths.js'); ?>"></script>
-<script src="data/confirmed_cz.js?v=<?php echo filemtime($cwd . 'data/confirmed_cz.js'); ?>"></script>
-<script src="data/recovered_cz.js?v=<?php echo filemtime($cwd . 'data/recovered_cz.js'); ?>"></script>
-<script src="data/deaths_cz.js?v=<?php echo filemtime($cwd . 'data/deaths_cz.js'); ?>"></script>
-<script src="data/tests_cz.js?v=<?php echo filemtime($cwd . 'data/tests_cz.js'); ?>"></script>
-<script src="data/vaccinated_cz_details.js?v=<?php echo filemtime($cwd . 'data/vaccinated_cz_details.js'); ?>"></script>
-<script src="data/confirmed_sk.js?v=<?php echo filemtime($cwd . 'data/confirmed_sk.js'); ?>"></script>
-<script src="data/recovered_sk.js?v=<?php echo filemtime($cwd . 'data/recovered_sk.js'); ?>"></script>
-<script src="data/deaths_sk.js?v=<?php echo filemtime($cwd . 'data/deaths_sk.js'); ?>"></script>
-<script src="data/tests_sk.js?v=<?php echo filemtime($cwd . 'data/tests_sk.js'); ?>"></script>
+<script src="data/confirmed.js?v=<?php echo filemtime('data/confirmed.js'); ?>"></script>
+<script src="data/recovered.js?v=<?php echo filemtime('data/recoveredz.js'); ?>"></script>
+<script src="data/deaths.js?v=<?php echo filemtime('data/deaths.js'); ?>"></script>
+<script src="data/confirmed_cz.js?v=<?php echo filemtime('data/confirmed_cz.js'); ?>"></script>
+<script src="data/recovered_cz.js?v=<?php echo filemtime('data/recovered_cz.js'); ?>"></script>
+<script src="data/deaths_cz.js?v=<?php echo filemtime('data/deaths_cz.js'); ?>"></script>
+<script src="data/tests_cz.js?v=<?php echo filemtime('data/tests_cz.js'); ?>"></script>
+<script src="data/vaccinated_cz_details.js?v=<?php echo filemtime('data/vaccinated_cz_details.js'); ?>"></script>
+<script src="data/confirmed_sk.js?v=<?php echo filemtime('data/confirmed_sk.js'); ?>"></script>
+<script src="data/recovered_sk.js?v=<?php echo filemtime('data/recovered_sk.js'); ?>"></script>
+<script src="data/deaths_sk.js?v=<?php echo filemtime('data/deaths_sk.js'); ?>"></script>
+<script src="data/tests_sk.js?v=<?php echo filemtime('data/tests_sk.js'); ?>"></script>
 
 
 <?php
     // compute last change to the model(s)
-    $max_code = filemtime($cwd . 'index.php');
-    $max_code = max($max_code, filemtime($cwd . 'graph.js'));
-    $max_code = max($max_code, filemtime($cwd . 'model.js'));
+    $max_code = filemtime('index.php');
+    $max_code = max($max_code, filemtime('graph.js'));
+    $max_code = max($max_code, filemtime('model.js'));
     // compute last change to the data
-    $max_data = filemtime($cwd . 'data/deaths.js');
-    $max_data = max($max_data, filemtime($cwd . 'data/deaths_cz.js'));
+    $max_data = filemtime('data/deaths.js');
+    $max_data = max($max_data, filemtime('data/deaths_cz.js'));
 ?>
 
 <!-- SEED AND PREPARE MODELS AND GRAPHS -->
@@ -664,55 +664,55 @@
     detect_client();
 </script>
 <!-- GRAPH CZ 01.05 -->
-<script src="graph_cz_05-01.js?v=<?php echo filemtime($cwd . 'graph_cz_05-01.js'); ?>"></script>
+<script src="graph_cz_05-01.js?v=<?php echo filemtime('graph_cz_05-01.js'); ?>"></script>
 
 <!-- GRAPH CZ Growth Rate-->
-<script src="graph_cz_growth.js?v=<?php echo filemtime($cwd . 'graph_cz_growth.js'); ?>"></script>
+<script src="graph_cz_growth.js?v=<?php echo filemtime('graph_cz_growth.js'); ?>"></script>
 
 <!-- GRAPH CZ Vaccinations - Detailed -->
-<script src="graph_cz_vaccinated_details.js?v=<?php echo filemtime($cwd . 'graph_cz_vaccinated_details.js'); ?>"></script>
+<script src="graph_cz_vaccinated_details.js?v=<?php echo filemtime('graph_cz_vaccinated_details.js'); ?>"></script>
 
 <!-- GRAPH CZ Vaccinations - Detailed & Daily -->
-<script src="graph_cz_vaccinated_daily_details.js?v=<?php echo filemtime($cwd . 'graph_cz_vaccinated_daily_details.js'); ?>"></script>
+<script src="graph_cz_vaccinated_daily_details.js?v=<?php echo filemtime('graph_cz_vaccinated_daily_details.js'); ?>"></script>
 
 <!-- GRAPH CZ Vaccinations-->
-<script src="graph_cz_vaccinated.js?v=<?php echo filemtime($cwd . 'graph_cz_vaccinated.js'); ?>"></script>
+<script src="graph_cz_vaccinated.js?v=<?php echo filemtime('graph_cz_vaccinated.js'); ?>"></script>
 
 <!-- GRAPH SK -->
-<script src="graph_sk_new.js?v=<?php echo filemtime($cwd . 'graph_sk_new.js'); ?>"></script>
+<script src="graph_sk_new.js?v=<?php echo filemtime('graph_sk_new.js'); ?>"></script>
 
 <!-- GRAPH SK Growth Rate-->
-<script src="graph_sk_growth.js?v=<?php echo filemtime($cwd . 'graph_sk_growth.js'); ?>"></script>
+<script src="graph_sk_growth.js?v=<?php echo filemtime('graph_sk_growth.js'); ?>"></script>
 
 <!-- GRAPH Compare Sick per 100k -->
-<script src="graph_compare_sick_eu.js?v=<?php echo filemtime($cwd . 'graph_compare_sick_eu.js'); ?>"></script>
+<script src="graph_compare_sick_eu.js?v=<?php echo filemtime('graph_compare_sick_eu.js'); ?>"></script>
 
 <!-- GRAPH Compare Confirmed per 100k -->
-<script src="graph_compare_confirmed_eu.js?v=<?php echo filemtime($cwd . 'graph_compare_confirmed_eu.js'); ?>"></script>
+<script src="graph_compare_confirmed_eu.js?v=<?php echo filemtime('graph_compare_confirmed_eu.js'); ?>"></script>
 
 <!-- GRAPH Compare Confirmed as percentage of population -->
-<script src="graph_compare_confirmed_perc_eu.js?v=<?php echo filemtime($cwd . 'graph_compare_confirmed_perc_eu.js'); ?>"></script>
+<script src="graph_compare_confirmed_perc_eu.js?v=<?php echo filemtime('graph_compare_confirmed_perc_eu.js'); ?>"></script>
 
 <!-- GRAPH Compare Deaths per 100k -->
-<script src="graph_compare_deaths_eu.js?v=<?php echo filemtime($cwd . 'graph_compare_deaths_eu.js'); ?>"></script>
+<script src="graph_compare_deaths_eu.js?v=<?php echo filemtime('graph_compare_deaths_eu.js'); ?>"></script>
 
 <!-- GRAPH Compare Deaths as percentage of population -->
-<script src="graph_compare_deaths_perc_eu.js?v=<?php echo filemtime($cwd . 'graph_compare_deaths_perc_eu.js'); ?>"></script>
+<script src="graph_compare_deaths_perc_eu.js?v=<?php echo filemtime('graph_compare_deaths_perc_eu.js'); ?>"></script>
 
 <!-- GRAPH Compare Deaths daily per 100k -->
-<script src="graph_compare_deaths_daily_eu.js?v=<?php echo filemtime($cwd . 'graph_compare_deaths_daily_eu.js'); ?>"></script>
+<script src="graph_compare_deaths_daily_eu.js?v=<?php echo filemtime('graph_compare_deaths_daily_eu.js'); ?>"></script>
 
 <!-- GRAPH Compare Deaths daily per 100k rolling 7-day average -->
-<script src="graph_compare_deaths_daily_eu_avg_7.js?v=<?php echo filemtime($cwd . 'graph_compare_deaths_daily_eu_avg_7.js'); ?>"></script>
+<script src="graph_compare_deaths_daily_eu_avg_7.js?v=<?php echo filemtime('graph_compare_deaths_daily_eu_avg_7.js'); ?>"></script>
 
 <!-- GRAPH CZ 27.12 -->
-<script src="graph_cz_27-12.js?v=<?php echo filemtime($cwd . 'graph_cz_27-12.js'); ?>"></script>
+<script src="graph_cz_27-12.js?v=<?php echo filemtime('graph_cz_27-12.js'); ?>"></script>
 
 <!-- GRAPH CZ 31.10 -->
-<script src="graph_cz_31-10.js?v=<?php echo filemtime($cwd . 'graph_cz_31-10.js'); ?>"></script>
+<script src="graph_cz_31-10.js?v=<?php echo filemtime('graph_cz_31-10.js'); ?>"></script>
 
 <!-- GRAPH CZ OLD -->
-<script src="graph_cz_20-09.js?v=<?php echo filemtime($cwd . 'graph_cz_20-09.js'); ?>"></script>
+<script src="graph_cz_20-09.js?v=<?php echo filemtime('graph_cz_20-09.js'); ?>"></script>
 
 
 </html>

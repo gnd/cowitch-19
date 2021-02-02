@@ -1,15 +1,3 @@
-// legend callback - see https://www.chartjs.org/docs/latest/configuration/legend.html
-function legendCallbackGrowthRate(e, legendItem) {
-    var index = legendItem.datasetIndex;
-    var ci = this.chart;
-
-    meta = ci.getDatasetMeta(index);
-    meta.hidden = meta.hidden === null ? !ci.data.datasets[index].hidden : null;
-
-    // Update the chart
-    ci.update();
-}
-
 // the growth rate
 var vaccinated_chart_cz_det_daily = document.getElementById("vaccinated_cz_det_daily").getContext('2d');
 
@@ -78,7 +66,6 @@ window.vaccinated_chart = new Chart(vaccinated_chart_cz_det_daily, {
         },
         legend: {
             display: true,
-            onClick: legendCallbackGrowthRate,
             labels: {
                 fontSize: fontsize,
                 fontColor: 'rgba(150,150,150,1)',
