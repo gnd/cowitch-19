@@ -144,8 +144,8 @@ function lin_decrease(day, speed) {
     return day/speed;
 }
 
-// This computes the average growth rate for days with data
-function avg_growth_rate(data) {
+// This computes the average for days with data
+function get_avg(data) {
     var sum = 0;
     for (var i=0; i < data.length; i++) {
         sum += data[i];
@@ -295,11 +295,11 @@ function fill_initial(arr, values, name, offset = 0) {
         }
 
         // compute daily average growth rate
-        arr[name]['growth_rate_avg'].push( avg_growth_rate( arr[name]['growth_rate'].slice(0,i+1) ) );
+        arr[name]['growth_rate_avg'].push( get_avg( arr[name]['growth_rate'].slice(0,i+1) ) );
 
         // compute rolling average growth rate for last 7 days
         slice_start = Math.min(i, 7);
-        arr[name]['growth_rate_avg_7'].push( avg_growth_rate( arr[name]['growth_rate'].slice(i-slice_start,i+1) ) );
+        arr[name]['growth_rate_avg_7'].push( get_avg( arr[name]['growth_rate'].slice(i-slice_start,i+1) ) );
     }
 
     return elapsed;
@@ -345,12 +345,14 @@ function prepare_100_relative(values, name, population) {
     new_name_deaths_conf = name+'_100_deaths';
     new_name_deaths_perc = name+'_100_deaths_perc';
     new_name_deaths_daily = name+'_100_deaths_daily';
+    new_name_deaths_daily_avg_7 = name+'_100_deaths_daily_avg_7';
     values[new_name] = [];
     values[new_name_conf] = [];
     values[new_name_perc] = [];
     values[new_name_deaths_conf] = [];
     values[new_name_deaths_perc] = [];
     values[new_name_deaths_daily] = [];
+    values[new_name_deaths_daily_avg_7] = [];
 
     for (i=0; i<values[name].length; i++) {
         if (values[name][i] > 100) {
@@ -360,6 +362,11 @@ function prepare_100_relative(values, name, population) {
             values[new_name_deaths_conf].push( values[name+'_deaths'][i] * 100000 / population );
             values[new_name_deaths_perc].push( values[name+'_deaths'][i] * 100 / population );
             values[new_name_deaths_daily].push( values[name+'_deaths_daily'][i] * 100000 / population );
+            
+            // compute rolling average daily deaths per 100k
+            var slice_start = Math.min(i, 7);
+            //arr[name]['growth_rate_avg_7'].push( avg_growth_rate( arr[name]['growth_rate'].slice(i-slice_start,i+1) ) );
+            values[new_name_deaths_daily_avg_7].push( get_avg(values[name+'_deaths_daily'].slice(i-slice_start,i+1)) * 100000 / population );
         }
     }
 }
