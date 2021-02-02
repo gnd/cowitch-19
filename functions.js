@@ -160,11 +160,21 @@ function extract_vaccinated_cz_details(csv, current, dest_name) {
         // prepare arrays - first round of vaccinations
         current[dest_name + '_vaccinated_a_' + age] = [];
         current[dest_name + '_vaccinated_b_' + age] = [];
+        current[dest_name + '_vaccinated_a_daily_' + age] = [];
+        current[dest_name + '_vaccinated_b_daily_' + age] = [];
         for (var j=0; j<days; j++) {
             column = moment(new Date(2020, 11, 27 + j)).format('M/D/YY');    // data starting from 12/27/20
             // extract vaccinated
             current[dest_name + '_vaccinated_a_' + age].push( csv['vaccinated_a_' + age][column] );
             current[dest_name + '_vaccinated_b_' + age].push( csv['vaccinated_b_' + age][column] );
+            
+            // extract daily numbers
+            if (j>1) {
+                previous_column = moment(new Date(2020, 11, 26 + j)).format('M/D/YY');    // data starting from 12/27/20
+                // extract vaccinated
+                current[dest_name + '_vaccinated_a_daily_' + age].push( csv['vaccinated_a_' + age][column] - csv['vaccinated_a_' + age][previous_column] );
+                current[dest_name + '_vaccinated_b_daily_' + age].push( csv['vaccinated_b_' + age][column] - csv['vaccinated_b_' + age][previous_column] );
+            }
         }
     }
     
