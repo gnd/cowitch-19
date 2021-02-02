@@ -342,15 +342,21 @@ function prepare_100_relative(values, name, population) {
     new_name = name+'_100';
     new_name_conf = name+'_100_confirmed';
     new_name_perc = name+'_100_confirmed_perc';
+    new_name_deaths_conf = name+'_100_deaths';
+    new_name_deaths_perc = name+'_100_deaths_perc';
     values[new_name] = [];
     values[new_name_conf] = [];
     values[new_name_perc] = [];
+    values[new_name_deaths_conf] = [];
+    values[new_name_deaths_perc] = [];
 
     for (i=0; i<values[name].length; i++) {
         if (values[name][i] > 100) {
             values[new_name].push( values[name][i] * 100000 / population );
             values[new_name_conf].push( values[name+'_confirmed'][i] * 100000 / population );
             values[new_name_perc].push( values[name+'_confirmed'][i] * 100 / population );
+            values[new_name_deaths_conf].push( values[name+'_deaths'][i] * 100000 / population );
+            values[new_name_deaths_perc].push( values[name+'_deaths'][i] * 100 / population );
         }
     }
 }

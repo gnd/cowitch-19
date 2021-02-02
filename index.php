@@ -20,10 +20,6 @@
 <meta property="og:image" content="https://co.witch19.space/corona-chan-black.jpg" />
 <meta property="og:image:secure_url" content="https://co.witch19.space/corona-chan-black.jpg" />
 
-<!--TODO:
-
--->
-
 <!-- MOMENT.JS -->
 <script src="moment.js"></script>
 
@@ -587,6 +583,24 @@
         <br class="clear"/>
     </div>
     <div class="graph_container">
+        <a id="compare_100_deaths"></a>
+        <div class="graph_filler">&nbsp;</div>
+        <div class="canvas_container">
+            <canvas id="canvas_compare_100_deaths" class="graph_dark"></canvas>
+            <a class="link" href="#compare_100_deaths">link</a>
+        </div>
+        <br class="clear"/>
+    </div>
+    <div class="graph_container">
+        <a id="compare_100_deaths_perc"></a>
+        <div class="graph_filler">&nbsp;</div>
+        <div class="canvas_container">
+            <canvas id="canvas_compare_100_deaths_perc" class="graph_dark"></canvas>
+            <a class="link" href="#compare_100_deaths_perc">link</a>
+        </div>
+        <br class="clear"/>
+    </div>
+    <div class="graph_container">
         <a id="cz_pred_27-12"></a>
         <div class="graph_filler">&nbsp;</div>
         <div class="canvas_container">
@@ -650,6 +664,12 @@
 
 <!-- GRAPH Compare Confirmed as percent -->
 <script src="graph_compare_confirmed_perc_eu.js?v=<?php echo filemtime($cwd . 'graph_compare_confirmed_perc_eu.js'); ?>"></script>
+
+<!-- GRAPH Compare Deaths-->
+<script src="graph_compare_deaths_eu.js?v=<?php echo filemtime($cwd . 'graph_compare_deaths_eu.js'); ?>"></script>
+
+<!-- GRAPH Compare Deaths as percent -->
+<script src="graph_compare_deaths_perc_eu.js?v=<?php echo filemtime($cwd . 'graph_compare_deaths_perc_eu.js'); ?>"></script>
 
 <!-- GRAPH CZ 27.12 -->
 <script src="graph_cz_27-12.js?v=<?php echo filemtime($cwd . 'graph_cz_27-12.js'); ?>"></script>
