@@ -80,10 +80,12 @@ function extract_data(csv, current, country, dest_name) {
     current[dest_name + '_confirmed'] = [];
     current[dest_name + '_recovered'] = [];
     current[dest_name + '_deaths'] = [];
+    current[dest_name + '_deaths_daily'] = [];
 
 
     for (i=0; i<days-1; i++) {
         column = moment(new Date(2020, 0, 22 + i)).format('M/D/YY');    // data starting from 1/22/20
+        
 
         // extract confirmed
         current[dest_name + '_confirmed'].push( csv['confirmed'][country][column] );
@@ -93,7 +95,13 @@ function extract_data(csv, current, country, dest_name) {
 
         // extract deaths
         current[dest_name + '_deaths'].push( csv['deaths'][country][column] );
-
+        
+        // extract daily deaths
+        if (i > 0) {
+            previous_column = moment(new Date(2020, 0, 21 + i)).format('M/D/YY');
+            current[dest_name + '_deaths_daily'].push( csv['deaths'][country][column] - csv['deaths'][country][previous_column] );
+        }
+        
         // push into dest_name array
         current[dest_name].push( current[dest_name + '_confirmed'][i] - current[dest_name + '_recovered'][i] - current[dest_name + '_deaths'][i] );
     }
@@ -111,6 +119,7 @@ function extract_data_cz(csv, current, dest_name) {
     current[dest_name + '_confirmed'] = [];
     current[dest_name + '_recovered'] = [];
     current[dest_name + '_deaths'] = [];
+    current[dest_name + '_deaths_daily'] = [];
     current[dest_name + '_tests'] = [];
 
     for (i=0; i<days; i++) {
@@ -124,6 +133,12 @@ function extract_data_cz(csv, current, dest_name) {
 
         // extract deaths
         current[dest_name + '_deaths'].push( csv['deaths'][column] );
+        
+        // extract daily deaths
+        if (i > 0) {
+            previous_column = moment(new Date(2020, 2, 0 + i - 1)).format('M/D/YY');
+            current[dest_name + '_deaths_daily'].push( csv['deaths'][column] - csv['deaths'][previous_column] );
+        }
 
         // extract tests
         current[dest_name + '_tests'].push( csv['tests'][column] );
@@ -184,6 +199,7 @@ function extract_data_sk(csv, current, dest_name) {
     current[dest_name + '_confirmed'] = [];
     current[dest_name + '_recovered'] = [];
     current[dest_name + '_deaths'] = [];
+    current[dest_name + '_deaths_daily'] = [];
     current[dest_name + '_tests'] = [];
 
     for (i=0; i<days; i++) {
@@ -197,6 +213,12 @@ function extract_data_sk(csv, current, dest_name) {
 
         // extract deaths
         current[dest_name + '_deaths'].push( csv['deaths'][column] );
+        
+        // extract daily deaths
+        if (i > 0) {
+            previous_column = moment(new Date(2020, 2, 5 + i)).format('M/D/YY');
+            current[dest_name + '_deaths_daily'].push( csv['deaths'][column] - csv['deaths'][previous_column] );
+        }
 
         // extract tests
         current[dest_name + '_tests'].push( csv['tests'][column] );

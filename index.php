@@ -601,6 +601,15 @@
         <br class="clear"/>
     </div>
     <div class="graph_container">
+        <a id="compare_100_deaths_daily"></a>
+        <div class="graph_filler">&nbsp;</div>
+        <div class="canvas_container">
+            <canvas id="canvas_compare_100_deaths_daily" class="graph_dark"></canvas>
+            <a class="link" href="#compare_100_deaths_daily">link</a>
+        </div>
+        <br class="clear"/>
+    </div>
+    <div class="graph_container">
         <a id="cz_pred_27-12"></a>
         <div class="graph_filler">&nbsp;</div>
         <div class="canvas_container">
@@ -656,20 +665,23 @@
 <!-- GRAPH SK Growth Rate-->
 <script src="graph_sk_growth.js?v=<?php echo filemtime($cwd . 'graph_sk_growth.js'); ?>"></script>
 
-<!-- GRAPH Compare Sick-->
+<!-- GRAPH Compare Sick per 100k -->
 <script src="graph_compare_sick_eu.js?v=<?php echo filemtime($cwd . 'graph_compare_sick_eu.js'); ?>"></script>
 
-<!-- GRAPH Compare Confirmed-->
+<!-- GRAPH Compare Confirmed per 100k -->
 <script src="graph_compare_confirmed_eu.js?v=<?php echo filemtime($cwd . 'graph_compare_confirmed_eu.js'); ?>"></script>
 
-<!-- GRAPH Compare Confirmed as percent -->
+<!-- GRAPH Compare Confirmed as percentage of population -->
 <script src="graph_compare_confirmed_perc_eu.js?v=<?php echo filemtime($cwd . 'graph_compare_confirmed_perc_eu.js'); ?>"></script>
 
-<!-- GRAPH Compare Deaths-->
+<!-- GRAPH Compare Deaths per 100k -->
 <script src="graph_compare_deaths_eu.js?v=<?php echo filemtime($cwd . 'graph_compare_deaths_eu.js'); ?>"></script>
 
-<!-- GRAPH Compare Deaths as percent -->
+<!-- GRAPH Compare Deaths as percentage of population -->
 <script src="graph_compare_deaths_perc_eu.js?v=<?php echo filemtime($cwd . 'graph_compare_deaths_perc_eu.js'); ?>"></script>
+
+<!-- GRAPH Compare Deaths daily per 100k -->
+<script src="graph_compare_deaths_daily_eu.js?v=<?php echo filemtime($cwd . 'graph_compare_deaths_daily_eu.js'); ?>"></script>
 
 <!-- GRAPH CZ 27.12 -->
 <script src="graph_cz_27-12.js?v=<?php echo filemtime($cwd . 'graph_cz_27-12.js'); ?>"></script>

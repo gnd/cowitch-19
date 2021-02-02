@@ -344,11 +344,13 @@ function prepare_100_relative(values, name, population) {
     new_name_perc = name+'_100_confirmed_perc';
     new_name_deaths_conf = name+'_100_deaths';
     new_name_deaths_perc = name+'_100_deaths_perc';
+    new_name_deaths_daily = name+'_100_deaths_daily';
     values[new_name] = [];
     values[new_name_conf] = [];
     values[new_name_perc] = [];
     values[new_name_deaths_conf] = [];
     values[new_name_deaths_perc] = [];
+    values[new_name_deaths_daily] = [];
 
     for (i=0; i<values[name].length; i++) {
         if (values[name][i] > 100) {
@@ -357,6 +359,7 @@ function prepare_100_relative(values, name, population) {
             values[new_name_perc].push( values[name+'_confirmed'][i] * 100 / population );
             values[new_name_deaths_conf].push( values[name+'_deaths'][i] * 100000 / population );
             values[new_name_deaths_perc].push( values[name+'_deaths'][i] * 100 / population );
+            values[new_name_deaths_daily].push( values[name+'_deaths_daily'][i] * 100000 / population );
         }
     }
 }
