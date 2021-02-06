@@ -1,5 +1,6 @@
 age_slots = ['18','25','30','35','40','45','50','55','60','65','70','75','80'];
 age_slots_desc = ['18-24','25-29','30-34','35-39','40-44','45-49','50-54','55-59','60-64','65-69','70-74','75-79','80+'];
+used_vaccines = ['Pfizer', 'Moderna', 'other'];
 
 // HEX to R,G,B - taken from http://www.javascripter.net/faq/hextorgb.htm
 function hexToR(h) {return parseInt((cutHex(h)).substring(0,2),16)}
@@ -155,6 +156,7 @@ function extract_vaccinated_cz_details(csv, current, dest_name) {
     var duration = moment.duration(now.diff(start));
     var days = duration.asDays()
 
+    // Process data about vaccinations broken down by age groups
     for (var i=0; i<age_slots.length; i++) {
         var age = age_slots[i];        
         // prepare arrays - first round of vaccinations
@@ -186,6 +188,30 @@ function extract_vaccinated_cz_details(csv, current, dest_name) {
         // extract vaccinated
         current[dest_name + '_vaccinated_a_total'].push( csv['vaccinated_a_total'][column] );
         current[dest_name + '_vaccinated_b_total'].push( csv['vaccinated_b_total'][column] );
+    }
+    
+    // Process data about vaccinations broken down by vaccine types
+    for (var i=0; i<used_vaccines.length; i++) {
+        var vaccine = used_vaccines[i];        
+        // prepare arrays - first round of vaccinations
+        current[dest_name + '_vaccinated_a_' + vaccine] = [];
+        current[dest_name + '_vaccinated_b_' + vaccine] = [];
+        current[dest_name + '_vaccinated_a_daily_' + vaccine] = [];
+        current[dest_name + '_vaccinated_b_daily_' + vaccine] = [];
+        for (var j=0; j<days; j++) {
+            column = moment(new Date(2020, 11, 27 + j)).format('M/D/YY');    // data starting from 12/27/20
+            // extract vaccinated
+            current[dest_name + '_vaccinated_a_' + vaccine].push( csv['vaccinated_a_' + vaccine][column] );
+            current[dest_name + '_vaccinated_b_' + vaccine].push( csv['vaccinated_b_' + vaccine][column] );
+            
+            // extract daily numbers
+            if (j>1) {
+                previous_column = moment(new Date(2020, 11, 26 + j)).format('M/D/YY');    // data starting from 12/27/20
+                // extract vaccinated
+                current[dest_name + '_vaccinated_a_daily_' + vaccine].push( csv['vaccinated_a_' + vaccine][column] - csv['vaccinated_a_' + vaccine][previous_column] );
+                current[dest_name + '_vaccinated_b_daily_' + vaccine].push( csv['vaccinated_b_' + vaccine][column] - csv['vaccinated_b_' + vaccine][previous_column] );
+            }
+        }
     }
 }
 

@@ -536,6 +536,24 @@
         <br class="clear"/>
     </div>
     <div class="graph_container">
+        <a id="cz_vacc_types_det"></a>
+        <div class="graph_filler">&nbsp;</div>
+        <div class="canvas_container">
+            <canvas id="vaccinated_cz_types_det" class="graph_dark"></canvas>
+            <a class="link" href="#cz_vacc_types_det">link</a>
+        </div>
+        <br class="clear"/>
+    </div>
+    <div class="graph_container">
+        <a id="cz_vacc_types_det_daily"></a>
+        <div class="graph_filler">&nbsp;</div>
+        <div class="canvas_container">
+            <canvas id="vaccinated_cz_types_det_daily" class="graph_dark"></canvas>
+            <a class="link" href="#cz_vacc_types_det_daily">link</a>
+        </div>
+        <br class="clear"/>
+    </div>
+    <div class="graph_container">
         <a id="cz_vacc"></a>
         <div class="graph_filler">&nbsp;</div>
         <div class="canvas_container">
@@ -674,6 +692,12 @@
 
 <!-- GRAPH CZ Vaccinations - Detailed & Daily -->
 <script src="graph_cz_vaccinated_daily_details.js?v=<?php echo filemtime('graph_cz_vaccinated_daily_details.js'); ?>"></script>
+
+<!-- GRAPH CZ Vaccinations by Types - Detailed -->
+<script src="graph_cz_vaccinated_types_details.js?v=<?php echo filemtime('graph_cz_vaccinated_types_details.js'); ?>"></script>
+
+<!-- GRAPH CZ Vaccinations by Types - Detailed & Daily-->
+<script src="graph_cz_vaccinated_types_daily_details.js?v=<?php echo filemtime('graph_cz_vaccinated_types_daily_details.js'); ?>"></script>
 
 <!-- GRAPH CZ Vaccinations-->
 <script src="graph_cz_vaccinated.js?v=<?php echo filemtime('graph_cz_vaccinated.js'); ?>"></script>

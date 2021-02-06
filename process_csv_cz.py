@@ -61,7 +61,9 @@ def process_vaccinated_details(name):
     vaccinated_a['total'] = {} # daily total
     vaccinated_b['total'] = {} # daily total
     # create used vaccine slots in vaccinated
-    for vaccine in used_vaccines.values():
+    vaccine_types = used_vaccines.values()
+    vaccine_types.append('other')
+    for vaccine in vaccine_types:
         vaccinated_a[vaccine] = {}
         vaccinated_b[vaccine] = {}
     # Process data from the CSV line by line
@@ -107,12 +109,17 @@ def process_vaccinated_details(name):
                 vaccinated_a[vaccine][line_date] = 0
             if (line_date not in vaccinated_b[vaccine]):
                 vaccinated_b[vaccine][line_date] = 0
+        # Add a catch-all for not-yet-defined vaccines
+        vaccinated_a['other'][line_date] = 0
+        vaccinated_b['other'][line_date] = 0
         # Second, add data from line
         if (line_vaccine in used_vaccines):
             vaccine = used_vaccines[line_vaccine]
             vaccinated_a[vaccine][line_date] += int(line_data[5])
             vaccinated_b[vaccine][line_date] += int(line_data[6])
-            
+        else:
+            vaccinated_a['other'][line_date] += int(line_data[5])
+            vaccinated_b['other'][line_date] += int(line_data[6])
     # prepare output
     output = ""
     for age in age_slots:
@@ -153,9 +160,10 @@ def process_vaccinated_details(name):
         age_total_b += tuple[1]
         vaccinated_age_string += "'%s': %d, " % (nice_date, age_total_b)
     output += "czech_data['vaccinated_b_total'] = {%s};\n" % (vaccinated_age_string.strip(', '))
-    # add totals by vaccine type
-    output = ""
-    for vaccine in used_vaccines.values():
+    # add totals by vaccine type + expand by 'others'
+    vaccine_types = used_vaccines.values()
+    vaccine_types.append('other')
+    for vaccine in vaccine_types:
         vaccine_total_a = 0
         vaccine_total_b = 0
         # process vaccinated_a first - first dose of the vaccine
@@ -164,7 +172,7 @@ def process_vaccinated_details(name):
             # 01/26/21
             nice_date = "%s/%s/%s" % (tuple[0].split('-')[1].lstrip("0"),tuple[0].split('-')[2].lstrip("0"),tuple[0].split('-')[0][2:4])
             vaccine_total_a += tuple[1]
-            vaccinated_type_string += "'%s': %d, " % (vaccine, vaccine_total_a)
+            vaccinated_type_string += "'%s': %d, " % (nice_date, vaccine_total_a)
         output += "czech_data['vaccinated_a_%s'] = {%s};\n" % (vaccine, vaccinated_type_string.strip(', '))
         # process vaccinated_b next - second dose of the vaccine
         vaccinated_type_string = ""
@@ -172,7 +180,7 @@ def process_vaccinated_details(name):
             # 01/26/21
             nice_date = "%s/%s/%s" % (tuple[0].split('-')[1].lstrip("0"),tuple[0].split('-')[2].lstrip("0"),tuple[0].split('-')[0][2:4])
             vaccine_total_b += tuple[1]
-            vaccinated_type_string += "'%s': %d, " % (vaccine, vaccine_total_b)
+            vaccinated_type_string += "'%s': %d, " % (nice_date, vaccine_total_b)
         output += "czech_data['vaccinated_b_%s'] = {%s};\n" % (vaccine, vaccinated_type_string.strip(', '))
     
     # write to file
