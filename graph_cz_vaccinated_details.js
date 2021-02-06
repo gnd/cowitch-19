@@ -84,5 +84,24 @@ window.vaccinated_chart = new Chart(vaccinated_chart_cz_det, {
                 fontColor: 'rgba(150,150,150,1)',
             },
         },
+        annotation: {
+            drawTime: 'beforeDatasetsDraw',
+            events: ['click'],
+            annotations: [
+                {
+                    type: 'line',
+                    mode: 'vertical',
+                    scaleID: 'x-axis-0',
+                    value: 'Feb 06, 2021',
+                    borderColor: 'green',
+                    borderWidth: 2,
+                    label: {
+                        backgroundColor: "red",
+                        content: "AstraZeneca in CZ (19k)",
+                        enabled: true
+                    },
+                },
+            ]
+        },
     }
 });
