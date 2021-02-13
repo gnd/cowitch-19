@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python2
 
 def process_csv(name):
     f = file('data/%s' % name,'r')

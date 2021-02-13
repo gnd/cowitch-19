@@ -487,6 +487,97 @@
     );
     run_model( model_settings_05_01 );
 
+
+    // 13.02.2021
+    // Updating the 05.01 model to accomodate for the 4th wave
+    // Keeping the prediction date same, just expanding on the former model
+    rate_funcs = [];
+    var PREDICTION_DAY = 310; // Day 310 is 05.01.2021
+    rate_funcs.push( new rate_func(
+        'log',                      // name
+        PREDICTION_DAY,             // start
+        4,                        // steps
+        .1,                        // speed / steepness
+        0.01,                        // scale
+    ));
+    rate_funcs.push( new rate_func(
+        'exp',                      // name
+        PREDICTION_DAY+2,             // start
+        15,                         // steps
+        1.1,                        // speed / steepness
+        -0.08,                        // scale
+    ));
+    // 4th Wave - came much sooner than expected
+    var FOURTH_WAVE = PREDICTION_DAY+11; // set to 16.01
+    rate_funcs.push( new rate_func(
+        'lin',                      // name
+        FOURTH_WAVE,                // start
+        60,                        // steps
+        1.2,                        // speed / steepness
+        0.41,                        // scale
+    ));
+    // 4th Lockdown
+    rate_funcs.push( new rate_func(
+        'exp',                      // name
+        FOURTH_WAVE+38,             // start (guessing 22.02.2021)
+        20,                         // steps
+        1.2,                        // speed / steepness
+        -0.3,                       // scale
+    ));
+    // 5th Wave
+    var FIFTH_WAVE = PREDICTION_DAY+70; // set to 04.03
+    rate_funcs.push( new rate_func(
+        'lin',                      // name
+        FIFTH_WAVE,                // start
+        51,                        // steps
+        1.2,                        // speed / steepness
+        0.44,                        // scale
+    ));
+    // 5th Lockdown
+    rate_funcs.push( new rate_func(
+        'exp',                      // name
+        FIFTH_WAVE+31,          // start (guessing 20.02.2021)
+        20,                        // steps
+        1.2,                        // speed / steepness
+        -0.3,                        // scale
+    ));
+    // Add some postprocessing
+    post_funcs = [];
+    post_funcs.push( new post_func(
+        'saw',      // this adds a weekly oscilation to the growth rate
+        0,          // dow 
+        0.24            // scale
+    )); 
+    
+    // 13.02
+    var model_growthrate = {};
+    var model_seed = {};
+    for (i=0; i<=PREDICTION_DAY; i++) {
+        model_growthrate[i] = seed['growth_rate_avg_7']['cz'][i];
+        model_seed[i] = seed['infected']['cz'][i];
+    }
+    var model_settings_13_02 = new params(
+        'cz_13-02',                     // model name
+        450,                        // model duration
+        //seed['growth_rate_avg_7']['cz'],
+        model_growthrate,
+        0.9,                       // min possible growth rate
+        //seed['infected']['cz'],      // the confirmed cases so far
+        model_seed,
+        JITTER_COUNT,           // jitter count
+        JITTER_AMOUNT/16,        // jitter amount
+        'recovered_new',            // recovered distribution
+        40,                         // recovered offset - when to start looking into the past for current recoveries
+        'linton',               // deaths distribution
+        0.05,                      // case fatality rate (CFR)
+        rate_funcs,
+        post_funcs,
+        population_size['cz'],
+        1,                          // ratio of reported cases out of real cases (max 1)
+        0                           // debugging
+    );
+    run_model( model_settings_13_02 );
+
 </script>
 </head>
 <body>
@@ -500,11 +591,11 @@
         </div>
     </div>
     <div class="graph_container">
-        <a id="cz_pred_05-01"></a>
+        <a id="cz_pred_13-02"></a>
         <div class="graph_filler">&nbsp;</div>
         <div class="canvas_container">
-            <canvas id="infected_cz_05-01" class="graph"></canvas>
-            <a class="link" href="#cz_pred_05-01">link</a>
+            <canvas id="infected_cz_13-02" class="graph"></canvas>
+            <a class="link" href="#cz_pred_13-02">link</a>
         </div>
         <br class="clear"/>
     </div>
@@ -644,6 +735,15 @@
         <br class="clear"/>
     </div>
     <div class="graph_container">
+        <a id="cz_pred_05-01"></a>
+        <div class="graph_filler">&nbsp;</div>
+        <div class="canvas_container">
+            <canvas id="infected_cz_05-01" class="graph"></canvas>
+            <a class="link" href="#cz_pred_05-01">link</a>
+        </div>
+        <br class="clear"/>
+    </div>
+    <div class="graph_container">
         <a id="cz_pred_27-12"></a>
         <div class="graph_filler">&nbsp;</div>
         <div class="canvas_container">
@@ -681,8 +781,8 @@
     // detect if mobile or desktop
     detect_client();
 </script>
-<!-- GRAPH CZ 01.05 -->
-<script src="graph_cz_05-01.js?v=<?php echo filemtime('graph_cz_05-01.js'); ?>"></script>
+<!-- GRAPH CZ 02.13 -->
+<script src="graph_cz_13-02.js?v=<?php echo filemtime('graph_cz_13-02.js'); ?>"></script>
 
 <!-- GRAPH CZ Growth Rate-->
 <script src="graph_cz_growth.js?v=<?php echo filemtime('graph_cz_growth.js'); ?>"></script>
@@ -728,6 +828,9 @@
 
 <!-- GRAPH Compare Deaths daily per 100k rolling 7-day average -->
 <script src="graph_compare_deaths_daily_eu_avg_7.js?v=<?php echo filemtime('graph_compare_deaths_daily_eu_avg_7.js'); ?>"></script>
+
+<!-- GRAPH CZ 01.05 -->
+<script src="graph_cz_05-01.js?v=<?php echo filemtime('graph_cz_05-01.js'); ?>"></script>
 
 <!-- GRAPH CZ 27.12 -->
 <script src="graph_cz_27-12.js?v=<?php echo filemtime('graph_cz_27-12.js'); ?>"></script>

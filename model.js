@@ -609,8 +609,8 @@ function run_model(params) {
                     model[params.name]['total_reported'][jitter].push( total_reported );
                 } else {
                     // Lets have always some sick to keep the model going
-                    model[params.name]['total'][jitter].push( 10000 );
-                    model[params.name]['total_reported'][jitter].push( 10000 );
+                    model[params.name]['total'][jitter].push( 15000 );
+                    model[params.name]['total_reported'][jitter].push( 15000 );
                 }
 
                 // Susceptible = Susceptible[n-1] - infected - recovered - deaths
