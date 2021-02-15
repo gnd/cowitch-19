@@ -18,15 +18,18 @@ def process_csv(name):
     #    tests += "'%s': %s, " % (datum, 0)
     for line in lines[1:]:
         # example of one row in data:
-        # 2020-01-27,0,0,0,20
+        # "Datum";"Pocet.potvrdenych.PCR.testami";"Dennych.PCR.testov";"Dennych.PCR.prirastkov";"Pocet.umrti";"AgTests";"AgPosit"
+        # 2021-02-14;278254;2775;572;5952;249092;2392
         arr = line.split(';')
         datum_arr = arr[0].split("-")
-        datum = "%s/%s/%s" % (datum_arr[1].lstrip("0"), datum_arr[0].lstrip("0"), datum_arr[2][2:])
+        datum = "%s/%s/%s" % (datum_arr[1].lstrip("0"), datum_arr[2].lstrip("0"), datum_arr[0][2:])
         # create entries like '1/22/20': 0,
         confirmed += "'%s': %s, " % (datum, arr[1])
-        recovered += "'%s': %s, " % (datum, arr[2])
-        deaths += "'%s': %s, " % (datum, arr[6].strip())
-        tests += "'%s': %s, " % (datum, arr[4])
+        # slovak gov has stopped publishing this data :/
+        # recovered += "'%s': %s, " % (datum, arr[2])
+        recovered += "'%s': %s, " % (datum, 0)
+        deaths += "'%s': %s, " % (datum, arr[4])
+        tests += "'%s': %s, " % (datum, arr[2])
 
     # Write the data into files - confirmed
     f = file('data/confirmed_sk.js', 'w')
