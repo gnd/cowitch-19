@@ -4,7 +4,7 @@ from operator import itemgetter
 
 months = {"Jan": 1, "Feb": 2, "Mar": 3, "Apr": 4, "May": 5, "Jun": 6, "Jul": 7, "Aug": 8, "Sep": 9, "Oct": 10, "Nov": 11, "Dec": 12}
 age_slots = ['18-24','25-29','30-34','35-39','40-44','45-49','50-54','55-59','60-64','65-69','70-74','75-79','80+']
-used_vaccines = {'Comirnaty': 'Pfizer', '"COVID-19 Vaccine Moderna"': 'Moderna'}
+used_vaccines = {'Comirnaty': 'Pfizer', '"COVID-19 Vaccine Moderna"': 'Moderna', '"COVID-19 Vaccine AstraZeneca"': 'AstraZeneca', 'Other': 'Other'}
 
 def process_csv(name):
     f = file('data/%s' % name,'r')
@@ -109,17 +109,15 @@ def process_vaccinated_details(name):
                 vaccinated_a[vaccine][line_date] = 0
             if (line_date not in vaccinated_b[vaccine]):
                 vaccinated_b[vaccine][line_date] = 0
-        # Add a catch-all for not-yet-defined vaccines
-        vaccinated_a['other'][line_date] = 0
-        vaccinated_b['other'][line_date] = 0
         # Second, add data from line
         if (line_vaccine in used_vaccines):
             vaccine = used_vaccines[line_vaccine]
             vaccinated_a[vaccine][line_date] += int(line_data[5])
             vaccinated_b[vaccine][line_date] += int(line_data[6])
         else:
-            vaccinated_a['other'][line_date] += int(line_data[5])
-            vaccinated_b['other'][line_date] += int(line_data[6])
+            vaccinated_a['Other'][line_date] += int(line_data[5])
+            vaccinated_b['Other'][line_date] += int(line_data[6])
+    
     # prepare output
     output = ""
     for age in age_slots:
@@ -162,7 +160,6 @@ def process_vaccinated_details(name):
     output += "czech_data['vaccinated_b_total'] = {%s};\n" % (vaccinated_age_string.strip(', '))
     # add totals by vaccine type + expand by 'others'
     vaccine_types = used_vaccines.values()
-    vaccine_types.append('other')
     for vaccine in vaccine_types:
         vaccine_total_a = 0
         vaccine_total_b = 0
