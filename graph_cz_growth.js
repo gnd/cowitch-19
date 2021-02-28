@@ -5,6 +5,7 @@ var TOTAL_PREDICTIONS = 5;      // Increase when adding a new prediction
 function legendCallbackGrowthRate(e, legendItem) {
     var index = legendItem.datasetIndex;
     var ci = this.chart;
+    
     meta = ci.getDatasetMeta(index);
     meta.hidden = meta.hidden === null ? !ci.data.datasets[index].hidden : null;
     

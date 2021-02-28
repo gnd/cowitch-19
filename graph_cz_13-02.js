@@ -108,7 +108,7 @@ window.infected_chart = new Chart(infected_chart_cz_13_02, {
             yAxes: [{
                 ticks: {
                     min: 0,
-                    max: 300000,
+                    max: 400000,
                 }
             }]
         },
