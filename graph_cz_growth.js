@@ -280,7 +280,7 @@ window.growth_rate_chart = new Chart(growth_rate_chart_cz, {
                     mode: 'vertical',
                     scaleID: 'x-axis-0',
                     value: 'Mar 14, 2020',
-                    borderColor: 'green',
+                    borderColor: 'red',
                     borderWidth: 2,
                     label: {
                         backgroundColor: "red",
@@ -293,7 +293,7 @@ window.growth_rate_chart = new Chart(growth_rate_chart_cz, {
                     mode: 'vertical',
                     scaleID: 'x-axis-0',
                     value: 'Oct 22, 2020',
-                    borderColor: 'green',
+                    borderColor: 'red',
                     borderWidth: 2,
                     label: {
                         backgroundColor: "red",
@@ -306,7 +306,7 @@ window.growth_rate_chart = new Chart(growth_rate_chart_cz, {
                     mode: 'vertical',
                     scaleID: 'x-axis-0',
                     value: 'Dec 27, 2020',
-                    borderColor: 'green',
+                    borderColor: 'red',
                     borderWidth: 2,
                     label: {
                         backgroundColor: "red",
