@@ -1,4 +1,5 @@
-var TOTAL_PREDICTIONS = 5;
+var FIXED_DATASETS = 3;         // Observed, Observed Average, Observed Avg 7
+var TOTAL_PREDICTIONS = 5;      // Increase when adding a new prediction
 
 // legend callback - see https://www.chartjs.org/docs/latest/configuration/legend.html
 function legendCallbackGrowthRate(e, legendItem) {
@@ -8,8 +9,8 @@ function legendCallbackGrowthRate(e, legendItem) {
     meta.hidden = meta.hidden === null ? !ci.data.datasets[index].hidden : null;
     
     // Turn off also jitter for predictions
-    if (index > 2) {
-        var OFFSET = index + TOTAL_PREDICTIONS + (index - TOTAL_PREDICTIONS + 2) * (JITTER_COUNT-1);
+    if (index => FIXED_DATASETS) {
+        var OFFSET = index + TOTAL_PREDICTIONS + (index - TOTAL_PREDICTIONS + (FIXED_DATASETS-1)) * (JITTER_COUNT-1);
         for (i=0; i<JITTER_COUNT; i++) {
             var meta = ci.getDatasetMeta(i + OFFSET);
             meta.hidden = meta.hidden === null ? !ci.data.datasets[i + OFFSET].hidden : null;
@@ -263,7 +264,7 @@ window.growth_rate_chart = new Chart(growth_rate_chart_cz, {
                 fontSize: fontsize,
                 // Show only first N labels
                 filter: function (legendItem, chartData) {
-                    if (legendItem.datasetIndex < 8) {
+                    if (legendItem.datasetIndex < FIXED_DATASETS + TOTAL_PREDICTIONS) {
                         return (chartData.datasets[legendItem.datasetIndex].label)
                     }
 
