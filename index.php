@@ -260,7 +260,7 @@
         post_funcs,
         population_size['cz'],
         1,                          // ratio of reported cases out of real cases (max 1)
-        1,                          // growth_rate_from_infected (eg. do not subtract recovered and dead twice)
+        0,                          // growth_rate_from_infected (eg. do not subtract recovered and dead twice)
         0                           // debugging
     );
     run_model( model_settings );
@@ -314,7 +314,7 @@
         post_funcs,
         population_size['cz'],
         1,                          // ratio of reported cases out of real cases (max 1)
-        1,                          // growth_rate_from_infected (eg. do not subtract recovered and dead twice)
+        0,                          // growth_rate_from_infected (eg. do not subtract recovered and dead twice)
         0                           // debugging
     );
     run_model( model_settings_31_10 );
@@ -364,7 +364,7 @@
         post_funcs,
         population_size['cz'],
         1,                          // ratio of reported cases out of real cases (max 1)
-        1,                          // growth_rate_from_infected (eg. do not subtract recovered and dead twice)
+        0,                          // growth_rate_from_infected (eg. do not subtract recovered and dead twice)
         0                           // debugging
     );
     run_model( model_settings_27_12 );
@@ -414,7 +414,7 @@
         post_funcs,
         population_size['sk'],
         1,                          // ratio of reported cases out of real cases (max 1)
-        1,                          // growth_rate_from_infected (eg. do not subtract recovered and dead twice)
+        0,                          // growth_rate_from_infected (eg. do not subtract recovered and dead twice)
         0                           // debugging
     );
     run_model( model_settings_1_1_sk );
@@ -487,7 +487,7 @@
         post_funcs,
         population_size['cz'],
         1,                          // ratio of reported cases out of real cases (max 1)
-        1,                          // growth_rate_from_infected (eg. do not subtract recovered and dead twice)
+        0,                          // growth_rate_from_infected (eg. do not subtract recovered and dead twice)
         0                           // debugging
     );
     run_model( model_settings_05_01 );
@@ -571,7 +571,7 @@
         //seed['infected']['cz'],      // the confirmed cases so far
         model_seed,
         JITTER_COUNT,           // jitter count
-        JITTER_AMOUNT/16,        // jitter amount
+        JITTER_AMOUNT/32,        // jitter amount
         'recovered_new',            // recovered distribution
         40,                         // recovered offset - when to start looking into the past for current recoveries
         'linton',               // deaths distribution
@@ -580,7 +580,7 @@
         post_funcs,
         population_size['cz'],
         1,                          // ratio of reported cases out of real cases (max 1)
-        0,                          // growth_rate_from_infected (eg. do not subtract recovered and dead twice)
+        1,                          // growth_rate_from_infected (eg. do not subtract recovered and dead twice)
         0                           // debugging
     );
     run_model( model_settings_13_02 );
