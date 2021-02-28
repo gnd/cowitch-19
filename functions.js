@@ -251,7 +251,7 @@ function extract_data_sk(csv, current, dest_name) {
         // extract tests
         current[dest_name + '_tests'].push( csv['tests'][column] );
 
-        // push into dest_name array
+        // push into dest_name array - this is later taken as 'infected'
         current[dest_name].push( current[dest_name + '_confirmed'][i] - current[dest_name + '_recovered'][i] - current[dest_name + '_deaths'][i] );
     }
 }

@@ -260,6 +260,7 @@
         post_funcs,
         population_size['cz'],
         1,                          // ratio of reported cases out of real cases (max 1)
+        0,                          // growth_rate_from_infected (eg. do not subtract recovered and dead twice)
         0                           // debugging
     );
     run_model( model_settings );
@@ -313,6 +314,7 @@
         post_funcs,
         population_size['cz'],
         1,                          // ratio of reported cases out of real cases (max 1)
+        0,                          // growth_rate_from_infected (eg. do not subtract recovered and dead twice)
         0                           // debugging
     );
     run_model( model_settings_31_10 );
@@ -362,6 +364,7 @@
         post_funcs,
         population_size['cz'],
         1,                          // ratio of reported cases out of real cases (max 1)
+        0,                          // growth_rate_from_infected (eg. do not subtract recovered and dead twice)
         0                           // debugging
     );
     run_model( model_settings_27_12 );
@@ -411,6 +414,7 @@
         post_funcs,
         population_size['sk'],
         1,                          // ratio of reported cases out of real cases (max 1)
+        0,                          // growth_rate_from_infected (eg. do not subtract recovered and dead twice)
         0                           // debugging
     );
     run_model( model_settings_1_1_sk );
@@ -483,6 +487,7 @@
         post_funcs,
         population_size['cz'],
         1,                          // ratio of reported cases out of real cases (max 1)
+        0,                          // growth_rate_from_infected (eg. do not subtract recovered and dead twice)
         0                           // debugging
     );
     run_model( model_settings_05_01 );
@@ -498,56 +503,57 @@
         PREDICTION_DAY,             // start
         4,                        // steps
         .1,                        // speed / steepness
-        0.01,                        // scale
+        -0.07,                        // scale
     ));
     rate_funcs.push( new rate_func(
         'exp',                      // name
         PREDICTION_DAY+2,             // start
         15,                         // steps
         1.1,                        // speed / steepness
-        -0.08,                        // scale
+        -0.1,                        // scale
     ));
     // 4th Wave - came much sooner than expected
-    var FOURTH_WAVE = PREDICTION_DAY+10; // set to 16.01
+    var FOURTH_WAVE = PREDICTION_DAY+15;    
     rate_funcs.push( new rate_func(
         'lin',                      // name
         FOURTH_WAVE,                // start
         60,                        // steps
         1.2,                        // speed / steepness
-        0.350,                        // scale
+        0.145,                       // scale
     ));
     // 4th Lockdown
     rate_funcs.push( new rate_func(
         'exp',                      // name
-        FOURTH_WAVE+48,             // start (guessing 22.02.2021) in the ned a week later - 01.03.2021
-        20,                         // steps
+        FOURTH_WAVE+46,             // start (guessing 22.02.2021) -- in the end it was a week later - 01.03.2021 
+        24,                         // steps
         1.2,                        // speed / steepness
-        -0.282,                       // scale
+        -0.15,                       // scale
     ));
     // 5th Wave
-    var FIFTH_WAVE = PREDICTION_DAY+70; // set to 04.03
+    var FIFTH_WAVE = FOURTH_WAVE+48+24; // set to 04.04
     rate_funcs.push( new rate_func(
         'lin',                      // name
         FIFTH_WAVE,                // start
         51,                        // steps
         1.2,                        // speed / steepness
-        0.44,                        // scale
+        0.15,                        // scale
     ));
     // 5th Lockdown
     rate_funcs.push( new rate_func(
         'exp',                      // name
         FIFTH_WAVE+31,          // start (guessing 20.02.2021)
-        20,                        // steps
+        24,                        // steps
         1.2,                        // speed / steepness
-        -0.3,                        // scale
+        -0.15,                        // scale
     ));
     // Add some postprocessing
     post_funcs = [];
     post_funcs.push( new post_func(
         'saw',      // this adds a weekly oscilation to the growth rate
         0,          // dow 
-        0.26        // scale
-    )); 
+        0.32,        // scale
+        0.007       // offset
+    ));
     
     // 13.02
     var model_growthrate = {};
@@ -565,7 +571,7 @@
         //seed['infected']['cz'],      // the confirmed cases so far
         model_seed,
         JITTER_COUNT,           // jitter count
-        JITTER_AMOUNT/64,        // jitter amount
+        JITTER_AMOUNT/32,        // jitter amount
         'recovered_new',            // recovered distribution
         40,                         // recovered offset - when to start looking into the past for current recoveries
         'linton',               // deaths distribution
@@ -574,6 +580,7 @@
         post_funcs,
         population_size['cz'],
         1,                          // ratio of reported cases out of real cases (max 1)
+        1,                          // growth_rate_from_infected (eg. do not subtract recovered and dead twice)
         0                           // debugging
     );
     run_model( model_settings_13_02 );

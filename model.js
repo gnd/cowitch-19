@@ -225,7 +225,7 @@ function saw(dow, scale, offset) {
         break;
     }
     
-    return value;
+    return value + offset;
 }
 
 // old func for compatibility
@@ -442,10 +442,11 @@ function post_func(name, param1, param2, param3) {
     this.name = name;
     this.param1 = param1;
     this.param2 = param2;
+    this.param3 = param3;
 }
 
 // Sort of struct emulation in js - model prameters
-function params(name, model_duration, growth_rate_seed, growth_rate_min, infected_seed, jitter_count, jitter_amount, recovered_func, recovered_offset, dead_func, cfr, rate_funcs, post_funcs = false, population_size, real_to_reported, debug) {
+function params(name, model_duration, growth_rate_seed, growth_rate_min, infected_seed, jitter_count, jitter_amount, recovered_func, recovered_offset, dead_func, cfr, rate_funcs, post_funcs = false, population_size, real_to_reported, growth_rate_from_infected, debug) {
     this.name = name;
     this.model_duration = model_duration;
     this.irs = growth_rate_seed;
@@ -461,6 +462,7 @@ function params(name, model_duration, growth_rate_seed, growth_rate_min, infecte
     this.post_funcs = post_funcs;
     this.population_size = population_size;
     this.reported_ratio = real_to_reported;
+    this.growth_rate_from_infected = growth_rate_from_infected; // TODO compare two models - one based on growth rate from confirmed, another one from infected
     this.debug = debug;
 }
 
@@ -510,11 +512,6 @@ function run_model(params) {
                             new_rate = model[params.name]['growth_rate'][jitter][i-1] + window[rate_func.name]( i-rate_func.start, rate_func.steps, rate_func.speed, rate_func.scale );
                         }
                     }
-                    // post-processing
-                    for (j=0; j<params.post_funcs.length; j++) {
-                        var post_func = params.post_funcs[j];
-                        new_rate += window[post_func.name]( i+post_func.param1, post_func.param2 );
-                    }
                     // add some jitter
                     if (params.jitter_amount > 0) {
                         rnd = 1  + (Math.random()*params.jitter_amount*2) - (params.jitter_amount);
@@ -529,7 +526,26 @@ function run_model(params) {
                 }
             }
         }
-
+        
+        // post-process growth rate
+        for (var i=0; i < params.model_duration; i++) {
+            if (i in params.irs) {
+            } else {
+                var computed_rate = model[params.name]['growth_rate'][jitter][i];
+                // post-processing
+                for (j=0; j<params.post_funcs.length; j++) {
+                    var post_func = params.post_funcs[j];
+                    computed_rate += window[post_func.name]( i+post_func.param1, post_func.param2, post_func.param3 );
+                }
+                // just for logging purposes
+                postprocessed_new_rate = computed_rate;
+                // check if new_rate over allowed min 
+                computed_rate = Math.max( computed_rate, params.growth_rate_min );
+                // add rate into model
+                model[params.name]['growth_rate'][jitter][i] = computed_rate;
+            }
+        }
+        
         // compute the projected
         recovered = 0;
         deaths = 0;
@@ -601,7 +617,11 @@ function run_model(params) {
                 if (i in params.infected_seed) {
                     total = infected;
                 } else {
-                    total = infected - recovered_daily - deaths_daily;
+                    if (params.growth_rate_from_infected) {
+                        total = infected;
+                    } else {
+                        total = infected - recovered_daily - deaths_daily;
+                    }
                 }
                 var total_reported = total / params.reported_ratio;
                 if (total > 0) {
