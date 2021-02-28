@@ -446,7 +446,7 @@ function post_func(name, param1, param2, param3) {
 }
 
 // Sort of struct emulation in js - model prameters
-function params(name, model_duration, growth_rate_seed, growth_rate_min, infected_seed, jitter_count, jitter_amount, recovered_func, recovered_offset, dead_func, cfr, rate_funcs, post_funcs = false, population_size, real_to_reported, include_recovered, debug) {
+function params(name, model_duration, growth_rate_seed, growth_rate_min, infected_seed, jitter_count, jitter_amount, recovered_func, recovered_offset, dead_func, cfr, rate_funcs, post_funcs = false, population_size, real_to_reported, growth_rate_from_infected, debug) {
     this.name = name;
     this.model_duration = model_duration;
     this.irs = growth_rate_seed;
@@ -462,7 +462,7 @@ function params(name, model_duration, growth_rate_seed, growth_rate_min, infecte
     this.post_funcs = post_funcs;
     this.population_size = population_size;
     this.reported_ratio = real_to_reported;
-    this.include_recovered = include_recovered;
+    this.growth_rate_from_infected = growth_rate_from_infected; // TODO compare two models - one based on growth rate from confirmed, another one from infected
     this.debug = debug;
 }
 
@@ -617,10 +617,10 @@ function run_model(params) {
                 if (i in params.infected_seed) {
                     total = infected;
                 } else {
-                    if (params.include_recovered) {
-                        total = infected - recovered_daily - deaths_daily;
+                    if (params.growth_rate_from_infected) {
+                        total = infected;
                     } else {
-                        total = infected - deaths_daily;
+                        total = infected - recovered_daily - deaths_daily;
                     }
                 }
                 var total_reported = total / params.reported_ratio;
