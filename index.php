@@ -488,7 +488,7 @@
     run_model( model_settings_05_01 );
 
 
-    // 13.02.2021
+    // 13.02.2021 (modified 28.02.2021)
     // Updating the 05.01 model to accomodate for the 4th wave
     // Keeping the prediction date same, just expanding on the former model
     rate_funcs = [];
@@ -508,21 +508,21 @@
         -0.08,                        // scale
     ));
     // 4th Wave - came much sooner than expected
-    var FOURTH_WAVE = PREDICTION_DAY+11; // set to 16.01
+    var FOURTH_WAVE = PREDICTION_DAY+10; // set to 16.01
     rate_funcs.push( new rate_func(
         'lin',                      // name
         FOURTH_WAVE,                // start
         60,                        // steps
         1.2,                        // speed / steepness
-        0.41,                        // scale
+        0.350,                        // scale
     ));
     // 4th Lockdown
     rate_funcs.push( new rate_func(
         'exp',                      // name
-        FOURTH_WAVE+38,             // start (guessing 22.02.2021)
+        FOURTH_WAVE+48,             // start (guessing 22.02.2021) in the ned a week later - 01.03.2021
         20,                         // steps
         1.2,                        // speed / steepness
-        -0.3,                       // scale
+        -0.282,                       // scale
     ));
     // 5th Wave
     var FIFTH_WAVE = PREDICTION_DAY+70; // set to 04.03
@@ -546,7 +546,7 @@
     post_funcs.push( new post_func(
         'saw',      // this adds a weekly oscilation to the growth rate
         0,          // dow 
-        0.24            // scale
+        0.26        // scale
     )); 
     
     // 13.02
@@ -565,7 +565,7 @@
         //seed['infected']['cz'],      // the confirmed cases so far
         model_seed,
         JITTER_COUNT,           // jitter count
-        JITTER_AMOUNT/16,        // jitter amount
+        JITTER_AMOUNT/64,        // jitter amount
         'recovered_new',            // recovered distribution
         40,                         // recovered offset - when to start looking into the past for current recoveries
         'linton',               // deaths distribution

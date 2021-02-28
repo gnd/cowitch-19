@@ -56,7 +56,7 @@ infected_dataset.push( {
     fill: false
 } );
 infected_dataset.push( {
-    label: 'Predicted 13.02',
+    label: 'Predicted 13.02 (modified 28.02.2021)',
     data: model['cz_13-02']['total']['avg'],
     spanGaps: true,
     borderWidth: 2,
@@ -179,6 +179,20 @@ window.infected_chart = new Chart(infected_chart_cz_13_02, {
                     label: {
                         backgroundColor: "green",
                         content: "End emergency state",
+                        enabled: true,
+                        yAdjust: -30,
+                    },
+                },
+                {
+                    type: 'line',
+                    mode: 'vertical',
+                    scaleID: 'x-axis-0',
+                    value: 'Mar 1, 2021',
+                    borderColor: 'red',
+                    borderWidth: 2,
+                    label: {
+                        backgroundColor: "red",
+                        content: "4th lockdown",
                         enabled: true
                     },
                 },

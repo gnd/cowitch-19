@@ -1,16 +1,18 @@
+var TOTAL_PREDICTIONS = 5;
+
 // legend callback - see https://www.chartjs.org/docs/latest/configuration/legend.html
 function legendCallbackGrowthRate(e, legendItem) {
     var index = legendItem.datasetIndex;
     var ci = this.chart;
-
-    // Observed, Average and rolling average growth rate
-    if (index < 4) {
-        meta = ci.getDatasetMeta(index);
-        meta.hidden = meta.hidden === null ? !ci.data.datasets[index].hidden : null;
-    } else { // predictions
-        for (i=0; i<=JITTER_COUNT; i++) {
-            var meta = ci.getDatasetMeta(i+5);
-            meta.hidden = meta.hidden === null ? !ci.data.datasets[i+5].hidden : null;
+    meta = ci.getDatasetMeta(index);
+    meta.hidden = meta.hidden === null ? !ci.data.datasets[index].hidden : null;
+    
+    // Turn off also jitter for predictions
+    if (index > 2) {
+        var OFFSET = index + TOTAL_PREDICTIONS + (index - TOTAL_PREDICTIONS + 2) * (JITTER_COUNT-1);
+        for (i=0; i<JITTER_COUNT; i++) {
+            var meta = ci.getDatasetMeta(i + OFFSET);
+            meta.hidden = meta.hidden === null ? !ci.data.datasets[i + OFFSET].hidden : null;
         }
     }
 
@@ -119,7 +121,7 @@ growth_rate_dataset.push( {
     fill: false
 });
 
-// Jitters for 20.09 and 31.10 ans 27.12
+// Jitters for 20.09 and 31.10 and 27.12 and 13.02
 for (i=0; i<JITTER_COUNT; i++) {
     if (i>0) {
         label = 'Predicted 20.09' + '-' + i;
@@ -208,7 +210,7 @@ for (i=0; i<JITTER_COUNT; i++) {
     if (i>0) {
         label = 'Predicted 13.02' + '-' + i;
     } else {
-        label = 'Predicted 13.02';
+        label = 'Predicted 13.02 (modified 28.02.2021)';
     }
     cz_13_02 =  {
         label: label,
@@ -321,6 +323,20 @@ window.growth_rate_chart = new Chart(growth_rate_chart_cz, {
                     label: {
                         backgroundColor: "green",
                         content: "End emergency state",
+                        enabled: true,
+                        yAdjust: -30
+                    },
+                },
+                {
+                    type: 'line',
+                    mode: 'vertical',
+                    scaleID: 'x-axis-0',
+                    value: 'Mar 1, 2021',
+                    borderColor: 'red',
+                    borderWidth: 2,
+                    label: {
+                        backgroundColor: "red",
+                        content: "4th lockdown",
                         enabled: true
                     },
                 },
