@@ -171,11 +171,13 @@ function extract_vaccinated_cz_details(csv, current, dest_name) {
             current[dest_name + '_vaccinated_b_' + age].push( csv['vaccinated_b_' + age][column] );
             
             // extract daily numbers
-            if (j>1) {
+            if (j>1) { // subtract yesterday's values
                 previous_column = moment(new Date(2020, 11, 26 + j)).format('M/D/YY');    // data starting from 12/27/20
-                // extract vaccinated
                 current[dest_name + '_vaccinated_a_daily_' + age].push( csv['vaccinated_a_' + age][column] - csv['vaccinated_a_' + age][previous_column] );
                 current[dest_name + '_vaccinated_b_daily_' + age].push( csv['vaccinated_b_' + age][column] - csv['vaccinated_b_' + age][previous_column] );
+            } else { // if this is the first day, just add its values
+                current[dest_name + '_vaccinated_a_daily_' + age].push( csv['vaccinated_a_' + age][column] );
+                current[dest_name + '_vaccinated_b_daily_' + age].push( csv['vaccinated_b_' + age][column] );
             }
         }
     }
@@ -205,11 +207,13 @@ function extract_vaccinated_cz_details(csv, current, dest_name) {
             current[dest_name + '_vaccinated_b_' + vaccine].push( csv['vaccinated_b_' + vaccine][column] );
             
             // extract daily numbers
-            if (j>1) {
+            if (j>1) { // subtract yesterday's values
                 previous_column = moment(new Date(2020, 11, 26 + j)).format('M/D/YY');    // data starting from 12/27/20
-                // extract vaccinated
                 current[dest_name + '_vaccinated_a_daily_' + vaccine].push( csv['vaccinated_a_' + vaccine][column] - csv['vaccinated_a_' + vaccine][previous_column] );
                 current[dest_name + '_vaccinated_b_daily_' + vaccine].push( csv['vaccinated_b_' + vaccine][column] - csv['vaccinated_b_' + vaccine][previous_column] );
+            } else { // if this is the first day, just add its values
+                current[dest_name + '_vaccinated_a_daily_' + vaccine].push( csv['vaccinated_a_' + vaccine][column] );
+                current[dest_name + '_vaccinated_b_daily_' + vaccine].push( csv['vaccinated_b_' + vaccine][column] );
             }
         }
     }
