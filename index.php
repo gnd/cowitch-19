@@ -460,7 +460,8 @@
     post_funcs.push( new post_func(
         'saw',      // this adds a weekly oscilation to the growth rate
         0,          // dow 
-        0.2         // scale
+        0.2,         // scale
+        0               // offset
     ));
     
     // 05.01
