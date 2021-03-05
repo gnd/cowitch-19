@@ -12,6 +12,7 @@ wget https://onemocneni-aktualne.mzcr.cz/api/v2/covid-19/ockovani.csv -O data/va
 # download new slovak data
 wget https://raw.githubusercontent.com/Institut-Zdravotnych-Analyz/covid19-data/main/DailyStats/OpenData_Slovakia_Covid_DailyStats.csv -O data/slovakia.csv
 #wget https://mapa.covid.chat/export/csv -O data/slovakia.csv
+wget https://raw.githubusercontent.com/Institut-Zdravotnych-Analyz/covid19-data/main/Vaccination/OpenData_Slovakia_Vaccination_Regions.csv -O data/vaccinated_sk_details.csv
 
 # now turn it into JS arrays
 echo "Processing data .."

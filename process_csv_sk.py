@@ -1,4 +1,7 @@
 #!/usr/bin/env python2
+# -*- coding: utf-8 -*-
+
+from operator import itemgetter
 
 def process_csv(name):
     f = file('data/%s' % name,'r')
@@ -49,6 +52,63 @@ def process_csv(name):
     f.write("slovak_data['tests'] = {%s};" % (tests.strip(', ')))
     f.close()
 
+def process_vaccinated_details(name):
+    f = file('data/%s' % name, 'r')
+    lines = f.readlines()
+    lines = lines[1:]
+    lines.reverse()
+    f.close()
+
+    vaccinated_a = {} # first dose
+    vaccinated_b = {} # second dose
+    # create totals in vaccinated
+    vaccinated_a['total'] = {} # daily total
+    vaccinated_b['total'] = {} # daily total
+    # Process data from the CSV line by line
+    for line in lines:
+        # 2021-03-04;"Bratislavský kraj";"SK010";269;842
+        line_data = line.split(';')
+        line_date = line_data[0]
+        
+        #        
+        # Process data about first and second doses - total over all age groups
+        # First make sure the date exists in vaccinated_{a|b}['total'] arrays
+        #
+        if (line_date not in vaccinated_a['total']):
+            vaccinated_a['total'][line_date] = 0
+        if (line_date not in vaccinated_b['total']):
+            vaccinated_b['total'][line_date] = 0
+        # Second, add data from line
+        vaccinated_a['total'][line_date] += int(line_data[3])
+        vaccinated_b['total'][line_date] += int(line_data[4])
+
+    # prepare output
+    output = ""
+    # add first dose totals
+    age_total_a = 0
+    vaccinated_age_string = ""
+    for tuple in sorted(vaccinated_a['total'].items(), key=itemgetter(0)):
+        # 01/26/21
+        nice_date = "%s/%s/%s" % (tuple[0].split('-')[1].lstrip("0"),tuple[0].split('-')[2].lstrip("0"),tuple[0].split('-')[0][2:4])
+        age_total_a += tuple[1]
+        vaccinated_age_string += "'%s': %d, " % (nice_date, age_total_a)
+    output += "slovak_data['vaccinated_a_total'] = {%s};\n" % (vaccinated_age_string.strip(', '))
+    # add first dose totals
+    age_total_b = 0
+    vaccinated_age_string = ""
+    for tuple in sorted(vaccinated_b['total'].items(), key=itemgetter(0)):
+        # 01/26/21
+        nice_date = "%s/%s/%s" % (tuple[0].split('-')[1].lstrip("0"),tuple[0].split('-')[2].lstrip("0"),tuple[0].split('-')[0][2:4])
+        age_total_b += tuple[1]
+        vaccinated_age_string += "'%s': %d, " % (nice_date, age_total_b)
+    output += "slovak_data['vaccinated_b_total'] = {%s};\n" % (vaccinated_age_string.strip(', '))
+
+    # write to file
+    f = file('data/vaccinated_sk_details.js', 'w')
+    f.write(output)
+    f.close()
+
 
 # Run processing#
 process_csv('slovakia.csv')
+process_vaccinated_details('vaccinated_sk_details.csv')
