@@ -671,6 +671,15 @@
         <br class="clear"/>
     </div>
     <div class="graph_container">
+        <a id="sk_daily"></a>
+        <div class="graph_filler">&nbsp;</div>
+        <div class="canvas_container">
+            <canvas id="infected_sk_daily" class="graph"></canvas>
+            <a class="link" href="#sk_daily">link</a>
+        </div>
+        <br class="clear"/>
+    </div>
+    <div class="graph_container">
         <a id="sk_growth"></a>
         <div class="graph_filler">&nbsp;</div>
         <div class="canvas_container">
@@ -770,6 +779,15 @@
         <br class="clear"/>
     </div>
     <div class="graph_container">
+        <a id="sk_01_01"></a>
+        <div class="graph_filler">&nbsp;</div>
+        <div class="canvas_container">
+            <canvas id="infected_sk_01_01" class="graph"></canvas>
+            <a class="link" href="#sk_01_01">link</a>
+        </div>
+        <br class="clear"/>
+    </div>
+    <div class="graph_container">
         <a id="cz_pred_27-12"></a>
         <div class="graph_filler">&nbsp;</div>
         <div class="canvas_container">
@@ -831,6 +849,9 @@
 <!-- GRAPH SK -->
 <script src="graph_sk_new.js?v=<?php echo filemtime('graph_sk_new.js'); ?>"></script>
 
+<!-- GRAPH SK - Daily numbers -->
+<script src="graph_sk_daily.js?v=<?php echo filemtime('graph_sk_daily.js'); ?>"></script>
+
 <!-- GRAPH SK Growth Rate-->
 <script src="graph_sk_growth.js?v=<?php echo filemtime('graph_sk_growth.js'); ?>"></script>
 
@@ -863,6 +884,9 @@
 
 <!-- GRAPH CZ 01.05 -->
 <script src="graph_cz_05-01.js?v=<?php echo filemtime('graph_cz_05-01.js'); ?>"></script>
+
+<!-- GRAPH SK -->
+<script src="graph_sk_01_01.js?v=<?php echo filemtime('graph_sk_01_01.js'); ?>"></script>
 
 <!-- GRAPH CZ 27.12 -->
 <script src="graph_cz_27-12.js?v=<?php echo filemtime('graph_cz_27-12.js'); ?>"></script>

@@ -19,13 +19,13 @@ function legendCallbackInfected(e, legendItem) {
 }
 
 // the infected graph
-var infected_chart_sk = document.getElementById("infected_sk").getContext('2d');
+var infected_chart_sk_daily = document.getElementById("infected_sk_daily").getContext('2d');
 
 // Create datasets for infected projections
 infected_dataset = [];
 infected_dataset.push( {
-    label: 'Confirmed',
-    data: current_values['sk'],
+    label: 'Confirmed - Daily',
+    data: current_values['sk_confirmed_daily'],
     spanGaps: true,
     borderWidth: 1,
     borderColor: '#' + pal_8[1],
@@ -37,7 +37,7 @@ infected_dataset.push( {
 } );
 
 // The infected chart
-window.infected_chart = new Chart(infected_chart_sk, {
+window.infected_chart = new Chart(infected_chart_sk_daily, {
     type: 'line',
     data: {
         labels: gen_days(6, 2, 390),
@@ -48,7 +48,7 @@ window.infected_chart = new Chart(infected_chart_sk, {
         title: {
             display: true,
             fontSize: fontsize,
-            text: ["Confirmed total cases of COVID-19 in Slovakia", "Slovaks stopped publishing data about recovered cases so this has no sense."]
+            text: ["Confirmed daily cases of COVID-19 in Slovakia"]
         },
         scales: {
             xAxes: [{
@@ -60,7 +60,7 @@ window.infected_chart = new Chart(infected_chart_sk, {
             yAxes: [{
                 ticks: {
                     min: 0,
-                    max: 350000,
+                    max: 7000,
                 }
             }]
         },

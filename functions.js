@@ -225,6 +225,7 @@ function extract_data_sk(csv, current, dest_name) {
     // prepare arrays
     current[dest_name] = [];
     current[dest_name + '_confirmed'] = [];
+    current[dest_name + '_confirmed_daily'] = [];
     current[dest_name + '_recovered'] = [];
     current[dest_name + '_deaths'] = [];
     current[dest_name + '_deaths_daily'] = [];
@@ -232,6 +233,12 @@ function extract_data_sk(csv, current, dest_name) {
 
     for (i=0; i<days; i++) {
         column = moment(new Date(2020, 2, 6 + i)).format('M/D/YY');    // data starting from 3/1/20
+        
+        // extract daily confirmed
+        if (i > 0) {
+            previous_column = moment(new Date(2020, 2, 5 + i)).format('M/D/YY');
+            current[dest_name + '_confirmed_daily'].push( csv['confirmed'][column] - csv['confirmed'][previous_column] );
+        }
 
         // extract confirmed
         current[dest_name + '_confirmed'].push( csv['confirmed'][column] );

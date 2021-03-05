@@ -19,7 +19,7 @@ function legendCallbackInfected(e, legendItem) {
 }
 
 // the infected graph
-var infected_chart_sk = document.getElementById("infected_sk").getContext('2d');
+var infected_chart_sk_01_01 = document.getElementById("infected_sk_01_01").getContext('2d');
 
 // Create datasets for infected projections
 infected_dataset = [];
@@ -35,9 +35,37 @@ infected_dataset.push( {
     tension: 0,
     fill: false
 } );
+infected_dataset.push( {
+    label: 'Predicted 1.1',
+    data: model['sk_1-1']['total']['avg'],
+    spanGaps: true,
+    borderWidth: 2,
+    borderColor: '#' + pal_8[5],
+    pointStyle: 'circle',
+    pointBorderColor:  '#' + pal_8[5],
+    tension: 0,
+    fill: false
+} );
+for (i=0; i<JITTER_COUNT; i++) {
+    label = 'Predicted 1.1'+i;
+    sk_1_1 = {
+        label: label,
+        data: model['sk_1-1']['total'][i],
+        spanGaps: true,
+        borderWidth: 1,
+        borderDash: [5, 5],
+        borderColor: hexToRGBA('#' + pal_8[5], 0.4),
+        pointStyle: 'circle',
+        radius: 0,
+        pointBorderColor:  '#' + pal_8[5],
+        tension: 0.2,
+        fill: false
+    };
+    infected_dataset.push( sk_1_1 );
+}
 
 // The infected chart
-window.infected_chart = new Chart(infected_chart_sk, {
+window.infected_chart = new Chart(infected_chart_sk_01_01, {
     type: 'line',
     data: {
         labels: gen_days(6, 2, 390),
@@ -48,7 +76,7 @@ window.infected_chart = new Chart(infected_chart_sk, {
         title: {
             display: true,
             fontSize: fontsize,
-            text: ["Confirmed total cases of COVID-19 in Slovakia", "Slovaks stopped publishing data about recovered cases so this has no sense."]
+            text: ["Confirmed and predicted cases of COVID-19 in Slovakia", "Graph broken when Slovaks stopped publishing data about recovered cases. Fucking fucktards."]
         },
         scales: {
             xAxes: [{

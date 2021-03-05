@@ -58,41 +58,6 @@ growth_rate_dataset.push( {
     fill: false
 } );
 
-// Predicted 1.1.2021
-growth_rate_dataset.push( {
-    label: 'Predicted 1.11',
-    data: model['sk_1-1']['growth_rate']['avg'],
-    spanGaps: true,
-    borderWidth: 2,
-    borderColor: '#' + pal_8[5],
-    pointStyle: 'circle',
-    pointBorderColor:  '#' + pal_8[5],
-    tension: 0.2,
-    fill: false
-});
-
-for (i=0; i<JITTER_COUNT; i++) {
-    if (i>0) {
-        label = 'Predicted 1.1' + '-' + i;
-    } else {
-        label = 'Predicted 1.1';
-    }
-    sk_1_1 =  {
-        label: label,
-        data: model['sk_1-1']['growth_rate'][i],
-        spanGaps: true,
-        borderWidth: 1,
-        borderDash: [5, 5],
-        borderColor: hexToRGBA('#' + pal_8[5], 0.2),
-        pointStyle: 'circle',
-        radius: 0,
-        pointBorderColor: '#' + pal_8[5],
-        tension: 0.2,
-        fill: false
-    };
-    growth_rate_dataset.push( sk_1_1 );
-}
-
 // The growth rate chart
 window.growth_rate_chart = new Chart(growth_rate_chart_sk, {
     type: 'line',
@@ -105,7 +70,7 @@ window.growth_rate_chart = new Chart(growth_rate_chart_sk, {
         title: {
             display: true,
             fontSize: fontsize,
-            text: ["Confirmed, average and predicted growth rate of COVID-19 in Slovakia", "(click on the legend to show/hide data)"]
+            text: ["Confirmed and average growth rate of COVID-19 in Slovakia", "(click on the legend to show/hide data)"]
         },
         scales: {
             xAxes: [{
