@@ -58,7 +58,7 @@
 <script src="data/recovered_sk.js?v=<?php echo filemtime('data/recovered_sk.js'); ?>"></script>
 <script src="data/deaths_sk.js?v=<?php echo filemtime('data/deaths_sk.js'); ?>"></script>
 <script src="data/tests_sk.js?v=<?php echo filemtime('data/tests_sk.js'); ?>"></script>
-
+<script src="data/vaccinated_sk_details.js?v=<?php echo filemtime('data/vaccinated_sk_details.js'); ?>"></script>
 
 <?php
     // compute last change to the model(s)
@@ -121,7 +121,8 @@
     extract_data(global_data, current_values, 'Poland', 'pl');
     extract_data(global_data, current_values, 'Portugal', 'pt');
     extract_data(global_data, current_values, 'Romania', 'ro');
-    extract_data_sk(slovak_data, current_values, 'sk'); // Get Slovak data from https://mapa.covid.chat/export/csv
+    extract_data_sk(slovak_data, current_values, 'sk'); // Get Slovak data from https://github.com/Institut-Zdravotnych-Analyz/covid19-data
+    extract_vaccinated_sk_details(slovak_data, current_values, 'sk'); // Get Slovak data from https://github.com/Institut-Zdravotnych-Analyz/covid19-data
     extract_data(global_data, current_values, 'Slovenia', 'sl');
     extract_data(global_data, current_values, 'Serbia', 'sr');
     extract_data(global_data, current_values, 'Spain', 'es');
@@ -679,6 +680,24 @@
         <br class="clear"/>
     </div>
     <div class="graph_container">
+        <a id="sk_vacc"></a>
+        <div class="graph_filler">&nbsp;</div>
+        <div class="canvas_container">
+            <canvas id="vaccinated_sk" class="graph_dark"></canvas>
+            <a class="link" href="#sk_vacc">link</a>
+        </div>
+        <br class="clear"/>
+    </div>
+    <div class="graph_container">
+        <a id="sk_vacc_det_daily"></a>
+        <div class="graph_filler">&nbsp;</div>
+        <div class="canvas_container">
+            <canvas id="vaccinated_sk_det_daily" class="graph_dark"></canvas>
+            <a class="link" href="#sk_vacc_det_daily">link</a>
+        </div>
+        <br class="clear"/>
+    </div>
+    <div class="graph_container">
         <a id="compare_100_sick"></a>
         <div class="graph_filler">&nbsp;</div>
         <div class="canvas_container">
@@ -814,6 +833,12 @@
 
 <!-- GRAPH SK Growth Rate-->
 <script src="graph_sk_growth.js?v=<?php echo filemtime('graph_sk_growth.js'); ?>"></script>
+
+<!-- GRAPH SK Vaccinations - Detailed & Daily -->
+<script src="graph_sk_vaccinated_daily_details.js?v=<?php echo filemtime('graph_sk_vaccinated_daily_details.js'); ?>"></script>
+
+<!-- GRAPH SK Vaccinations-->
+<script src="graph_sk_vaccinated.js?v=<?php echo filemtime('graph_sk_vaccinated.js'); ?>"></script>
 
 <!-- GRAPH Compare Sick per 100k -->
 <script src="graph_compare_sick_eu.js?v=<?php echo filemtime('graph_compare_sick_eu.js'); ?>"></script>

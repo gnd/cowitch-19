@@ -257,6 +257,35 @@ function extract_data_sk(csv, current, dest_name) {
 }
 
 
+// Extract data from Slovak CSV arrays - vaccinations detailed info
+function extract_vaccinated_sk_details(csv, current, dest_name) {
+    var now = moment(new Date());
+    var start = moment("2021-01-04");
+    var duration = moment.duration(now.diff(start));
+    var days = duration.asDays()
+
+    // Process data about vaccinations
+    current[dest_name + '_vaccinated_a_daily_total'] = [];
+    current[dest_name + '_vaccinated_b_daily_total'] = [];
+    for (var j=0; j<days; j++) {
+        // extract daily numbers
+        column = moment(new Date(2021, 0, 4 + j)).format('M/D/YY');    // data starting from 01/05/21        
+        previous_column = moment(new Date(2021, 0, 3 + j)).format('M/D/YY');    // data starting from 01/04/21
+        current[dest_name + '_vaccinated_a_daily_total'].push( csv['vaccinated_a_total'][column] - csv['vaccinated_a_total'][previous_column] );
+        current[dest_name + '_vaccinated_b_daily_total'].push( csv['vaccinated_b_total'][column] - csv['vaccinated_b_total'][previous_column] );
+    }
+    
+    // Now do the totals
+    current[dest_name + '_vaccinated_a_total'] = [];
+    current[dest_name + '_vaccinated_b_total'] = [];
+    for (var j=0; j<days; j++) {
+        column = moment(new Date(2021, 0, 4 + j)).format('M/D/YY');    // data starting from 01/05/21
+        // extract vaccinated
+        current[dest_name + '_vaccinated_a_total'].push( csv['vaccinated_a_total'][column] );
+        current[dest_name + '_vaccinated_b_total'].push( csv['vaccinated_b_total'][column] );
+    }
+}
+
 
 function detect_client() {
     const mq = window.matchMedia('screen and (min-width: 300px) and (max-width: 340px)');
