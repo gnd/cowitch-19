@@ -267,7 +267,7 @@ for (i=0; i<JITTER_COUNT; i++) {
 window.growth_rate_chart_sk = new Chart(growth_rate_chart_sk, {
     type: 'line',
     data: {
-        labels: gen_days(0, 2, 90),
+        labels: gen_days(0, 2, 180),
         datasets: dataset,
     },
     options: {

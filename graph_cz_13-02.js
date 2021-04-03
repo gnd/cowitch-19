@@ -88,7 +88,7 @@ for (i=0; i<JITTER_COUNT; i++) {
 window.infected_chart = new Chart(infected_chart_cz_13_02, {
     type: 'line',
     data: {
-        labels: gen_days(0, 2, 450),
+        labels: gen_days(0, 2, 540),
         datasets: infected_dataset,
     },
     options: {

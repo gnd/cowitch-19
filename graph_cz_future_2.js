@@ -149,7 +149,7 @@ for (i=0; i<JITTER_COUNT; i++) {
 window.cz_future_long = new Chart(cz_future_long, {
     type: 'line',
     data: {
-        labels: gen_days(0, 2, 500),
+        labels: gen_days(0, 2, 540),
         datasets: dataset,
     },
     options: {

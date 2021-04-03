@@ -42,7 +42,7 @@ vaccinated_dataset.push( {
 window.vaccinated_chart = new Chart(vaccinated_chart_cz, {
     type: 'line',
     data: {
-        labels: gen_days(26, 11, 100),
+        labels: gen_days(26, 11, 190),
         datasets: vaccinated_dataset,
     },
     options: {

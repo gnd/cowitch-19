@@ -62,7 +62,7 @@ growth_rate_dataset.push( {
 window.growth_rate_chart = new Chart(growth_rate_chart_sk, {
     type: 'line',
     data: {
-        labels: gen_days(6, 2, 390),
+        labels: gen_days(6, 2, 480),
         datasets: growth_rate_dataset,
     },
     options: {

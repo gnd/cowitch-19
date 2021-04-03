@@ -205,7 +205,7 @@ dataset.push( {
 window.compare= new Chart(compare_100_deaths_daily, {
     type: 'line',
     data: {
-        labels: gen_days_relative(390),
+        labels: gen_days_relative(480),
         datasets: dataset,
     },
     options: {

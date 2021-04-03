@@ -47,7 +47,7 @@ for (var i=0; i<age_slots.length; i++) {
 window.vaccinated_chart = new Chart(vaccinated_chart_cz_det, {
     type: 'line',
     data: {
-        labels: gen_days(26, 11, 100),
+        labels: gen_days(26, 11, 190),
         datasets: vaccinated_dataset,
     },
     options: {
@@ -98,6 +98,19 @@ window.vaccinated_chart = new Chart(vaccinated_chart_cz_det, {
                     label: {
                         backgroundColor: "red",
                         content: "AstraZeneca in CZ (19k)",
+                        enabled: true
+                    },
+                },
+                {
+                    type: 'line',
+                    mode: 'vertical',
+                    scaleID: 'x-axis-0',
+                    value: 'Mar 30, 2021',
+                    borderColor: 'green',
+                    borderWidth: 2,
+                    label: {
+                        backgroundColor: "red",
+                        content: "AstraZeneca renamed to Vaxzevria",
                         enabled: true
                     },
                 },

@@ -40,7 +40,7 @@ infected_dataset.push( {
 window.infected_chart = new Chart(infected_chart_sk_daily, {
     type: 'line',
     data: {
-        labels: gen_days(6, 2, 390),
+        labels: gen_days(6, 2, 480),
         datasets: infected_dataset,
     },
     options: {

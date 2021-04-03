@@ -4,7 +4,7 @@ from operator import itemgetter
 
 months = {"Jan": 1, "Feb": 2, "Mar": 3, "Apr": 4, "May": 5, "Jun": 6, "Jul": 7, "Aug": 8, "Sep": 9, "Oct": 10, "Nov": 11, "Dec": 12}
 age_slots = ['18-24','25-29','30-34','35-39','40-44','45-49','50-54','55-59','60-64','65-69','70-74','75-79','80+']
-used_vaccines = {'Comirnaty': 'Pfizer', '"COVID-19 Vaccine Moderna"': 'Moderna', '"COVID-19 Vaccine AstraZeneca"': 'AstraZeneca', 'Other': 'Other'}
+used_vaccines = {'Comirnaty': 'Pfizer', '"COVID-19 Vaccine Moderna"': 'Moderna', '"COVID-19 Vaccine AstraZeneca"': 'AstraZeneca', 'VAXZEVRIA': 'AstraZeneca', 'Other': 'Other'}
 
 def process_csv(name):
     f = file('data/%s' % name,'r')

@@ -473,7 +473,7 @@
     }
     var model_settings_05_01 = new params(
         'cz_05-01',                     // model name
-        450,                        // model duration
+        540,                        // model duration
         //seed['growth_rate_avg_7']['cz'],
         model_growthrate,
         0.9,                       // min possible growth rate
@@ -566,7 +566,7 @@
     }
     var model_settings_13_02 = new params(
         'cz_13-02',                     // model name
-        450,                        // model duration
+        540,                        // model duration
         //seed['growth_rate_avg_7']['cz'],
         model_growthrate,
         0.9,                       // min possible growth rate
