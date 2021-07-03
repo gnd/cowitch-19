@@ -1,3 +1,6 @@
+// days since March 1st, 2020
+var CHART_DAYS = 570;
+
 // legend callback - see https://www.chartjs.org/docs/latest/configuration/legend.html
 function legendCallbackGrowthRate(e, legendItem) {
     var index = legendItem.datasetIndex;
@@ -62,7 +65,7 @@ growth_rate_dataset.push( {
 window.growth_rate_chart = new Chart(growth_rate_chart_sk, {
     type: 'line',
     data: {
-        labels: gen_days(6, 2, 480),
+        labels: gen_days(6, 2, CHART_DAYS),
         datasets: growth_rate_dataset,
     },
     options: {

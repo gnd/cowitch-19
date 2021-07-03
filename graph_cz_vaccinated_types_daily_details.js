@@ -1,3 +1,6 @@
+// days since December 27th
+var CHART_DAYS = 280;
+
 // the growth rate
 var vaccinated_chart_cz_types_det_daily = document.getElementById("vaccinated_cz_types_det_daily").getContext('2d');
 
@@ -34,7 +37,7 @@ for (var i=0; i<used_vaccines.length; i++) {
 window.vaccinated_chart = new Chart(vaccinated_chart_cz_types_det_daily, {
     type: 'line',
     data: {
-        labels: gen_days(26, 11, 190),
+        labels: gen_days(26, 11, CHART_DAYS),
         datasets: vaccinated_dataset,
     },
     options: {

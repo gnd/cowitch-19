@@ -66,7 +66,7 @@ def process_vaccinated_details(name):
     vaccinated_b['total'] = {} # daily total
     # Process data from the CSV line by line
     for line in lines:
-        # 2021-03-04;"Bratislavský kraj";"SK010";269;842
+        # 2021-06-28;"Košický kraj";"SK042";"Comirnaty koncentrát na injekčnú disperziu";243;1499
         line_data = line.split(';')
         line_date = line_data[0]
         
@@ -79,8 +79,8 @@ def process_vaccinated_details(name):
         if (line_date not in vaccinated_b['total']):
             vaccinated_b['total'][line_date] = 0
         # Second, add data from line
-        vaccinated_a['total'][line_date] += int(line_data[3])
-        vaccinated_b['total'][line_date] += int(line_data[4])
+        vaccinated_a['total'][line_date] += int(line_data[4])
+        vaccinated_b['total'][line_date] += int(line_data[5])
 
     # prepare output
     output = ""

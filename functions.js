@@ -1,6 +1,6 @@
 age_slots = ['18','25','30','35','40','45','50','55','60','65','70','75','80'];
 age_slots_desc = ['18-24','25-29','30-34','35-39','40-44','45-49','50-54','55-59','60-64','65-69','70-74','75-79','80+'];
-used_vaccines = ['Pfizer', 'Moderna', 'AstraZeneca', 'Other'];
+used_vaccines = ['Pfizer', 'Moderna', 'AstraZeneca', 'JohnsonJohnson', 'Other'];
 
 // HEX to R,G,B - taken from http://www.javascripter.net/faq/hextorgb.htm
 function hexToR(h) {return parseInt((cutHex(h)).substring(0,2),16)}
