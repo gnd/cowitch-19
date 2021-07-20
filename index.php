@@ -83,8 +83,9 @@
     current_values = {};
     days_elapsed = {};
     seed = {'growth_rate': {}, 'growth_rate_avg_7': {}, 'infected': {}};
+    
+    // Population sizes
     population_size = {};
-
     population_size['at'] =  8858775; // https://en.wikipedia.org/wiki/Demographics_of_Austria
     population_size['be'] = 11550039; // https://en.wikipedia.org/wiki/Demographics_of_Belgium
     population_size['bg'] =  6951482; // https://en.wikipedia.org/wiki/Demographics_of_Bulgaria
@@ -104,7 +105,12 @@
     population_size['sr'] =  6926705; // https://en.wikipedia.org/wiki/Demographics_of_Serbia
     population_size['es'] = 47431256; // https://en.wikipedia.org/wiki/Demographics_of_Spain
     population_size['ua'] = 41762138; // https://en.wikipedia.org/wiki/Demographics_of_Ukraine
-
+    
+    // Population sizes by age groups
+    population_size_by_age = {}; // https://population.un.org/wpp/Download/Standard/Population/
+    population_size_by_age['sk'] = [284,283,283,263,291,365,410,437,458,404,347,362,362,333,237,162,100,57,19,3,0];
+    population_size_by_age['cz'] = [559,555,574,488,471,634,717,761,930,868,694,657,644,681,613,418,235,144,54,11,0];
+    
     // Get global data from https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_confirmed_global.csv
     extract_data(global_data, current_values, 'Austria', 'at');
     extract_data(global_data, current_values, 'Belgium', 'be');
@@ -169,6 +175,10 @@
     prepare_100_relative(current_values, 'sr', population_size['sr']);
     prepare_100_relative(current_values, 'es', population_size['es']);
     prepare_100_relative(current_values, 'ua', population_size['ua']);
+    
+    // process age groups (estimate for 18-24, sum for 80+)
+    population_size_by_age['sk'] = process_age_groups(population_size_by_age['sk']);
+    population_size_by_age['cz'] = process_age_groups(population_size_by_age['cz']);
 
     // Prepare the model
     model = {};
@@ -663,6 +673,24 @@
         <br class="clear"/>
     </div>
     <div class="graph_container">
+        <a id="cz_vacc_age_groups"></a>
+        <div class="graph_filler">&nbsp;</div>
+        <div class="canvas_container">
+            <canvas id="vaccinated_cz_age_groups" class="graph_dark"></canvas>
+            <a class="link" href="#cz_vacc_age_groups">link</a>
+        </div>
+        <br class="clear"/>
+    </div>
+    <div class="graph_container">
+        <a id="cz_vacc_age_groups_perc"></a>
+        <div class="graph_filler">&nbsp;</div>
+        <div class="canvas_container">
+            <canvas id="vaccinated_cz_age_groups_perc" class="graph_dark"></canvas>
+            <a class="link" href="#cz_vacc_age_groups_perc">link</a>
+        </div>
+        <br class="clear"/>
+    </div>
+    <div class="graph_container">
         <a id="sk_new"></a>
         <div class="graph_filler">&nbsp;</div>
         <div class="canvas_container">
@@ -846,6 +874,12 @@
 
 <!-- GRAPH CZ Vaccinations-->
 <script src="graph_cz_vaccinated.js?v=<?php echo filemtime('graph_cz_vaccinated.js'); ?>"></script>
+
+<!-- GRAPH CZ Vaccinations- by Age Groups + Total population -->
+<script src="graph_cz_vaccinated_age_groups.js?v=<?php echo filemtime('graph_cz_vaccinated_age_groups.js'); ?>"></script>
+
+<!-- GRAPH CZ Vaccinations- by Age Groups in percent -->
+<script src="graph_cz_vaccinated_age_groups_perc.js?v=<?php echo filemtime('graph_cz_vaccinated_age_groups_perc.js'); ?>"></script>
 
 <!-- GRAPH SK -->
 <script src="graph_sk_new.js?v=<?php echo filemtime('graph_sk_new.js'); ?>"></script>

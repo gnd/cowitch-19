@@ -23,9 +23,9 @@ vaccinated_dataset.push( {
     data: current_values['cz_vaccinated_a_total'],
     spanGaps: true,
     borderWidth: 1,
-    borderColor: '#ff0000',
+    borderColor: '#f2b705',
     pointStyle: 'crossRot',
-    pointBorderColor:  '#ff0000',
+    pointBorderColor:  '#f2b705',
     tension: 0.2,
     fill: false
 } );
@@ -34,9 +34,9 @@ vaccinated_dataset.push( {
     data: current_values['cz_vaccinated_b_total'],
     spanGaps: true,
     borderWidth: 2,
-    borderColor: '#00ff00',
+    borderColor: '#d96704',
     pointStyle: 'rect',
-    pointBorderColor:  '#00ff00',
+    pointBorderColor: '#d96704',
     tension: 0.2,
     fill: false
 } );
@@ -69,8 +69,11 @@ window.vaccinated_chart = new Chart(vaccinated_chart_cz, {
             }],
             yAxes: [{
                 gridLines: {
-                    color: 'rgba(30,30,30,1)',
-                    lineWidth: 1
+                    color: 'rgba(70,70,70,1)',
+                    lineWidth: 1,
+                },
+                ticks: {
+                    stepSize: 500000
                 }
             }],
         },
@@ -81,25 +84,6 @@ window.vaccinated_chart = new Chart(vaccinated_chart_cz, {
                 fontSize: fontsize,
                 fontColor: 'rgba(150,150,150,1)',
             },
-        },
-        annotation: {
-            drawTime: 'beforeDatasetsDraw',
-            events: ['click'],
-            annotations: [
-                {
-                    type: 'line',
-                    mode: 'vertical',
-                    scaleID: 'x-axis-0',
-                    value: 'Feb 06, 2021',
-                    borderColor: 'green',
-                    borderWidth: 2,
-                    label: {
-                        backgroundColor: "red",
-                        content: "AstraZeneca in CZ (19k)",
-                        enabled: true
-                    },
-                },
-            ]
         },
     }
 });
