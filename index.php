@@ -59,6 +59,7 @@
 <script src="data/deaths_sk.js?v=<?php echo filemtime('data/deaths_sk.js'); ?>"></script>
 <script src="data/tests_sk.js?v=<?php echo filemtime('data/tests_sk.js'); ?>"></script>
 <script src="data/vaccinated_sk_details.js?v=<?php echo filemtime('data/vaccinated_sk_details.js'); ?>"></script>
+<script src="data/eody_crete.js?v=<?php echo filemtime('data/eody_crete.js'); ?>"></script>
 
 <?php
     // compute last change to the model(s)
@@ -68,6 +69,7 @@
     // compute last change to the data
     $max_data = filemtime('data/deaths.js');
     $max_data = max($max_data, filemtime('data/deaths_cz.js'));
+    $max_data = max($max_data, filemtime('data/eody_crete.js'));
 ?>
 
 <!-- SEED AND PREPARE MODELS AND GRAPHS -->
@@ -133,6 +135,9 @@
     extract_data(global_data, current_values, 'Serbia', 'sr');
     extract_data(global_data, current_values, 'Spain', 'es');
     extract_data(global_data, current_values, 'Ukraine', 'ua');
+    
+    // Cretan / Greek data
+    extract_crete_details(crete_data, current_values, 'gr'); // Get Greek data from https://eody.gov.gr
     
     // Fill initial stats for countries
     days_elapsed['at'] = fill_initial(data, current_values, 'at');
@@ -628,6 +633,15 @@
         <br class="clear"/>
     </div>
     <div class="graph_container">
+        <a id="crete_cities"></a>
+        <div class="graph_filler">&nbsp;</div>
+        <div class="canvas_container">
+            <canvas id="graph_crete_cities" class="graph"></canvas>
+            <a class="link" href="#crete_cities">link</a>
+        </div>
+        <br class="clear"/>
+    </div>
+    <div class="graph_container">
         <a id="cz_vacc_det"></a>
         <div class="graph_filler">&nbsp;</div>
         <div class="canvas_container">
@@ -859,6 +873,9 @@
 
 <!-- GRAPH CZ Growth Rate-->
 <script src="graph_cz_growth.js?v=<?php echo filemtime('graph_cz_growth.js'); ?>"></script>
+
+<!-- GRAPH CRETE CITIES-->
+<script src="graph_crete_cities.js?v=<?php echo filemtime('graph_crete_cities.js'); ?>"></script>
 
 <!-- GRAPH CZ Vaccinations - Detailed -->
 <script src="graph_cz_vaccinated_details.js?v=<?php echo filemtime('graph_cz_vaccinated_details.js'); ?>"></script>

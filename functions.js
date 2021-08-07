@@ -69,10 +69,10 @@ const pSBC=(p,c0,c1,l)=>{
 }
 
 // generate labels
-function gen_days(start_day, start_month, count) {
+function gen_days(start_day, start_month, count, start_year = 2020) {
     var labels = [];
     for (var i=1; i<count; i++) {
-        labels.push( moment(new Date(2020, start_month, start_day+i)) );
+        labels.push( moment(new Date(start_year, start_month, start_day+i)) );
     }
     return labels;
 }
@@ -320,6 +320,37 @@ function extract_vaccinated_sk_details(csv, current, dest_name) {
         // extract vaccinated
         current[dest_name + '_vaccinated_a_total'].push( csv['vaccinated_a_total'][column] );
         current[dest_name + '_vaccinated_b_total'].push( csv['vaccinated_b_total'][column] );
+    }
+}
+
+// Extract data from Greek PDF reports
+function extract_crete_details(crete_data, current, dest_name) {
+    var now = moment(new Date());
+    var start = moment("2021-01-01");
+    var duration = moment.duration(now.diff(start));
+    var days = duration.asDays()
+
+    // Process data about vaccinations
+    current[dest_name + '_chania_confirmed'] = [];
+    current[dest_name + '_heraklion_confirmed'] = [];
+    current[dest_name + '_lasithi_confirmed'] = [];
+    current[dest_name + '_rethymno_confirmed'] = [];
+    current[dest_name + '_crete_confirmed'] = [];
+    for (var j=0; j<days; j++) {
+        // extract daily numbers
+        column = moment(new Date(2021, 0, 1 + j)).format('M/D/YY');
+        current[dest_name + '_chania_confirmed'].push( crete_data['confirmed']['chania'][column]);
+        current[dest_name + '_heraklion_confirmed'].push( crete_data['confirmed']['heraklion'][column]);
+        current[dest_name + '_lasithi_confirmed'].push( crete_data['confirmed']['lasithi'][column]);
+        current[dest_name + '_rethymno_confirmed'].push( crete_data['confirmed']['rethymno'][column]);
+        
+        // compute cretan totals
+        current[dest_name + '_crete_confirmed'].push( 
+            crete_data['confirmed']['chania'][column] +
+            crete_data['confirmed']['heraklion'][column] +
+            crete_data['confirmed']['lasithi'][column] +
+            crete_data['confirmed']['rethymno'][column] 
+        );
     }
 }
 

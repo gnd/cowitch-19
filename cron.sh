@@ -14,8 +14,17 @@ wget https://raw.githubusercontent.com/Institut-Zdravotnych-Analyz/covid19-data/
 #wget https://mapa.covid.chat/export/csv -O data/slovakia.csv
 wget https://raw.githubusercontent.com/Institut-Zdravotnych-Analyz/covid19-data/main/Vaccination/OpenData_Slovakia_Vaccination_Regions.csv -O data/vaccinated_sk_details.csv
 
+# download greek data
+$YEAR=`date "+%Y"`
+$MONTH=`date "+%m"`
+$DATE_STRING=`date "+%m%d"`
+if [[ ! -f data/eody_reports/covid-gr-daily-report-$YEAR$DATE_STRING.pdf ]]; then
+    wget https://eody.gov.gr/wp-content/uploads/$YEAR/$MONTH/covid-gr-daily-report-$YEAR$DATE_STRING.pdf -O data/eody_reports/
+fi
+
 # now turn it into JS arrays
 echo "Processing data .."
 $DIR/process_csv.py
 $DIR/process_csv_cz.py
 $DIR/process_csv_sk.py
+$DIR/process_crete.py

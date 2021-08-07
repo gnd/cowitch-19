@@ -17,13 +17,13 @@ def process_csv(name):
         arr = line.split()
         datum = arr[0]
         if len(arr) > 1:
-            confirmed += "'{}': {}, ".format(datum, arr[1])
-            avg7 += "'{}': {}, ".format(datum, arr[2])
-            hundred_k += "'{}': {}, ".format(datum, arr[3])
+            confirmed += "'{}': {}, ".format(datum, arr[1].replace(',','.'))
+            avg7 += "'{}': {}, ".format(datum, arr[2].replace(',','.'))
+            hundred_k += "'{}': {}, ".format(datum, arr[3].replace(',','.'))
         else:
-            confirmed = "'{}': {}, ".format(datum, 0)
-            avg7 = "'{}': {}, ".format(datum, 0)
-            hundred_k = "'{}': {}, ".format(datum, 0)
+            confirmed += "'{}': {}, ".format(datum, 0)
+            avg7 += "'{}': {}, ".format(datum, 0)
+            hundred_k += "'{}': {}, ".format(datum, 0)
 
     # Write the data into files - confirmed
     f = open('data/eody_crete.js', 'a')
@@ -42,11 +42,14 @@ def process_csv(name):
 # clean data file first
 f = open('data/eody_crete.js', 'w')
 f.write("crete_data = {};\n")
+f.write("crete_data['confirmed'] = {};\n")
+f.write("crete_data['avg7'] = {};\n")
+f.write("crete_data['hundred_k'] = {};\n")
 f.close()
 
 # process data from OCR'd pdfs
 process_csv('chania')
 process_csv('heraklion')
-#process_csv('lasithi')
+process_csv('lasithi')
 process_csv('rethymno')
 
