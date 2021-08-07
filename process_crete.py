@@ -16,9 +16,14 @@ def process_csv(name):
         # 1/22/21 100 100 100
         arr = line.split()
         datum = arr[0]
-        confirmed += "'{}': {}, ".format(datum, arr[1])
-        avg7 += "'{}': {}, ".format(datum, arr[2])
-        hundred_k += "'{}': {}, ".format(datum, arr[3])
+        if len(arr) > 1:
+            confirmed += "'{}': {}, ".format(datum, arr[1])
+            avg7 += "'{}': {}, ".format(datum, arr[2])
+            hundred_k += "'{}': {}, ".format(datum, arr[3])
+        else:
+            confirmed = "'{}': {}, ".format(datum, 0)
+            avg7 = "'{}': {}, ".format(datum, 0)
+            hundred_k = "'{}': {}, ".format(datum, 0)
 
     # Write the data into files - confirmed
     f = open('data/eody_crete.js', 'a')
@@ -42,6 +47,6 @@ f.close()
 # process data from OCR'd pdfs
 process_csv('chania')
 process_csv('heraklion')
-process_csv('lasithi')
+#process_csv('lasithi')
 process_csv('rethymno')
 
