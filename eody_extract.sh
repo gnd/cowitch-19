@@ -15,13 +15,13 @@ FILE=$2
 
 # function that handles the OCR
 ocr_pdf() {
-    # receive filename from input
-    file=$1
+    # receive FILEname from input
+    FILE=$1
 
-    # extract date from filename
-    YEAR=`echo $file | sed 's/.*-//g' | sed 's/\.pdf//g' | cut -c 3-4`
-    MONTH=`echo $file | sed 's/.*-//g' | sed 's/\.pdf//g' | cut -c 5-6 | sed 's/0//g'`
-    DAY=`echo $file | sed 's/.*-//g' | sed 's/\.pdf//g' | cut -c 7-8 | sed 's/^0//g'`
+    # extract date from FILEname
+    YEAR=`echo $FILE | sed 's/.*-//g' | sed 's/\.pdf//g' | cut -c 3-4`
+    MONTH=`echo $FILE | sed 's/.*-//g' | sed 's/\.pdf//g' | cut -c 5-6 | sed 's/0//g'`
+    DAY=`echo $FILE | sed 's/.*-//g' | sed 's/\.pdf//g' | cut -c 7-8 | sed 's/^0//g'`
     DATE="$MONTH/$DAY/$YEAR"
 
     # extract page 3 till 14.2, otherwise page 4
@@ -33,21 +33,21 @@ ocr_pdf() {
         PAGE=3
     fi    
 
-    # extract page from file, convert to jpeg and OCR the jpeg
-    pdfseparate -f $PAGE -l $PAGE $file $file"-page_"$PAGE".pdf"
-    convert -density 500 -quality 100 $file"-page_"$PAGE".pdf" $file"-page_"$PAGE".jpg"
-    tesseract $file"-page_"$PAGE".jpg" $file --psm 6    
+    # extract page from FILE, convert to jpeg and OCR the jpeg
+    pdfseparate -f $PAGE -l $PAGE $FILE $FILE"-page_"$PAGE".pdf"
+    convert -density 500 -quality 100 $FILE"-page_"$PAGE".pdf" $FILE"-page_"$PAGE".jpg"
+    tesseract $FILE"-page_"$PAGE".jpg" $FILE --psm 6    
     
     # cleanup
-    rm $file"-page_"$PAGE".pdf"
-    rm $file"-page_"$PAGE".jpg"
+    rm $FILE"-page_"$PAGE".pdf"
+    rm $FILE"-page_"$PAGE".jpg"
 }
 
 # function that extracts data from ocr'd documents
 extract_daily_stats() {
-    # receive filename from input
-    file=$1
-    city=$2
+    # receive FILEname from input
+    FILE=$1
+    CITY=$2
     
     # set default ubers to zero
     CHANIA_CASES=0
@@ -63,54 +63,54 @@ extract_daily_stats() {
     RETHYMNO_WEEK_AVG=0
     RETHYMNO_PER_HUNDRED_K=0
 
-    case $city in
+    case $CITY in
         chania)
-            # read results from text file
-            if [[ `cat $file | grep XANION | wc -l` -gt 0 ]]; then
-                CASES=`cat $file | grep XANION | sed 's/.*XANION //g' | awk {'print $1;'}`
-                WEEK_AVG=`cat $file | grep XANION | sed 's/.*XANION //g' | awk {'print $2;'}`
-                PER_HUNDRED_K=`cat $file | grep XANION | sed 's/.*XANION //g' | awk {'print $3;'}`
+            # read results from text FILE
+            if [[ `cat $FILE | grep XANION | wc -l` -gt 0 ]]; then
+                CASES=`cat $FILE | grep XANION | sed 's/.*XANION //g' | awk {'print $1;'}`
+                WEEK_AVG=`cat $FILE | grep XANION | sed 's/.*XANION //g' | awk {'print $2;'}`
+                PER_HUNDRED_K=`cat $FILE | grep XANION | sed 's/.*XANION //g' | awk {'print $3;'}`
             fi        
         ;;
         heraklion)
-            if [[ `cat $file | grep HPAKAEIOY | wc -l` -gt 0 ]]; then
-                CASES=`cat $file | grep HPAKAEIOY | sed 's/.*HPAKAEIOY //g' | awk {'print $1;'}`
-                WEEK_AVG=`cat $file | grep HPAKAEIOY | sed 's/.*HPAKAEIOY //g' | awk {'print $2;'}`
-                PER_HUNDRED_K=`cat $file | grep HPAKAEIOY | sed 's/.*HPAKAEIOY //g' | awk {'print $3;'}`
+            if [[ `cat $FILE | grep HPAKAEIOY | wc -l` -gt 0 ]]; then
+                CASES=`cat $FILE | grep HPAKAEIOY | sed 's/.*HPAKAEIOY //g' | awk {'print $1;'}`
+                WEEK_AVG=`cat $FILE | grep HPAKAEIOY | sed 's/.*HPAKAEIOY //g' | awk {'print $2;'}`
+                PER_HUNDRED_K=`cat $FILE | grep HPAKAEIOY | sed 's/.*HPAKAEIOY //g' | awk {'print $3;'}`
             fi
         ;;
         lasithi)
-            if [[ `cat $file | grep AAXIOIOY | wc -l` -gt 0 ]]; then
-                CASES=`cat $file | grep AAXIOIOY | sed 's/.*AAXIOIOY //g' | awk {'print $1;'}`
-                WEEK_AVG=`cat $file | grep AAXIOIOY | sed 's/.*AAXIOIOY //g' | awk {'print $2;'}`
-                PER_HUNDRED_K=`cat $file | grep AAXIOIOY | sed 's/.*AAXIOIOY //g' | awk {'print $3;'}`
-            elif [[ `cat $file | grep AAZIOIOY | wc -l` -gt 0 ]]; then
-                CASES=`cat $file | grep AAZIOIOY | sed 's/.*AAZIOIOY //g' | awk {'print $1;'}`
-                WEEK_AVG=`cat $file | grep AAZIOIOY | sed 's/.*AAZIOIOY //g' | awk {'print $2;'}`
-                PER_HUNDRED_K=`cat $file | grep AAZIOIOY | sed 's/.*AAZIOIOY //g' | awk {'print $3;'}`
+            if [[ `cat $FILE | grep AAXIOIOY | wc -l` -gt 0 ]]; then
+                CASES=`cat $FILE | grep AAXIOIOY | sed 's/.*AAXIOIOY //g' | awk {'print $1;'}`
+                WEEK_AVG=`cat $FILE | grep AAXIOIOY | sed 's/.*AAXIOIOY //g' | awk {'print $2;'}`
+                PER_HUNDRED_K=`cat $FILE | grep AAXIOIOY | sed 's/.*AAXIOIOY //g' | awk {'print $3;'}`
+            elif [[ `cat $FILE | grep AAZIOIOY | wc -l` -gt 0 ]]; then
+                CASES=`cat $FILE | grep AAZIOIOY | sed 's/.*AAZIOIOY //g' | awk {'print $1;'}`
+                WEEK_AVG=`cat $FILE | grep AAZIOIOY | sed 's/.*AAZIOIOY //g' | awk {'print $2;'}`
+                PER_HUNDRED_K=`cat $FILE | grep AAZIOIOY | sed 's/.*AAZIOIOY //g' | awk {'print $3;'}`
             fi
         ;;
         rethymno)
-            if [[ `cat $file | grep ΡΕΘΥΜΝΟΥ | wc -l` -gt 0 ]]; then
-                CASES=`cat $file | grep ΡΕΘΥΜΝΟΥ | sed 's/.*ΡΕΘΥΜΝΟΥ //g' | awk {'print $1;'}`
-                WEEK_AVG=`cat $file | grep ΡΕΘΥΜΝΟΥ | sed 's/.*ΡΕΘΥΜΝΟΥ //g' | awk {'print $2;'}`
-                PER_HUNDRED_K=`cat $file | grep ΡΕΘΥΜΝΟΥ | sed 's/.*ΡΕΘΥΜΝΟΥ //g' | awk {'print $3;'}`
-            elif [[ `cat $file | grep PEOYMNOY | wc -l` -gt 0 ]]; then
-                CASES=`cat $file | grep PEOYMNOY | sed 's/.*PEOYMNOY //g' | awk {'print $1;'}`
-                WEEK_AVG=`cat $file | grep PEOYMNOY | sed 's/.*PEOYMNOY //g' | awk {'print $2;'}`
-                PER_HUNDRED_K=`cat $file | grep PEOYMNOY | sed 's/.*PEOYMNOY //g' | awk {'print $3;'}`
-            elif [[ `cat $file | grep PEQYMNOY | wc -l` -gt 0 ]]; then
-                CASES=`cat $file | grep PEQYMNOY | sed 's/.*PEQYMNOY //g' | awk {'print $1;'}`
-                WEEK_AVG=`cat $file | grep PEQYMNOY | sed 's/.*PEQYMNOY //g' | awk {'print $2;'}`
-                PER_HUNDRED_K=`cat $file | grep PEQYMNOY | sed 's/.*PEQYMNOY //g' | awk {'print $3;'}`
-            elif [[ `cat $file | grep PEOQYMNOY | wc -l` -gt 0 ]]; then 
-                CASES=`cat $file | grep PEOQYMNOY | sed 's/.*PEOQYMNOY //g' | awk {'print $1;'}`
-                WEEK_AVG=`cat $file | grep PEOQYMNOY | sed 's/.*PEOQYMNOY //g' | awk {'print $2;'}`
-                PER_HUNDRED_K=`cat $file | grep PEOQYMNOY | sed 's/.*PEOQYMNOY //g' | awk {'print $3;'}`
+            if [[ `cat $FILE | grep ΡΕΘΥΜΝΟΥ | wc -l` -gt 0 ]]; then
+                CASES=`cat $FILE | grep ΡΕΘΥΜΝΟΥ | sed 's/.*ΡΕΘΥΜΝΟΥ //g' | awk {'print $1;'}`
+                WEEK_AVG=`cat $FILE | grep ΡΕΘΥΜΝΟΥ | sed 's/.*ΡΕΘΥΜΝΟΥ //g' | awk {'print $2;'}`
+                PER_HUNDRED_K=`cat $FILE | grep ΡΕΘΥΜΝΟΥ | sed 's/.*ΡΕΘΥΜΝΟΥ //g' | awk {'print $3;'}`
+            elif [[ `cat $FILE | grep PEOYMNOY | wc -l` -gt 0 ]]; then
+                CASES=`cat $FILE | grep PEOYMNOY | sed 's/.*PEOYMNOY //g' | awk {'print $1;'}`
+                WEEK_AVG=`cat $FILE | grep PEOYMNOY | sed 's/.*PEOYMNOY //g' | awk {'print $2;'}`
+                PER_HUNDRED_K=`cat $FILE | grep PEOYMNOY | sed 's/.*PEOYMNOY //g' | awk {'print $3;'}`
+            elif [[ `cat $FILE | grep PEQYMNOY | wc -l` -gt 0 ]]; then
+                CASES=`cat $FILE | grep PEQYMNOY | sed 's/.*PEQYMNOY //g' | awk {'print $1;'}`
+                WEEK_AVG=`cat $FILE | grep PEQYMNOY | sed 's/.*PEQYMNOY //g' | awk {'print $2;'}`
+                PER_HUNDRED_K=`cat $FILE | grep PEQYMNOY | sed 's/.*PEQYMNOY //g' | awk {'print $3;'}`
+            elif [[ `cat $FILE | grep PEOQYMNOY | wc -l` -gt 0 ]]; then 
+                CASES=`cat $FILE | grep PEOQYMNOY | sed 's/.*PEOQYMNOY //g' | awk {'print $1;'}`
+                WEEK_AVG=`cat $FILE | grep PEOQYMNOY | sed 's/.*PEOQYMNOY //g' | awk {'print $2;'}`
+                PER_HUNDRED_K=`cat $FILE | grep PEOQYMNOY | sed 's/.*PEOQYMNOY //g' | awk {'print $3;'}`
             fi
         ;;
         *)
-            echo "Unknown city"
+            echo "Unknown CITY"
         ;;
     esac       
     
@@ -128,44 +128,54 @@ if [[ $EXTRACT_MODE == "bootstrap" ]]; then
     cd data/eody_reports
 
     # get all past reports
-    $YEAR=`date "+%Y"`
-    $CURR_MONTH=`date "+%m"`
-    for MONTH in {01..$CURR_MONTH}
+    YEAR=`date "+%Y"`
+    for MONTH in {01..08}
     do
         for DAY in {01..31}
         do
             wget https://eody.gov.gr/wp-content/uploads/$YEAR/$MONTH/covid-gr-daily-report-$YEAR$MONTH$DAY.pdf 
         done
     done
+    
+    # fix bad files
+    wget https://eody.gov.gr/wp-content/uploads/$YEAR/06/covid-gr-daily-report-20210609-2.pdf -O covid-gr-daily-report-20210609.pdf
 
     # OCR all past reports
-    for file in `ls data/eody_reports`
+    for FILE in `ls|grep -v txt`
     do
-        ocr_pdf $file
+        echo "Doing OCR for $FILE"
+        ocr_pdf $FILE
+    done
+    
+    # delete previous data if any
+    for CITY in chania heraklion lasithi rethymno
+    do
+        rm ../eody_$CITY.txt
     done
     
     # extract data from all past reports
-    for file in `ls data/eody_reports | grep txt`
+    for FILE in `ls | grep txt`
     do
-        # extract date from filename
-        Y=`echo $file | sed 's/.*-//g' | sed 's/\.pdf\.txt//g' | cut -c 3-4`
-        M=`echo $file | sed 's/.*-//g' | sed 's/\.pdf\.txt//g' | cut -c 5-6 | sed 's/0//g'`
-        D=`echo $file | sed 's/.*-//g' | sed 's/\.pdf\.txt//g' | cut -c 7-8 | sed 's/^0//g'`
+        # extract date from Filename
+        Y=`echo $FILE | sed 's/.*-//g' | sed 's/\.pdf\.txt//g' | cut -c 3-4`
+        M=`echo $FILE | sed 's/.*-//g' | sed 's/\.pdf\.txt//g' | cut -c 5-6 | sed 's/0//g'`
+        D=`echo $FILE | sed 's/.*-//g' | sed 's/\.pdf\.txt//g' | cut -c 7-8 | sed 's/^0//g'`
         DATE="$M/$D/$Y"
         
-        for CITY in {chania, heraklion, lasithi, rethymno}
+        for CITY in chania heraklion lasithi rethymno
         do
-            daily_stats=`extract_daily_stats $file $CITY`
-            echo "$DATE $DAILY_STATS" >> data/eody_$CITY.txt
+            echo "Extracting data from $FILE"
+            DAILY_STATS=`extract_daily_stats $FILE $CITY`
+            echo "$DATE $DAILY_STATS" >> ../eody_$CITY.txt
         done
     done
-fi
+
 
 # This is run daily
-if [[ $EXTRACT_MODE == "single" ]]; then
+elif [[ $EXTRACT_MODE == "single" ]]; then
     ocr_pdf $FILE
     
-    # extract date from filename
+    # extract date from FILEname
     Y=`echo $FILE | sed 's/.*-//g' | sed 's/\.pdf\.txt//g' | cut -c 3-4`
     M=`echo $FILE | sed 's/.*-//g' | sed 's/\.pdf\.txt//g' | cut -c 5-6 | sed 's/0//g'`
     D=`echo $FILE | sed 's/.*-//g' | sed 's/\.pdf\.txt//g' | cut -c 7-8 | sed 's/^0//g'`
@@ -176,5 +186,9 @@ if [[ $EXTRACT_MODE == "single" ]]; then
         DAILY_STATS=`extract_daily_stats $FILE.txt $CITY`
         echo "$DATE $DAILY_STATS" >> data/eody_$CITY.txt
     done
+
+
+else
+    echo "Usage ./eody_extract [bootstrap | single <file> ]"
 fi
 
