@@ -16,6 +16,18 @@ var crete_cities = document.getElementById("graph_crete_cities").getContext('2d'
 // Create datasets for infected projections
 crete_dataset = [];
 crete_dataset.push( {
+    label: 'Crete (Total)',
+    data: current_values['gr_crete_confirmed'],
+    spanGaps: true,
+    borderWidth: 1,
+    borderColor: '#000000',
+    pointStyle: 'cross',
+    radius: 5,
+    pointBorderColor:  '#000000',
+    tension: 0,
+    fill: false
+} );
+crete_dataset.push( {
     label: 'Chania',
     data: current_values['gr_chania_confirmed'],
     spanGaps: true,
@@ -68,7 +80,7 @@ crete_dataset.push( {
 window.infected_chart = new Chart(crete_cities, {
     type: 'line',
     data: {
-        labels: gen_days(0, 0, 240, 2021),
+        labels: gen_days(0, 0, 270, 2021),
         datasets: crete_dataset,
     },
     options: {
@@ -88,7 +100,7 @@ window.infected_chart = new Chart(crete_cities, {
             yAxes: [{
                 ticks: {
                     min: 0,
-                    max: 300,
+                    suggestedMax: 250,
                 }
             }]
         },
