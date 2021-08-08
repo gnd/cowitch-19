@@ -642,6 +642,15 @@
         <br class="clear"/>
     </div>
     <div class="graph_container">
+        <a id="crete_growth_rate"></a>
+        <div class="graph_filler">&nbsp;</div>
+        <div class="canvas_container">
+            <canvas id="graph_crete_growth_rate" class="graph"></canvas>
+            <a class="link" href="#crete_growth_rate">link</a>
+        </div>
+        <br class="clear"/>
+    </div>
+    <div class="graph_container">
         <a id="cz_vacc_det"></a>
         <div class="graph_filler">&nbsp;</div>
         <div class="canvas_container">
@@ -876,6 +885,9 @@
 
 <!-- GRAPH CRETE CITIES-->
 <script src="graph_crete_cities.js?v=<?php echo filemtime('graph_crete_cities.js'); ?>"></script>
+
+<!-- GRAPH CRETE CITIES-->
+<script src="graph_crete_growth_rate.js?v=<?php echo filemtime('graph_crete_growth_rate.js'); ?>"></script>
 
 <!-- GRAPH CZ Vaccinations - Detailed -->
 <script src="graph_cz_vaccinated_details.js?v=<?php echo filemtime('graph_cz_vaccinated_details.js'); ?>"></script>

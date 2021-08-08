@@ -11,25 +11,13 @@ function legendCallbackInfected(e, legendItem) {
 }
 
 // the infected graph
-var crete_cities = document.getElementById("graph_crete_cities").getContext('2d');
+var crete_growth_rate = document.getElementById("graph_crete_growth_rate").getContext('2d');
 
 // Create datasets for infected projections
 crete_dataset = [];
 crete_dataset.push( {
-    label: 'Crete (Total)',
-    data: current_values['gr_crete_confirmed_daily'],
-    spanGaps: true,
-    borderWidth: 1,
-    borderColor: '#000000',
-    pointStyle: 'cross',
-    radius: 5,
-    pointBorderColor:  '#000000',
-    tension: 0,
-    fill: false
-} );
-crete_dataset.push( {
-    label: 'Chania',
-    data: current_values['gr_chania_confirmed_daily'],
+    label: 'Growth rate',
+    data: current_values['gr_crete_growth_rate'],
     spanGaps: true,
     borderWidth: 1,
     borderColor: '#' + pal_8[1],
@@ -40,20 +28,8 @@ crete_dataset.push( {
     fill: false
 } );
 crete_dataset.push( {
-    label: 'Lasithi',
-    data: current_values['gr_lasithi_confirmed_daily'],
-    spanGaps: true,
-    borderWidth: 1,
-    borderColor: '#' + pal_8[2],
-    pointStyle: 'cross',
-    radius: 5,
-    pointBorderColor:  '#' + pal_8[2],
-    tension: 0,
-    fill: false
-} );
-crete_dataset.push( {
-    label: 'Heraklion',
-    data: current_values['gr_heraklion_confirmed_daily'],
+    label: 'Growth rate (average)',
+    data: current_values['gr_crete_growth_rate_avg'],
     spanGaps: true,
     borderWidth: 1,
     borderColor: '#' + pal_8[3],
@@ -64,10 +40,10 @@ crete_dataset.push( {
     fill: false
 } );
 crete_dataset.push( {
-    label: 'Rethymno',
-    data: current_values['gr_rethymno_confirmed_daily'],
+    label: 'Growth rate (7-day average)',
+    data: current_values['gr_crete_growth_rate_avg7'],
     spanGaps: true,
-    borderWidth: 1,
+    borderWidth: 2,
     borderColor: '#' + pal_8[4],
     pointStyle: 'cross',
     radius: 5,
@@ -77,7 +53,7 @@ crete_dataset.push( {
 } );
 
 // The infected chart
-window.infected_chart = new Chart(crete_cities, {
+window.infected_chart = new Chart(crete_growth_rate, {
     type: 'line',
     data: {
         labels: gen_days(0, 0, 270, 2021),
@@ -88,7 +64,7 @@ window.infected_chart = new Chart(crete_cities, {
         title: {
             display: true,
             fontSize: fontsize,
-            text: ["Daily new cases of COVID-19 in Crete", "Breakdown by Cretan regional units"]
+            text: ["Growth rate of COVID-19 in Crete"]
         },
         scales: {
             xAxes: [{
@@ -99,8 +75,8 @@ window.infected_chart = new Chart(crete_cities, {
             }],
             yAxes: [{
                 ticks: {
-                    min: 0,
-                    suggestedMax: 250,
+                    suggestedMin: 0.8,
+                    max: 1.6,
                 }
             }]
         },
@@ -112,7 +88,7 @@ window.infected_chart = new Chart(crete_cities, {
                 fontSize: fontsize,
                 // Show only first two labels
                 filter: function (legendItem, chartData) {
-                    if (legendItem.datasetIndex < 5) {
+                    if (legendItem.datasetIndex < 4) {
                         return (chartData.datasets[legendItem.datasetIndex].label)
                     }
                 },

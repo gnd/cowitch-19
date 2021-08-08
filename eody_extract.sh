@@ -140,6 +140,10 @@ if [[ $EXTRACT_MODE == "bootstrap" ]]; then
     
     # fix bad files
     wget https://eody.gov.gr/wp-content/uploads/$YEAR/06/covid-gr-daily-report-20210609-2.pdf -O covid-gr-daily-report-20210609.pdf
+    wget https://eody.gov.gr/wp-content/uploads/$YEAR/04/covid-gr-daily-report-202104302.pdf -O covid-gr-daily-report-20210430.pdf
+    # lol no data for 2nd of May
+    wget https://eody.gov.gr/wp-content/uploads/$YEAR/05/covid-gr-daily-report-20210501.pdf -O covid-gr-daily-report-20210502.pdf
+    wget https://eody.gov.gr/wp-content/uploads/$YEAR/05/covid-gr-daily-report-202105142.pdf -O covid-gr-daily-report-20210514.pdf
 
     # OCR all past reports
     for FILE in `ls|grep -v txt`
@@ -204,7 +208,39 @@ elif [[ $EXTRACT_MODE == "single" ]]; then
     done
 
 
+# This is run daily
+elif [[ $EXTRACT_MODE == "manual" ]]; then
+    # check for input sanity
+    if [[ -z $FILE ]]; then
+        echo "Please provide input file."
+        exit
+    fi
+    if [[ ! -f $FILE ]]; then
+        echo "File $FILE does not exist."
+        exit
+    fi
+    
+    # OCR the fie 
+    echo "Doing OCR for $FILE"   
+    ocr_pdf $FILE
+    
+    # extract date from FILEname
+    Y=`echo $FILE | sed 's/.*-//g' | sed 's/\.pdf\.txt//g' | cut -c 3-4`
+    M=`echo $FILE | sed 's/.*-//g' | sed 's/\.pdf\.txt//g' | cut -c 5-6 | sed 's/0//g'`
+    D=`echo $FILE | sed 's/.*-//g' | sed 's/\.pdf\.txt//g' | cut -c 7-8 | sed 's/^0//g'`
+    DATE="$M/$D/$Y"
+
+    DAILY_STATS=`extract_daily_stats $FILE.txt chania`
+    echo "Chania: $DATE $DAILY_STATS"
+    DAILY_STATS=`extract_daily_stats $FILE.txt heraklion`
+    echo "Heraklion: $DATE $DAILY_STATS"
+    DAILY_STATS=`extract_daily_stats $FILE.txt lasithi`
+    echo "Lasithi: $DATE $DAILY_STATS"
+    DAILY_STATS=`extract_daily_stats $FILE.txt rethymno`
+    echo "Rethymno: $DATE $DAILY_STATS"
+    
+
 else
-    echo "Usage ./eody_extract [bootstrap | single <file> ]"
+    echo "Usage ./eody_extract [bootstrap | single <file> | manual <file> ]"
 fi
 

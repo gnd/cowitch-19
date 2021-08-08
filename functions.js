@@ -42,32 +42,6 @@ var pal_vacc_a = palette('rainbow', 13, 0);
 // generate rainbow pallete for second vaccination round
 var pal_vacc_b = palette('rainbow', 13, 1);
 
-// https://stackoverflow.com/questions/5560248/programmatically-lighten-or-darken-a-hex-color-or-rgb-and-blend-colors
-const pSBC=(p,c0,c1,l)=>{
-    let r,g,b,P,f,t,h,i=parseInt,m=Math.round,a=typeof(c1)=="string";
-    if(typeof(p)!="number"||p<-1||p>1||typeof(c0)!="string"||(c0[0]!='r'&&c0[0]!='#')||(c1&&!a))return null;
-    if(!this.pSBCr)this.pSBCr=(d)=>{
-        let n=d.length,x={};
-        if(n>9){
-            [r,g,b,a]=d=d.split(","),n=d.length;
-            if(n<3||n>4)return null;
-            x.r=i(r[3]=="a"?r.slice(5):r.slice(4)),x.g=i(g),x.b=i(b),x.a=a?parseFloat(a):-1
-        }else{
-            if(n==8||n==6||n<4)return null;
-            if(n<6)d="#"+d[1]+d[1]+d[2]+d[2]+d[3]+d[3]+(n>4?d[4]+d[4]:"");
-            d=i(d.slice(1),16);
-            if(n==9||n==5)x.r=d>>24&255,x.g=d>>16&255,x.b=d>>8&255,x.a=m((d&255)/0.255)/1000;
-            else x.r=d>>16,x.g=d>>8&255,x.b=d&255,x.a=-1
-        }return x};
-    h=c0.length>9,h=a?c1.length>9?true:c1=="c"?!h:false:h,f=this.pSBCr(c0),P=p<0,t=c1&&c1!="c"?this.pSBCr(c1):P?{r:0,g:0,b:0,a:-1}:{r:255,g:255,b:255,a:-1},p=P?p*-1:p,P=1-p;
-    if(!f||!t)return null;
-    if(l)r=m(P*f.r+p*t.r),g=m(P*f.g+p*t.g),b=m(P*f.b+p*t.b);
-    else r=m((P*f.r**2+p*t.r**2)**0.5),g=m((P*f.g**2+p*t.g**2)**0.5),b=m((P*f.b**2+p*t.b**2)**0.5);
-    a=f.a,t=t.a,f=a>=0||t>=0,a=f?a<0?t:t<0?a:a*P+t*p:0;
-    if(h)return"rgb"+(f?"a(":"(")+r+","+g+","+b+(f?","+m(a*1000)/1000:"")+")";
-    else return"#"+(4294967296+r*16777216+g*65536+b*256+(f?m(a*255):0)).toString(16).slice(1,f?undefined:-2)
-}
-
 // generate labels
 function gen_days(start_day, start_month, count, start_year = 2020) {
     var labels = [];
@@ -331,27 +305,67 @@ function extract_crete_details(crete_data, current, dest_name) {
     var days = duration.asDays()
 
     // Process data about vaccinations
-    current[dest_name + '_chania_confirmed'] = [];
-    current[dest_name + '_heraklion_confirmed'] = [];
-    current[dest_name + '_lasithi_confirmed'] = [];
-    current[dest_name + '_rethymno_confirmed'] = [];
+    current[dest_name + '_chania_confirmed_daily'] = [];
+    current[dest_name + '_heraklion_confirmed_daily'] = [];
+    current[dest_name + '_lasithi_confirmed_daily'] = [];
+    current[dest_name + '_rethymno_confirmed_daily'] = [];
+    current[dest_name + '_crete_confirmed_daily'] = [];
     current[dest_name + '_crete_confirmed'] = [];
+    current[dest_name + '_crete_growth_rate'] = [];
+    current[dest_name + '_crete_growth_rate_avg'] = [];
+    current[dest_name + '_crete_growth_rate_avg7'] = [];
+    crete_total = 0;
+    
     for (var j=0; j<days; j++) {
         // extract daily numbers
         column = moment(new Date(2021, 0, 1 + j)).format('M/D/YY');
-        current[dest_name + '_chania_confirmed'].push( crete_data['confirmed']['chania'][column]);
-        current[dest_name + '_heraklion_confirmed'].push( crete_data['confirmed']['heraklion'][column]);
-        current[dest_name + '_lasithi_confirmed'].push( crete_data['confirmed']['lasithi'][column]);
-        current[dest_name + '_rethymno_confirmed'].push( crete_data['confirmed']['rethymno'][column]);
+        current[dest_name + '_chania_confirmed_daily'].push( crete_data['confirmed_daily']['chania'][column]);
+        current[dest_name + '_heraklion_confirmed_daily'].push( crete_data['confirmed_daily']['heraklion'][column]);
+        current[dest_name + '_lasithi_confirmed_daily'].push( crete_data['confirmed_daily']['lasithi'][column]);
+        current[dest_name + '_rethymno_confirmed_daily'].push( crete_data['confirmed_daily']['rethymno'][column]);
         
         // compute cretan totals
-        current[dest_name + '_crete_confirmed'].push( 
-            crete_data['confirmed']['chania'][column] +
-            crete_data['confirmed']['heraklion'][column] +
-            crete_data['confirmed']['lasithi'][column] +
-            crete_data['confirmed']['rethymno'][column] 
-        );
+        console.log( "total " + column + " = chania: " + crete_data['confirmed_daily']['chania'][column]
+                        + " heraklion: " + crete_data['confirmed_daily']['heraklion'][column] 
+                        + " lasithi: " + crete_data['confirmed_daily']['lasithi'][column] 
+                        + " rethymno: " + crete_data['confirmed_daily']['rethymno'][column]
+                    )
+        crete_total_daily = crete_data['confirmed_daily']['chania'][column] +
+                            crete_data['confirmed_daily']['heraklion'][column] +
+                            crete_data['confirmed_daily']['lasithi'][column] +
+                            crete_data['confirmed_daily']['rethymno'][column];
+        current[dest_name + '_crete_confirmed_daily'].push( crete_total_daily );
+        
+        
+        if (j==0) {
+            crete_total = crete_total_daily;
+        } else {
+            if (j>21) {
+                // rough estimate of sick people getting healthy after 21 days
+                crete_total = current[dest_name + '_crete_confirmed'][j-1] + crete_total_daily - current[dest_name + '_crete_confirmed_daily'][j-21];
+            } else {
+                crete_total = current[dest_name + '_crete_confirmed'][j-1] + crete_total_daily;
+            }
+        }
+        current[dest_name + '_crete_confirmed'].push( crete_total );
+        
+        // compute growth rate
+        if ( (j == 0) || (crete_total == 0) ) {
+            current[dest_name + '_crete_growth_rate'].push( 1 );
+        } else {
+            console.log( "step: " + j + " crete_total: " + crete_total + " confirmed[j-1]: " + current[dest_name + '_crete_confirmed'][j-1] );
+            current[dest_name + '_crete_growth_rate'].push( crete_total / current[dest_name + '_crete_confirmed'][j-1] );
+        }
+
+        // compute daily average growth rate
+        current[dest_name + '_crete_growth_rate_avg'].push( get_avg( current[dest_name + '_crete_growth_rate'].slice(0,j+1) ) );
+
+        // compute rolling average growth rate for last 7 days
+        slice_start = Math.min(j, 7);
+        current[dest_name + '_crete_growth_rate_avg7'].push( get_avg( current[dest_name + '_crete_growth_rate'].slice(j-slice_start,j+1) ) );
     }
+    
+    console.log(current[dest_name + '_crete_growth_rate']);
 }
 
 

@@ -27,7 +27,7 @@ def process_csv(name):
 
     # Write the data into files - confirmed
     f = open('data/eody_crete.js', 'a')
-    f.write("crete_data['confirmed']['{}'] = {{{}}};\n".format(name, confirmed.strip(', ')))
+    f.write("crete_data['confirmed_daily']['{}'] = {{{}}};\n".format(name, confirmed.strip(', ')))
     f.close()
     # Write the data into files - avg7
     f = open('data/eody_crete.js', 'a')
@@ -42,7 +42,7 @@ def process_csv(name):
 # clean data file first
 f = open('data/eody_crete.js', 'w')
 f.write("crete_data = {};\n")
-f.write("crete_data['confirmed'] = {};\n")
+f.write("crete_data['confirmed_daily'] = {};\n")
 f.write("crete_data['avg7'] = {};\n")
 f.write("crete_data['hundred_k'] = {};\n")
 f.close()
