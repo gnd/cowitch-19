@@ -45,7 +45,7 @@ ocr_pdf() {
 
 # function that extracts data from ocr'd documents
 extract_daily_stats() {
-    # receive FILEname from input
+    # receive filename from input
     FILE=$1
     CITY=$2
     
@@ -122,6 +122,7 @@ extract_daily_stats() {
 
 # Run this only once at the beginnign to gat all the historic data
 if [[ $EXTRACT_MODE == "bootstrap" ]]; then
+    
     if [[ ! -d data/eody/reports ]]; then
     	mkdir -p data/eody_reports
     fi	
@@ -173,6 +174,20 @@ if [[ $EXTRACT_MODE == "bootstrap" ]]; then
 
 # This is run daily
 elif [[ $EXTRACT_MODE == "single" ]]; then
+    cd data/eody_reports
+    
+    # check for input sanity
+    if [[ -z $FILE ]]; then
+        echo "Please provide input file."
+        exit
+    fi
+    if [[ ! -f $FILE ]]; then
+        echo "File $FILE does not exist."
+        exit
+    fi
+    
+    # OCR the fie 
+    echo "Doing OCR for $FILE"   
     ocr_pdf $FILE
     
     # extract date from FILEname
@@ -181,10 +196,11 @@ elif [[ $EXTRACT_MODE == "single" ]]; then
     D=`echo $FILE | sed 's/.*-//g' | sed 's/\.pdf\.txt//g' | cut -c 7-8 | sed 's/^0//g'`
     DATE="$M/$D/$Y"
 
-    for CITY in {chania, heraklion, lasithi, rethymno}
+    for CITY in chania heraklion lasithi rethymno
     do
+        echo "Extracting data from $FILE.txt"
         DAILY_STATS=`extract_daily_stats $FILE.txt $CITY`
-        echo "$DATE $DAILY_STATS" >> data/eody_$CITY.txt
+        echo "$DATE $DAILY_STATS" >> ../eody_$CITY.txt
     done
 
 
