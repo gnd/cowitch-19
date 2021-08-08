@@ -310,7 +310,9 @@ function extract_crete_details(crete_data, current, dest_name) {
     current[dest_name + '_lasithi_confirmed_daily'] = [];
     current[dest_name + '_rethymno_confirmed_daily'] = [];
     current[dest_name + '_crete_confirmed_daily'] = [];
+    current[dest_name + '_crete_confirmed_daily_avg7'] = [];
     current[dest_name + '_crete_confirmed'] = [];
+    current[dest_name + '_crete_infected_estimate'] = [];
     current[dest_name + '_crete_growth_rate'] = [];
     current[dest_name + '_crete_growth_rate_avg'] = [];
     current[dest_name + '_crete_growth_rate_avg7'] = [];
@@ -324,37 +326,40 @@ function extract_crete_details(crete_data, current, dest_name) {
         current[dest_name + '_lasithi_confirmed_daily'].push( crete_data['confirmed_daily']['lasithi'][column]);
         current[dest_name + '_rethymno_confirmed_daily'].push( crete_data['confirmed_daily']['rethymno'][column]);
         
-        // compute cretan totals
-        console.log( "total " + column + " = chania: " + crete_data['confirmed_daily']['chania'][column]
-                        + " heraklion: " + crete_data['confirmed_daily']['heraklion'][column] 
-                        + " lasithi: " + crete_data['confirmed_daily']['lasithi'][column] 
-                        + " rethymno: " + crete_data['confirmed_daily']['rethymno'][column]
-                    )
+        // compute cretan total new cases for today
         crete_total_daily = crete_data['confirmed_daily']['chania'][column] +
                             crete_data['confirmed_daily']['heraklion'][column] +
                             crete_data['confirmed_daily']['lasithi'][column] +
                             crete_data['confirmed_daily']['rethymno'][column];
         current[dest_name + '_crete_confirmed_daily'].push( crete_total_daily );
         
-        
+        // compute rolling average of the daily totals in the last 7 days
+        slice_start = Math.min(j, 7);
+        current[dest_name + '_crete_confirmed_daily_avg7'].push( get_avg( current[dest_name + '_crete_confirmed_daily'].slice(j-slice_start,j+1) ) );
+
+        // total (cumulative) number of all confirmed infections in Crete  
         if (j==0) {
             crete_total = crete_total_daily;
         } else {
-            if (j>21) {
-                // rough estimate of sick people getting healthy after 21 days
-                crete_total = current[dest_name + '_crete_confirmed'][j-1] + crete_total_daily - current[dest_name + '_crete_confirmed_daily'][j-21];
-            } else {
-                crete_total = current[dest_name + '_crete_confirmed'][j-1] + crete_total_daily;
-            }
+            crete_total = current[dest_name + '_crete_confirmed'][j-1] + crete_total_daily;
         }
         current[dest_name + '_crete_confirmed'].push( crete_total );
         
+        // estimate the number of infected people (actually sick)
+        // basically we take yesterdays total add todays new sick and subtract all people that got sick 21 days ago (because they all got magically healthy today)
+        if (j > 21) {
+            infected_estimate = current[dest_name + '_crete_infected_estimate'][j-1] + crete_total_daily - current[dest_name + '_crete_confirmed_daily'][j-21]
+            current[dest_name + '_crete_infected_estimate'].push( infected_estimate );
+        } else {
+            current[dest_name + '_crete_infected_estimate'].push( crete_total );
+        }
+        
         // compute growth rate
-        if ( (j == 0) || (crete_total == 0) ) {
+        // this is based on the infected_estimate, which is a totally un-grounded metric.. well what can i do
+        if (j == 0) {
             current[dest_name + '_crete_growth_rate'].push( 1 );
         } else {
-            console.log( "step: " + j + " crete_total: " + crete_total + " confirmed[j-1]: " + current[dest_name + '_crete_confirmed'][j-1] );
-            current[dest_name + '_crete_growth_rate'].push( crete_total / current[dest_name + '_crete_confirmed'][j-1] );
+            current[dest_name + '_crete_growth_rate'].push( current[dest_name + '_crete_infected_estimate'][j] / current[dest_name + '_crete_infected_estimate'][j-1] );
         }
 
         // compute daily average growth rate
@@ -364,8 +369,6 @@ function extract_crete_details(crete_data, current, dest_name) {
         slice_start = Math.min(j, 7);
         current[dest_name + '_crete_growth_rate_avg7'].push( get_avg( current[dest_name + '_crete_growth_rate'].slice(j-slice_start,j+1) ) );
     }
-    
-    console.log(current[dest_name + '_crete_growth_rate']);
 }
 
 

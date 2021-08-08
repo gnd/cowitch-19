@@ -23,7 +23,19 @@ crete_dataset.push( {
     borderColor: '#000000',
     pointStyle: 'cross',
     radius: 5,
-    pointBorderColor:  '#000000',
+    pointBorderColor: '#000000',
+    tension: 0,
+    fill: false
+} );
+crete_dataset.push( {
+    label: 'Crete (7-day rolling average)',
+    data: current_values['gr_crete_confirmed_daily_avg7'],
+    spanGaps: true,
+    borderWidth: 1,
+    borderColor: '#' + pal_8[0],
+    pointStyle: 'cross',
+    radius: 5,
+    pointBorderColor: '#' + pal_8[0],
     tension: 0,
     fill: false
 } );
@@ -75,6 +87,19 @@ crete_dataset.push( {
     tension: 0,
     fill: false
 } );
+crete_dataset.push( {
+    label: 'Crete - Estimated current sick',
+    data: current_values['gr_crete_infected_estimate'],
+    spanGaps: true,
+    borderWidth: 1,
+    borderColor: '#' + pal_8[5],
+    pointStyle: 'cross',
+    radius: 5,
+    pointBorderColor: '#' + pal_8[5],
+    tension: 0,
+    fill: false,
+    hidden: true
+} );
 
 // The infected chart
 window.infected_chart = new Chart(crete_cities, {
@@ -99,7 +124,7 @@ window.infected_chart = new Chart(crete_cities, {
             }],
             yAxes: [{
                 ticks: {
-                    min: 0,
+                    suggestedMin: 0,
                     suggestedMax: 250,
                 }
             }]
@@ -109,14 +134,19 @@ window.infected_chart = new Chart(crete_cities, {
             display: true,
             onClick: legendCallbackInfected,
             labels: {
-                fontSize: fontsize,
-                // Show only first two labels
-                filter: function (legendItem, chartData) {
-                    if (legendItem.datasetIndex < 5) {
-                        return (chartData.datasets[legendItem.datasetIndex].label)
-                    }
-                },
+                fontSize: fontsize
             },
         },
     }
 });
+
+/*
+window.infected_chart.data.datasets.forEach((dataSet, i) => {
+  var meta = chart.getDatasetMeta(i);
+
+  meta.hidden = (i>5);
+});
+
+this.chart.update();
+
+*/
