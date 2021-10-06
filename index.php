@@ -260,7 +260,7 @@
     }
     var model_settings = new params(
         'cz_c',                     // model name
-        390,                        // model duration
+        480,                        // model duration
         //seed['growth_rate_avg_7']['cz'],
         model_growthrate,
         0.95,                       // min possible growth rate
@@ -314,7 +314,7 @@
     }
     var model_settings_31_10 = new params(
         'cz_31-10',                     // model name
-        390,                        // model duration
+        480,                        // model duration
         //seed['growth_rate_avg_7']['cz'],
         model_growthrate,
         0.95,                       // min possible growth rate
@@ -364,7 +364,7 @@
     }
     var model_settings_27_12 = new params(
         'cz_27-12',                     // model name
-        390,                        // model duration
+        480,                        // model duration
         //seed['growth_rate_avg_7']['cz'],
         model_growthrate,
         0.95,                       // min possible growth rate
@@ -414,7 +414,7 @@
     }
     var model_settings_1_1_sk = new params(
         'sk_1-1',                     // model name
-        390,                        // model duration
+        480,                        // model duration
         //seed['growth_rate_avg_7']['cz'],
         model_growthrate,
         0.95,                       // min possible growth rate
@@ -488,7 +488,7 @@
     }
     var model_settings_05_01 = new params(
         'cz_05-01',                     // model name
-        540,                        // model duration
+        580,                        // model duration
         //seed['growth_rate_avg_7']['cz'],
         model_growthrate,
         0.9,                       // min possible growth rate
@@ -581,7 +581,7 @@
     }
     var model_settings_13_02 = new params(
         'cz_13-02',                     // model name
-        540,                        // model duration
+        580,                        // model duration
         //seed['growth_rate_avg_7']['cz'],
         model_growthrate,
         0.9,                       // min possible growth rate
