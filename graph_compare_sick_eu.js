@@ -1,5 +1,5 @@
 // days since March 1st, 2020
-var CHART_DAYS = 570;
+var CHART_DAYS = 660;
 
 // the compare graph
 var compare_100_sick = document.getElementById("canvas_compare_100_sick").getContext('2d');

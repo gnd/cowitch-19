@@ -1,5 +1,5 @@
 // days since December 27th
-var CHART_DAYS = 280;
+var CHART_DAYS = 365;
 
 // legend callback - see https://www.chartjs.org/docs/latest/configuration/legend.html
 function legendCallbackGrowthRate(e, legendItem) {
