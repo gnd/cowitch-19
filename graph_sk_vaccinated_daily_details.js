@@ -30,7 +30,7 @@ vaccinated_dataset.push( {
 window.vaccinated_chart = new Chart(vaccinated_chart_sk_det_daily, {
     type: 'line',
     data: {
-        labels: gen_days(4, 0, 190),
+        labels: gen_days(4, 0, 370),
         datasets: vaccinated_dataset,
     },
     options: {
