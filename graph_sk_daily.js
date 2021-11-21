@@ -1,5 +1,5 @@
 // days since March 1st, 2020
-var CHART_DAYS = 570;
+var CHART_DAYS = 720;
 
 // legend callback - see https://www.chartjs.org/docs/latest/configuration/legend.html
 function legendCallbackInfected(e, legendItem) {
@@ -62,8 +62,7 @@ window.infected_chart = new Chart(infected_chart_sk_daily, {
             }],
             yAxes: [{
                 ticks: {
-                    min: 0,
-                    max: 7000,
+                    min: 0
                 }
             }]
         },

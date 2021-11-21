@@ -47,7 +47,7 @@
 
 <!-- DATA -->
 <script src="data/confirmed.js?v=<?php echo filemtime('data/confirmed.js'); ?>"></script>
-<script src="data/recovered.js?v=<?php echo filemtime('data/recoveredz.js'); ?>"></script>
+<script src="data/recovered.js?v=<?php echo filemtime('data/recovered.js'); ?>"></script>
 <script src="data/deaths.js?v=<?php echo filemtime('data/deaths.js'); ?>"></script>
 <script src="data/confirmed_cz.js?v=<?php echo filemtime('data/confirmed_cz.js'); ?>"></script>
 <script src="data/recovered_cz.js?v=<?php echo filemtime('data/recovered_cz.js'); ?>"></script>
@@ -759,19 +759,10 @@
         <br class="clear"/>
     </div>
     <div class="graph_container">
-        <a id="compare_100_sick"></a>
-        <div class="graph_filler">&nbsp;</div>
-        <div class="canvas_container">
-            <canvas id="canvas_compare_100_sick" class="graph"></canvas>
-            <a class="link" href="#compare_100_sick">link</a>
-        </div>
-        <br class="clear"/>
-    </div>
-    <div class="graph_container">
         <a id="compare_100_confirmed"></a>
         <div class="graph_filler">&nbsp;</div>
         <div class="canvas_container">
-            <canvas id="canvas_compare_100_confirmed" class="graph"></canvas>
+            <canvas id="canvas_compare_100_confirmed" class="graph_dark"></canvas>
             <a class="link" href="#compare_100_confirmed">link</a>
         </div>
         <br class="clear"/>
@@ -780,7 +771,7 @@
         <a id="compare_100_confirmed_perc"></a>
         <div class="graph_filler">&nbsp;</div>
         <div class="canvas_container">
-            <canvas id="canvas_compare_100_confirmed_perc" class="graph"></canvas>
+            <canvas id="canvas_compare_100_confirmed_perc" class="graph_dark"></canvas>
             <a class="link" href="#compare_100_confirmed_perc">link</a>
         </div>
         <br class="clear"/>
@@ -924,9 +915,6 @@
 
 <!-- GRAPH SK Vaccinations-->
 <script src="graph_sk_vaccinated.js?v=<?php echo filemtime('graph_sk_vaccinated.js'); ?>"></script>
-
-<!-- GRAPH Compare Sick per 100k -->
-<script src="graph_compare_sick_eu.js?v=<?php echo filemtime('graph_compare_sick_eu.js'); ?>"></script>
 
 <!-- GRAPH Compare Confirmed per 100k -->
 <script src="graph_compare_confirmed_eu.js?v=<?php echo filemtime('graph_compare_confirmed_eu.js'); ?>"></script>

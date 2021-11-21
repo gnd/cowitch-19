@@ -1,5 +1,5 @@
 // days since December 27th
-var CHART_DAYS = 365;
+var CHART_DAYS = 420;
 
 // the growth rate
 var vaccinated_chart_cz_det_daily = document.getElementById("vaccinated_cz_det_daily").getContext('2d');
@@ -14,9 +14,10 @@ for (var i=0; i<age_slots.length; i++) {
         label: age_desc + ' (1st)',
         data: current_values['cz_vaccinated_a_daily_' + age],
         spanGaps: true,
-        borderWidth: 1,
+        borderWidth: 0.5,
         borderColor: '#' + pal_vacc_a[i],
-        pointStyle: 'crossRot',
+        pointStyle: 'line',
+        radius: 2,
         pointBorderColor:  '#' + pal_vacc_a[i],
         tension: 0.2,
         fill: false
@@ -25,9 +26,10 @@ for (var i=0; i<age_slots.length; i++) {
         label: age_desc + ' (2nd)',
         data: current_values['cz_vaccinated_b_daily_' + age],
         spanGaps: true,
-        borderWidth: 2,
+        borderWidth: 1,
         borderColor: '#' + pal_vacc_b[i],
-        pointStyle: 'rect',
+        pointStyle: 'line',
+        radius: 2,
         pointBorderColor:  '#' + pal_vacc_b[i],
         tension: 0.2,
         fill: false

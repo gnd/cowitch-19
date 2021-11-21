@@ -40,7 +40,7 @@ infected_dataset.push( {
 window.infected_chart = new Chart(infected_chart_sk, {
     type: 'line',
     data: {
-        labels: gen_days(6, 2, 480),
+        labels: gen_days(6, 2, 720),
         datasets: infected_dataset,
     },
     options: {
@@ -59,8 +59,7 @@ window.infected_chart = new Chart(infected_chart_sk, {
             }],
             yAxes: [{
                 ticks: {
-                    min: 0,
-                    max: 350000,
+                    min: 0
                 }
             }]
         },

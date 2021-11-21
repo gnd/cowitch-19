@@ -1,5 +1,5 @@
 // days since March 1st, 2020
-var CHART_DAYS = 660;
+var CHART_DAYS = 720;
 
 // the compare graph
 var compare_100_deaths_daily_avg_7 = document.getElementById("canvas_compare_100_deaths_daily_avg_7").getContext('2d');

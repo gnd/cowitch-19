@@ -1,4 +1,4 @@
-var CHART_DAYS = 630;
+var CHART_DAYS = 720;
 
 // legend callback - see https://www.chartjs.org/docs/latest/configuration/legend.html
 function legendCallbackInfected(e, legendItem) {

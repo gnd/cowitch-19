@@ -1,5 +1,5 @@
 // days since December 27th
-var CHART_DAYS = 365;
+var CHART_DAYS = 420;
 
 // legend callback - see https://www.chartjs.org/docs/latest/configuration/legend.html
 function legendCallbackGrowthRate(e, legendItem) {
@@ -22,9 +22,11 @@ vaccinated_dataset.push( {
     label: '1st dose',
     data: current_values['cz_vaccinated_a_total'],
     spanGaps: true,
-    borderWidth: 1,
+    borderWidth: 0.5,
     borderColor: '#f2b705',
-    pointStyle: 'crossRot',
+    pointStyle: 'line',
+    radius: 2,
+    rotation: 90,
     pointBorderColor:  '#f2b705',
     tension: 0.2,
     fill: false
@@ -33,9 +35,11 @@ vaccinated_dataset.push( {
     label: '2nd dose',
     data: current_values['cz_vaccinated_b_total'],
     spanGaps: true,
-    borderWidth: 2,
+    borderWidth: 1,
     borderColor: '#d96704',
-    pointStyle: 'rect',
+    pointStyle: 'line',
+    radius: 2,
+    rotation: 90,
     pointBorderColor: '#d96704',
     tension: 0.2,
     fill: false

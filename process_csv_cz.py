@@ -70,9 +70,9 @@ def process_vaccinated_details(name):
     for line in lines[1:]:
         # 2021-01-26,Comirnaty,CZ080,"Moravskoslezsky kraj",18-24,0,18,18\r\n'
         line_data = line.split(',')
-        line_date = line_data[0]
-        line_vaccine = line_data[1]
-        line_age  = line_data[4]
+        line_date = line_data[1]
+        line_vaccine = line_data[2]
+        line_age  = line_data[5]
         
         #
         # Process data about first and second doses broken down by age
@@ -85,8 +85,8 @@ def process_vaccinated_details(name):
                 vaccinated_b[age][line_date] = 0
         # Second, add data from line
         if (line_age in age_slots):
-            vaccinated_a[line_age][line_date] += int(line_data[5])
-            vaccinated_b[line_age][line_date] += int(line_data[6])
+            vaccinated_a[line_age][line_date] += int(line_data[6])
+            vaccinated_b[line_age][line_date] += int(line_data[7])
         
         #        
         # Process data about first and second doses - total over all age groups
@@ -97,8 +97,8 @@ def process_vaccinated_details(name):
         if (line_date not in vaccinated_b['total']):
             vaccinated_b['total'][line_date] = 0
         # Second, add data from line
-        vaccinated_a['total'][line_date] += int(line_data[5])
-        vaccinated_b['total'][line_date] += int(line_data[6])
+        vaccinated_a['total'][line_date] += int(line_data[6])
+        vaccinated_b['total'][line_date] += int(line_data[7])
 
         #
         # Process data about first and second doses - total over all vaccines used
@@ -112,11 +112,11 @@ def process_vaccinated_details(name):
         # Second, add data from line
         if (line_vaccine in used_vaccines):
             vaccine = used_vaccines[line_vaccine]
-            vaccinated_a[vaccine][line_date] += int(line_data[5])
-            vaccinated_b[vaccine][line_date] += int(line_data[6])
+            vaccinated_a[vaccine][line_date] += int(line_data[6])
+            vaccinated_b[vaccine][line_date] += int(line_data[7])
         else:
-            vaccinated_a['Other'][line_date] += int(line_data[5])
-            vaccinated_b['Other'][line_date] += int(line_data[6])
+            vaccinated_a['Other'][line_date] += int(line_data[6])
+            vaccinated_b['Other'][line_date] += int(line_data[7])
     
     # prepare output
     output = ""

@@ -23,9 +23,11 @@ def process_csv(name):
         # example of one row in data:
         # "Datum";"Pocet.potvrdenych.PCR.testami";"Dennych.PCR.testov";"Dennych.PCR.prirastkov";"Pocet.umrti";"AgTests";"AgPosit"
         # 2021-02-14;278254;2775;572;5952;249092;2392
+        # Datum;"Pocet potvrdenych PCR testami";"Dennych PCR testov";"Dennych PCR prirastkov";"Pocet umrti"
+        # 22-03-2020;185;242;7;0
         arr = line.split(';')
         datum_arr = arr[0].split("-")
-        datum = "%s/%s/%s" % (datum_arr[1].lstrip("0"), datum_arr[2].lstrip("0"), datum_arr[0][2:])
+        datum = "%s/%s/%s" % (datum_arr[1].lstrip("0"), datum_arr[0].lstrip("0"), datum_arr[2][2:])
         # create entries like '1/22/20': 0,
         confirmed += "'%s': %s, " % (datum, arr[1])
         # slovak gov has stopped publishing this data :/
@@ -55,7 +57,7 @@ def process_csv(name):
 def process_vaccinated_details(name):
     f = file('data/%s' % name, 'r')
     lines = f.readlines()
-    lines = lines[1:]
+    lines = lines[1:-1]
     lines.reverse()
     f.close()
 
@@ -67,6 +69,7 @@ def process_vaccinated_details(name):
     # Process data from the CSV line by line
     for line in lines:
         # 2021-06-28;"Košický kraj";"SK042";"Comirnaty koncentrát na injekčnú disperziu";243;1499
+        # 2021-11-16;"Prešovský kraj";"SK041";"Spikevax injekčná disperzia (pôvodne COVID-19 Vaccine Moderna)dis inj 10x5 ml (liek.inj.skl.)";30;13
         line_data = line.split(';')
         line_date = line_data[0]
         
