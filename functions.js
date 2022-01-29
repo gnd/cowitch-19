@@ -224,7 +224,7 @@ function extract_data_sk(csv, current, dest_name) {
     var now = moment(new Date());
     var start = moment("2020-3-6");
     var duration = moment.duration(now.diff(start));
-    var days = duration.asDays()
+    var days = duration.asDays() - 1;
 
     // prepare arrays
     current[dest_name] = [];

@@ -1,6 +1,3 @@
-// days since March 1st, 2020
-var CHART_DAYS = 720;
-
 // the compare graph
 var compare_100_deaths = document.getElementById("canvas_compare_100_deaths").getContext('2d');
 dataset = [];
@@ -208,7 +205,7 @@ dataset.push( {
 window.compare= new Chart(compare_100_deaths, {
     type: 'line',
     data: {
-        labels: gen_days_relative(CHART_DAYS),
+        labels: gen_days_relative(GLOBAL_CHART_DAYS),
         datasets: dataset,
     },
     options: {

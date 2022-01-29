@@ -17,7 +17,7 @@ for (var i=0; i < age_slots.length; i++) {
 }
 
 // Put it all together
-data = {
+var cz_vacc_data = {
   labels: labels,
   datasets: [
         {
@@ -47,7 +47,7 @@ var vaccinated_chart_cz_age_groups = document.getElementById("vaccinated_cz_age_
 // The vaccinations chart
 window.vaccinated_chart = new Chart(vaccinated_chart_cz_age_groups, {
   type: 'bar',
-  data: data,
+  data: cz_vacc_data,
   options: {
     grouped: true,
     elements: {

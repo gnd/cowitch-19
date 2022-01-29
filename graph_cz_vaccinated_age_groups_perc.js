@@ -17,7 +17,7 @@ for (var i=0; i<age_slots.length; i++) {
 }
 
 // Put it all together
-data = {
+var cz_vacc_data = {
   labels: labels,
   datasets: [
       {

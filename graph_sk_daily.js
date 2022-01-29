@@ -1,6 +1,3 @@
-// days since March 1st, 2020
-var CHART_DAYS = 720;
-
 // legend callback - see https://www.chartjs.org/docs/latest/configuration/legend.html
 function legendCallbackInfected(e, legendItem) {
     var index = legendItem.datasetIndex;
@@ -43,7 +40,7 @@ infected_dataset.push( {
 window.infected_chart = new Chart(infected_chart_sk_daily, {
     type: 'line',
     data: {
-        labels: gen_days(6, 2, CHART_DAYS),
+        labels: gen_days(6, 2, GLOBAL_CHART_DAYS-6),
         datasets: infected_dataset,
     },
     options: {

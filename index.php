@@ -74,11 +74,12 @@
 
 <!-- SEED AND PREPARE MODELS AND GRAPHS -->
 <script>
-    aspect_ratio = 2; // Desktop graph aspect ratio
-    aspect_ratio_mobile = 1.15; // Mobile graph aspect ratio
-    fontsize = 12;
-    fontsize_mobile = 24;
+    var aspect_ratio = 2; // Desktop graph aspect ratio
+    var aspect_ratio_mobile = 1.15; // Mobile graph aspect ratio
+    var fontsize = 12;
+    var fontsize_mobile = 24;
     moment.suppressDeprecationWarnings = true;
+    var GLOBAL_CHART_DAYS = 810;
 
     // Create the data arrays using values
     data = {};

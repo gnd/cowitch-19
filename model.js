@@ -290,9 +290,8 @@ function fill_initial(arr, values, name, offset = 0) {
             arr[name]['growth_rate'].push( 1 );
         } else {
             arr[name]['growth_rate'].push( arr[name]['infected'][i] / arr[name]['infected'][i-1] );
-            var gr = arr[name]['infected'][i] / arr[name]['infected'][i-1];
         }
-
+        
         // compute daily average growth rate
         arr[name]['growth_rate_avg'].push( get_avg( arr[name]['growth_rate'].slice(0,i+1) ) );
 

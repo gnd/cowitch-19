@@ -105,7 +105,7 @@ crete_dataset.push( {
 window.infected_chart = new Chart(crete_cities, {
     type: 'line',
     data: {
-        labels: gen_days(0, 0, 420, 2021),
+        labels: gen_days(0, 0, GLOBAL_CHART_DAYS-306, 2021),
         datasets: crete_dataset,
     },
     options: {
@@ -113,7 +113,7 @@ window.infected_chart = new Chart(crete_cities, {
         title: {
             display: true,
             fontSize: fontsize,
-            text: ["Daily new cases of COVID-19 in Crete", "Breakdown by Cretan regional units"]
+            text: ["Daily new cases of COVID-19 in Crete (BROKEN)", "Breakdown by Cretan regional units"]
         },
         scales: {
             xAxes: [{

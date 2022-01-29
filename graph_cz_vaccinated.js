@@ -1,6 +1,3 @@
-// days since December 27th
-var CHART_DAYS = 420;
-
 // legend callback - see https://www.chartjs.org/docs/latest/configuration/legend.html
 function legendCallbackGrowthRate(e, legendItem) {
     var index = legendItem.datasetIndex;
@@ -49,7 +46,7 @@ vaccinated_dataset.push( {
 window.vaccinated_chart = new Chart(vaccinated_chart_cz, {
     type: 'line',
     data: {
-        labels: gen_days(26, 11, CHART_DAYS),
+        labels: gen_days(26, 11, GLOBAL_CHART_DAYS-302),
         datasets: vaccinated_dataset,
     },
     options: {
