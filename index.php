@@ -79,14 +79,14 @@
     var fontsize = 12;
     var fontsize_mobile = 24;
     moment.suppressDeprecationWarnings = true;
-    var GLOBAL_CHART_DAYS = 810;
+    var GLOBAL_CHART_DAYS = 900;
 
     // Create the data arrays using values
     data = {};
     current_values = {};
     days_elapsed = {};
     seed = {'growth_rate': {}, 'growth_rate_avg_7': {}, 'infected': {}};
-    
+
     // Population sizes
     population_size = {};
     population_size['at'] =  8858775; // https://en.wikipedia.org/wiki/Demographics_of_Austria
@@ -108,12 +108,12 @@
     population_size['sr'] =  6926705; // https://en.wikipedia.org/wiki/Demographics_of_Serbia
     population_size['es'] = 47431256; // https://en.wikipedia.org/wiki/Demographics_of_Spain
     population_size['ua'] = 41762138; // https://en.wikipedia.org/wiki/Demographics_of_Ukraine
-    
+
     // Population sizes by age groups
     population_size_by_age = {}; // https://population.un.org/wpp/Download/Standard/Population/
     population_size_by_age['sk'] = [284,283,283,263,291,365,410,437,458,404,347,362,362,333,237,162,100,57,19,3,0];
     population_size_by_age['cz'] = [559,555,574,488,471,634,717,761,930,868,694,657,644,681,613,418,235,144,54,11,0];
-    
+
     // Get global data from https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_confirmed_global.csv
     extract_data(global_data, current_values, 'Austria', 'at');
     extract_data(global_data, current_values, 'Belgium', 'be');
@@ -136,10 +136,10 @@
     extract_data(global_data, current_values, 'Serbia', 'sr');
     extract_data(global_data, current_values, 'Spain', 'es');
     extract_data(global_data, current_values, 'Ukraine', 'ua');
-    
+
     // Cretan / Greek data
     extract_crete_details(crete_data, current_values, 'gr'); // Get Greek data from https://eody.gov.gr
-    
+
     // Fill initial stats for countries
     days_elapsed['at'] = fill_initial(data, current_values, 'at');
     days_elapsed['be'] = fill_initial(data, current_values, 'be');
@@ -181,7 +181,7 @@
     prepare_100_relative(current_values, 'sr', population_size['sr']);
     prepare_100_relative(current_values, 'es', population_size['es']);
     prepare_100_relative(current_values, 'ua', population_size['ua']);
-    
+
     // process age groups (estimate for 18-24, sum for 80+)
     population_size_by_age['sk'] = process_age_groups(population_size_by_age['sk']);
     population_size_by_age['cz'] = process_age_groups(population_size_by_age['cz']);
@@ -198,7 +198,7 @@
     // Create growth_rate seed and new cases seed for modelling
     create_seeds(seed, days_elapsed, 'cz');
     create_seeds(seed, days_elapsed, 'sk');
-    
+
     // This is a model following the 7-day rolling average of growth rate in Czech republic
     // TODO define a suite of realistic rate functions for autumn
     rate_funcs = [];
@@ -335,8 +335,8 @@
         0                           // debugging
     );
     run_model( model_settings_31_10 );
-    
-    
+
+
     // 27.12.2020
     // This is a model following the 7-day rolling average of growth rate in Czech republic
     rate_funcs = [];
@@ -355,7 +355,7 @@
         1.2,                        // speed / steepness
         -0.2,                        // scale
     ));
-    
+
     // 27.12
     var model_growthrate = {};
     var model_seed = {};
@@ -385,8 +385,8 @@
         0                           // debugging
     );
     run_model( model_settings_27_12 );
-    
-    
+
+
     // 1.1.2021
     // This is a model following the 7-day rolling average of growth rate in Slovakia
     rate_funcs = [];
@@ -405,7 +405,7 @@
         1.2,                        // speed / steepness
         -0.2,                        // scale
     ));
-    
+
     // 1.1.2021
     var model_growthrate = {};
     var model_seed = {};
@@ -435,7 +435,7 @@
         0                           // debugging
     );
     run_model( model_settings_1_1_sk );
-    
+
     // 05.01.2021
     // This is a model following the growth rate in Czech republic
     // Updated 16/01 - following avg7 growth rate seems better in retrospect
@@ -475,11 +475,11 @@
     post_funcs = [];
     post_funcs.push( new post_func(
         'saw',      // this adds a weekly oscilation to the growth rate
-        0,          // dow 
+        0,          // dow
         0.2,         // scale
         0               // offset
     ));
-    
+
     // 05.01
     var model_growthrate = {};
     var model_seed = {};
@@ -531,7 +531,7 @@
         -0.1,                        // scale
     ));
     // 4th Wave - came much sooner than expected
-    var FOURTH_WAVE = PREDICTION_DAY+15;    
+    var FOURTH_WAVE = PREDICTION_DAY+15;
     rate_funcs.push( new rate_func(
         'lin',                      // name
         FOURTH_WAVE,                // start
@@ -542,7 +542,7 @@
     // 4th Lockdown
     rate_funcs.push( new rate_func(
         'exp',                      // name
-        FOURTH_WAVE+46,             // start (guessing 22.02.2021) -- in the end it was a week later - 01.03.2021 
+        FOURTH_WAVE+46,             // start (guessing 22.02.2021) -- in the end it was a week later - 01.03.2021
         24,                         // steps
         1.2,                        // speed / steepness
         -0.15,                       // scale
@@ -568,11 +568,11 @@
     post_funcs = [];
     post_funcs.push( new post_func(
         'saw',      // this adds a weekly oscilation to the growth rate
-        0,          // dow 
+        0,          // dow
         0.32,        // scale
         0.007       // offset
     ));
-    
+
     // 13.02
     var model_growthrate = {};
     var model_seed = {};
