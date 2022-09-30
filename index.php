@@ -79,7 +79,7 @@
     var fontsize = 12;
     var fontsize_mobile = 24;
     moment.suppressDeprecationWarnings = true;
-    var GLOBAL_CHART_DAYS = 900;
+    var GLOBAL_CHART_DAYS = 990;
 
     // Create the data arrays using values
     data = {};
